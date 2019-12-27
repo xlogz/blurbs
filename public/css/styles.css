@@ -1,0 +1,90 @@
+
+@media (min-width: 576px) { ... }
+
+
+@media (min-width: 768px) { ... }
+
+
+@media (min-width: 992px) { ... }
+
+
+@media (min-width: 1200px) { ... }
+
+.formItem{
+	padding-top: 20px;
+	padding-bottom: 20px;
+}
+
+.submitbutton{
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+.line{
+	height: 1px;
+	width: 100%;
+	background-color: black;
+}
+
+.formItem{
+		font-family: sans-serif;
+}
+
+.formItem h6{
+	font-weight: 600;
+	font-size: .8em;
+}
+
+.sign-up-caption{
+	margin-top: 75px;
+}
+
+.sign-up-logo{
+	width: 150px;
+	height: 150px;
+	margin-top: 100px;
+	margin-bottom: 100px
+}
+
+.sign-up-title{
+	text-align: center;
+	margin-top: 150px;
+}
+
+.end-of-form{
+	margin-bottom: 100px;
+	height: 30px;
+}
+
+#create-event-button{
+	height: 50px;
+	border: 1px solid black;
+	color: black;
+	border-radius: 5px;
+	background-color: white;
+	transition: background-color .5s, color .2s;
+}
+
+#create-event-button:hover{
+	background-color: black;
+	color: white;
+	cursor: pointer;
+}
+
+.serif-font{
+	font-family: 'Georgia','Times New Roman', serif;
+}
+
+
+
+body{
+/*background-image: linear-gradient( 0deg, rgba(3,127,163,1) -0.1%, rgba(0,47,108,1) 102.5% );*/
+background-image: url('../images/background.png');
+background-repeat: no-repeat;
+background-position: right bottom;
+
+}
+div{
+	color: black;
+	
+}

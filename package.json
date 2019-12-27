@@ -1,0 +1,16 @@
+{
+  "name": "bookmark",
+  "version": "1.0.0",
+  "description": "Social Media Site for Bookmark Collection",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "angular-auth0": "^3.0.5",
+    "angular-ui-router": "^1.0.23",
+    "express": "^4.17.1"
+  }
+}
