@@ -1,0 +1,37 @@
+<section ng-controller="signInCtrl">
+  
+<div style="height: 76px"></div>
+<div style="height: 300px"></div>
+<div class="container">
+  <div class="row">
+    <form action="" ng-submit="login()" name="signInForm">
+      <div class="col-sm-6">
+       
+        Username:
+        <input type="text" class="form-input" id="username" data-ng-model="credentials.username" name="username">
+        
+
+      </div>
+      <div class="col-sm-6">
+       
+        Password:
+        <input type="password" id="password" data-ng-model="credentials.password" name="password">
+        
+
+      </div>
+      <div class="col-sm-6">
+       
+        <button class="submitbutton" ng-click="loginuser()">Submit</button>
+        
+        <button class="submitbutton" ng-click="handleAuthenticaton()">handleAuthenticaton</button>
+
+        <a href="" ng-click="login()">login</a>
+        <a href="" ng-click="logout()">logout</a>
+
+      </div>
+    </form>
+  </div>
+</div>
+
+
+</section>

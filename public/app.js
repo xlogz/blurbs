@@ -1,6 +1,6 @@
-var mainApp = angular.module('main', ['ui.router', 'auth0.auth0']);
+var mainApp = angular.module('main', ['ui.router', 'auth0.auth0', ]);
 
-mainApp.config(['$stateProvider', 'angularAuth0Provider', function($stateProvider,angularAuth0Provider) {
+mainApp.config(['$stateProvider', 'angularAuth0Provider', '$urlRouterProvider', '$locationProvider', function($stateProvider,angularAuth0Provider,$urlRouterProvider,$locationProvider) {
   var homeState = {
     name: 'home',
     url: '/home',
@@ -38,16 +38,31 @@ mainApp.config(['$stateProvider', 'angularAuth0Provider', function($stateProvide
     templateUrl: './app/authentication/register.html'
   }
 
+  var signInState = {
+    name: 'signin',
+    url: '/signin',
+    templateUrl: './app/authentication/signin.html'
+  }
+
+  var callBackState = {
+    name: 'callback',
+    url: '/callback',
+    templateUrl: './app/callback/callback.html',
+
+  }
+
   $stateProvider.state(homeState);
   $stateProvider.state(myBlurbsState);
   $stateProvider.state(addBlurbState);
   $stateProvider.state(blurbsState);
   $stateProvider.state(aboutState);
   $stateProvider.state(registerState);
+  $stateProvider.state(signInState);
+  $stateProvider.state(callBackState);
 
   var AUTH0_CLIENT_ID='x4QhXO346dfoY4wzVnWttmDAvFbQogAS'; 
   var AUTH0_DOMAIN='dev-kihm7h2g.auth0.com'; 
-  var AUTH0_CALLBACK_URL='http://localhost:3000/callback';
+  var AUTH0_CALLBACK_URL='http://localhost:3000/#/callback';
    // Initialization for the angular-auth0 library
     angularAuth0Provider.init({
       clientID: AUTH0_CLIENT_ID,
@@ -57,6 +72,30 @@ mainApp.config(['$stateProvider', 'angularAuth0Provider', function($stateProvide
       scope: 'openid'
     });
 
+
+
+    /// Comment out the line below to run the app
+    // without HTML5 mode (will use hashes in routes)
+
+
+
+
 }]);
 
- 
+mainApp.controller('mainCtrl',['authService', '$scope', function(authService,$scope){
+
+  if (localStorage.getItem('isLoggedIn') === 'true') {
+
+      authService.renewTokens();
+    } else {
+      // Handle the authentication
+      // result in the hash
+      authService.handleAuthentication();
+    }
+
+  $scope.isAuthenticated = authService.isAuthenticated;
+  $scope.logout = authService.logout;
+  $scope.login = authService.login;
+  
+}])
+

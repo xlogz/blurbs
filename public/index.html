@@ -1,6 +1,7 @@
 <!doctype html>
 <html class="no-js" lang="">
     <head>
+        <base href="/">
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
         <title></title>
@@ -14,7 +15,7 @@
         <link rel="stylesheet" href="css/styles.css">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     </head>
-    <body ng-app="main">
+    <body ng-app="main" ng-controller="mainCtrl">
         <!--[if lte IE 9]>
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
         <![endif]-->
@@ -31,10 +32,10 @@
         <a class="nav-link" ui-sref="home">Home <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" ui-sref="myblurbs">My Blurbs</a>
+        <a class="nav-link" ui-sref="myblurbs" ng-show="isAuthenticated()">My Blurbs</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" ui-sref="addblurb">Add Blurb</a>
+        <a class="nav-link" ui-sref="addblurb" ng-show="isAuthenticated()">Add Blurb</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" ui-sref="blurbs">View Blurbs</a>
@@ -54,10 +55,10 @@
         </div>
       </li> -->
       <li class="nav-item">
-        <a class="nav-link disabled" href="#">Sign In</a>
+        <a class="nav-link" href="#" ng-show="!isAuthenticated()" ng-click="login()">Sign In</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link disabled" href="#">Sign Out</a>
+        <a class="nav-link" href="#" ng-show="isAuthenticated()" ng-click="logout()">Sign Out</a>
       </li>
     </ul>
 <!--     <form class="form-inline my-2 my-lg-0">
@@ -91,6 +92,8 @@
 	<script src="factory.js"></script>
 	<script src="app/home/home.js"></script>
 	<script src="app/authentication/register.js"></script>
+  <script src="app/authentication/authservice.js"></script>  
+  <script src="app/authentication/signin.js"></script>  
   <script src="app/addBlurb/addBlurb.js"></script>
   <script src="app/myblurbs/myblurbs.js"></script>
   <script src="app/blurbs/blurbs.js"></script>	
