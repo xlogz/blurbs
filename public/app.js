@@ -82,7 +82,7 @@ mainApp.config(['$stateProvider', 'angularAuth0Provider', '$urlRouterProvider', 
 
 }]);
 
-mainApp.controller('mainCtrl',['authService', '$scope', function(authService,$scope){
+mainApp.controller('mainCtrl',['authService', '$scope', '$http', function(authService,$scope, $http){
 
   if (localStorage.getItem('isLoggedIn') === 'true') {
 
@@ -91,11 +91,26 @@ mainApp.controller('mainCtrl',['authService', '$scope', function(authService,$sc
       // Handle the authentication
       // result in the hash
       authService.handleAuthentication();
+
     }
+    setTimeout(function(){
+      authService.getUserId(); 
+    }, 500);
+ 
 
   $scope.isAuthenticated = authService.isAuthenticated;
   $scope.logout = authService.logout;
   $scope.login = authService.login;
+  $scope.getAccessToken = authService.getAccessToken;
+  $scope.handleAuthentication = authService.handleAuthentication;
+  $scope.getIdToken = authService.getIdToken;
+  $scope.getUserInfo = authService.getUserInfo;
+  $scope.getUserId = authService.getUserId;
+  $scope.getTest = authService.getTest;
+  $scope.getUserDBObject = authService.getUserDBObject;
+  $scope.username = authService.username;
+  $scope.email = authService.email;
+    
   
 }])
 
