@@ -2,7 +2,7 @@ mainApp.controller('addBlurbCtrl', ['$scope', '$http', 'authService', function($
 	
 
 	
-
+	
 
 	$scope.addBlurb = function(){
 
