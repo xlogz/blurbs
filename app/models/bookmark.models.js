@@ -10,21 +10,25 @@ var BookMarkSchema = new Schema({
 		type: String,
 		default:''
 	},
-	link: {
-		type: String,
-		default:''
-	},
 	description: {
 		type: String,
 		default:''
 	},
-	relativelinks: {
-		type: Array,
-		default: []
-	},
+	relativelinks: [{
+		type: Schema.Types.ObjectId, 
+		ref: 'Bookmark'
+	}],
 	children: {
 		type: Number,
 		default: 0
+	},
+	private: {
+		type: Boolean,
+		default: false
+	},
+	author: {
+		type: Schema.Types.ObjectId,
+		ref: 'User'
 	}
 
 })
