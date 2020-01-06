@@ -3,13 +3,28 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 	$scope.userObj;
 	$scope.categories = [];
 	$scope.categoryList = [];
+	$scope.collapsed = true;
 
 	$('.nav-item').on('click', function (e) {
 	  e.preventDefault()
 	  $(this).tab('show')
 	})
 
-	$('#myTab li:first-child a').tab('show')
+	$('#myTab li:first-child a').tab('show');
+
+	$('.card .collapse').collapse('show');
+
+
+	$scope.collapseAll = function(){
+		$('.card .collapse').collapse('hide');
+		$scope.collapsed = true;
+	}
+
+	$scope.expandAll = function(){
+		$('.card .collapse').collapse('show');
+		$scope.collapsed = false;
+	}
+
 
 	// $scope.categories = [
 	// 	{name: "Welcome", bookmarks:[{id: "1", title: "This is an example blurb", url: "http://www.yoururlhere.com", description: "This is your homepage where you can see all of the categories for your bookmarks. You can add them to an existing category or add one here"},
@@ -23,6 +38,8 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 	// 								 {id: "3", title: "This is an example blurb", url: "http://www.yoururlhere.com", description: "This is your third link that you've added. Lorum Ipsum Potato Tomato Pokemon Supercalifragilisticexpialidocious. Lorum Ipsum Potato Tomato Pokemon Supercalifragilisticexpialidocious. Lorum Ipsum Potato Tomato Pokemon Supercalifragilisticexpialidocious"}]}, 
 
 	//  ];
+
+
 
 	 $scope.myCategories = function(username, callback){
 	 	var userId = authService.getUserDBObject(username, function(userObject){
@@ -39,6 +56,7 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 
 				blurbService.createCategoriesObj(user, function(categoriesArray){
 					$scope.categories = categoriesArray;
+					console.log($scope.categories);
 					blurbService.createCategoriesList(categoriesArray, function(categoriesList){
 						console.log(categoriesList);
 						$scope.categoriesList = categoriesList;
@@ -98,13 +116,17 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 			})
 		} 
 		
-		$scope.getUserInfo(0, function(username){
+		
+	}
+	
+
+	$scope.getUserInfo(0, function(username){
 			console.log('this is the username being passed to getMyCategories');
 			console.log(username);
 			$scope.myCategories(username);
 		})
-	}
-	
+
+
 	init();
 	
 }])

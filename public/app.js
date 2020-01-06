@@ -93,9 +93,9 @@ mainApp.controller('mainCtrl',['authService', 'blurbService', '$scope', '$http',
       authService.handleAuthentication();
 
     }
-    setTimeout(function(){
-      authService.getUserInfo(); 
-    }, 500);
+    // setTimeout(function(){
+    //   authService.getUserInfo(); 
+    // }, 500);
  
     //authService methods
   $scope.isAuthenticated = authService.isAuthenticated;

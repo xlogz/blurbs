@@ -1,9 +1,10 @@
 var mongoose = require('mongoose');
 mongoose.Promise = require('bluebird');
 
-var User = mongoose.Promise.promisifyAll(mongoose.model('User'));
-var Bookmark = mongoose.Promise.promisifyAll(mongoose.model('Bookmark'));
+var User = mongoose.model('User');
+var Bookmark = mongoose.model('Bookmark');
 var Token = mongoose.model('Token');
+var Category = mongoose.model('Category');
 var request = require('request');
 
 var controller = {};
@@ -27,13 +28,26 @@ controller.addBlurb = function(req, res){
 	bookmark.save(function(err, bookmark){
 	console.log(bookmark._id)
 	console.log(bookmark);
-		User.updateOne({_id: req.headers.author}, {$push: {bookmarks: bookmark._id}}, function(error, success){
-			if(err){
-				console.log(error)
+	console.log(req.headers.categoryid);
+
+		Category.updateOne({_id: req.headers.categoryid}, {$push: {bookmarks: bookmark._id}}).then(function(error,success){
+			if(error){
+				console.log(error);
 			}else{
-				console.log('Successfully Added');
+				console.log('New bookmark successfully added');
+				res.status(201).send(bookmark._id);
 			}
-		} )
+		})
+
+
+
+		// User.updateOne({_id: req.headers.author}, {$push: {bookmarks: bookmark._id}}, function(error, success){
+		// 	if(err){
+		// 		console.log(error)
+		// 	}else{
+		// 		console.log('Successfully Added');
+		// 	}
+		// } )
 	})
 	
 }
