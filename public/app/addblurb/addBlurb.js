@@ -1,4 +1,4 @@
-mainApp.controller('addBlurbCtrl', ['$scope', '$http', 'authService', 'blurbService', function($scope, $http, authService, blurbService){
+mainApp.controller('addBlurbCtrl', ['$scope', '$http', 'authService', 'blurbService', '$rootScope', function($scope, $http, authService, blurbService, $rootScope){
 
 
 	$scope.myCategories = function(username, callback){
@@ -38,7 +38,7 @@ mainApp.controller('addBlurbCtrl', ['$scope', '$http', 'authService', 'blurbServ
 		info.category = $scope.bookmark.category;
 		info.categories = $scope.categories;
 
-		blurbService.addBlurb(info);
+		blurbService.addBlurb(info, $rootScope.user);
 
 		$scope.bookmark = {};
 

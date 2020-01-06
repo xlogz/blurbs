@@ -169,7 +169,7 @@ controller.getUserInfo = function(req, res){
 
 controller.getUserObject = function(req, res){
 	console.log('getting user DB ID by name');
-	console.log(req.headers);
+	console.log(req.headers.name);
 	User.find({username: req.headers.name}, function(err, item){
 		if(err){
 			console.log('There was an error when retrieving user db id by username');
@@ -204,10 +204,12 @@ controller.addBlurb = function(req, res){
 	console.log(bookmark._id)
 	console.log(bookmark);
 		User.updateOne({_id: req.headers.author}, {$push: {bookmarks: bookmark._id}}, function(error, success){
-			if(err){
+			if(error){
 				console.log(error)
+				res.status(401).send(error);
 			}else{
 				console.log('Successfully Added');
+				res.status(200).send(success);
 			}
 		} )
 	})

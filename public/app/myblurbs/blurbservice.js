@@ -1,66 +1,54 @@
-mainApp.service('blurbService', ['$http', 'authService', function($http, authService){
+mainApp.service('blurbService', ['$http', 'authService', '$rootScope', function($http, authService, $rootScope){
 	var categories = [];
 	var categoriesList = [];
 	var userObj;
 
-	function populateUserData (user){
-		var userId = authService.getUserDBObject(user, function(userObject){
-	 		userObj = userObject;
-
-	 		console.log('this is the user object, retrieved for my categories');
-	 		console.log(userObject);
-	 		$http({
-				method: 'GET',
-				url: '/blurb/mycategories',
-				headers: {id : userObject.data[0]._id}
-			}).then(function(user){
-				$scope.user = user.data;
-
-				createCategoriesObj(user, function(categoriesArray){
-					categories = categoriesArray;
-					createCategoriesList(categoriesArray, function(categoriesList){
-						categoriesList = categoriesList;
-					})
-				})
-				
-
+	function populateUserData (){
+		authService.getUserDBObject($rootScope.username, function(userObject){
+					getCategories(userObject, function(results){
+					console.log('populating user data');
+					console.log(userObject)
+					$rootScope.categories = results.categories;
+					$rootScope.categoriesList = results.categoriesList;
+				});
 			})
-	 	})
 	}
 
 	function createNewCategory (title, cb){
 		var info = {};
 		info.title = title;
-		var user = authService.getUserInfo(0, function(user){
-			authService.getUserDBObject(user, function(userObject){
-				info.userid = userObject.data[0]._id;
-				console.log('sending info.userId to /blurb/category');
-				console.log(info.userId);
-				$http({
-					method: 'PUT',
-					url: '/blurb/category',
-					headers: info
-				}).then(function(error,result){
-					if(error){
-						console.log(error);
-						return error;
-					}else{
-						console.log(result);
-						if(cb){
-							console.log(result);
-							cb(result)
-						}else{
-							return result
-						}
-					}
-				})
-			});
+
+		console.log('sending info.userId to /blurb/category');
+		console.log('this is the user user id');
+		console.log($rootScope.user);
+		
+		info.userid = $rootScope.user._id;
+
+		$http({
+			method: 'PUT',
+			url: '/blurb/category',
+			headers: info
+		}).then(function(error,result){
+			if(error){
+				console.log(error);
+				return error;
+			}else{
+				console.log(result);
+				if(cb){
+					populateUserData();
+					console.log(result);
+					cb(result)
+				}else{
+					populateUserData();
+					return result
+				}
+			}
 		});
 	}
 
 	function createCategoriesObj (user, cb){
 		var result = []
-
+		console.log(user.data.categories.length);
 		if(user.data.categories.length){
 			for(var i = 0; i < user.data.categories.length; i++){
 			var howManyBookmarks = user.data.categories[i].bookmarks.length;
@@ -120,19 +108,47 @@ mainApp.service('blurbService', ['$http', 'authService', function($http, authSer
 		}
 	}
 
-	function addBlurb(bookmark, cb){
-		var submit = bookmark;	
-		var user = authService.getUserInfo(0, function(user){
-			console.log('getting user to pass into get user object');
-			console.log(user)
+	function getCategories(userObject, cb){
+		var resultObj = {};
+		var username = userObject.data[0].username;
 
-			authService.getUserDBObject(user, function(userObject){
-				console.log('this is the userobject from add blurb');
-				console.log(userObject);
-				getCategoryId(submit.categories, submit.category, function(id){
+		console.log(userObject);
+	 		$http({
+				method: 'GET',
+				url: '/blurb/mycategories',
+				headers: {name : username}
+			}).then(function(user){
+				console.log(user);
+				resultObj.user = user.data;
+
+				createCategoriesObj(user, function(categoriesArray){
+					resultObj.categories = categoriesArray;
+
+					createCategoriesList(categoriesArray, function(categoriesList){
+						console.log(categoriesList);
+						resultObj.categoriesList = categoriesList;
+						if(cb){
+							cb(resultObj)	
+						}else{
+							return resultObj;
+						}
+						
+					})
+				})
+				
+
+			
+	 	})
+	}
+
+	function addBlurb(bookmark, userObj, cb){
+		var submit = bookmark;	
+		console.log($rootScope.categories);
+
+				getCategoryId($rootScope.categories, submit.category, function(id){
 		
 					submit.categoryId = id;
-					submit.author = userObject.data[0]._id;
+					submit.author = $rootScope.user._id;
 					console.log('sending info to add a new blurb');
 	
 					console.log(id);
@@ -147,9 +163,9 @@ mainApp.service('blurbService', ['$http', 'authService', function($http, authSer
 
 						return id;
 					})
-				});
 				
-			});
+				
+			
 
 		});
 	}
@@ -163,6 +179,7 @@ mainApp.service('blurbService', ['$http', 'authService', function($http, authSer
 		categories : categories,
 		categoriesList : categoriesList,
 		userObj : userObj,
+		getCategories: getCategories,
 		getCategoryId: getCategoryId,
 		addBlurb: addBlurb,
 		createNewCategory: createNewCategory

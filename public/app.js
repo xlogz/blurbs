@@ -82,21 +82,45 @@ mainApp.config(['$stateProvider', 'angularAuth0Provider', '$urlRouterProvider', 
 
 }]);
 
-mainApp.controller('mainCtrl',['authService', 'blurbService', '$scope', '$http',  function(authService,blurbService,$scope, $http){
+mainApp.controller('mainCtrl',['authService', 'blurbService', '$scope', '$http', '$rootScope',  function(authService,blurbService,$scope, $http,$rootScope){
+    $('.nav-item').on('click', function(){
+      console.log('navbar item clicked');
+      $('#navbarSupportedContent').removeClass('show');
+      });
+    
+    
+    if (localStorage.getItem('isLoggedIn') === 'true') {
 
-  if (localStorage.getItem('isLoggedIn') === 'true') {
-
-      authService.renewTokens();
+      authService.renewTokens(function(authResults){
+        console.log($scope.accessToken);
+        authService.getUserId(authResults.accessToken, function(authObject){
+          console.log(authObject);
+          $rootScope.username = authObject.username;
+          console.log($scope.username);
+          $scope.getUserDBObject($scope.username, function(userObject){
+            console.log(userObject);
+            blurbService.getCategories(userObject, function(results){
+              console.log(results);
+              $rootScope.user = results.user;
+              $rootScope.username = results.user.username;
+              $rootScope.categories = results.categories;
+              $rootScope.categoriesList = results.categoriesList;
+              console.log($rootScope.categories);
+              console.log($rootScope.categoriesList);
+              console.log($rootScope.user);
+            })
+          })
+        })
+      });
     } else {
       // Handle the authentication
       // result in the hash
       authService.handleAuthentication();
 
     }
-    // setTimeout(function(){
-    //   authService.getUserInfo(); 
-    // }, 500);
- 
+  
+
+    
     //authService methods
   $scope.isAuthenticated = authService.isAuthenticated;
   $scope.logout = authService.logout;
@@ -108,8 +132,8 @@ mainApp.controller('mainCtrl',['authService', 'blurbService', '$scope', '$http',
   $scope.getUserId = authService.getUserId;
   $scope.getTest = authService.getTest;
   $scope.getUserDBObject = authService.getUserDBObject;
-  $scope.username = authService.username;
-  $scope.email = authService.email;
+
+  $scope.token = authService.token;
 
   //blurbService methods
   $scope.getCategories = blurbService.getCategories;

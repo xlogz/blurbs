@@ -24,11 +24,10 @@
 			
 			<div class="tab-content" id="myTabContent">
 			  	<div class="tab-pane fade" id="{{category.name}}" role="tabpanel" aria-labelledby="home-tab" ng-repeat="category in categories">
-					<h1> {{category.name}} </h1> CATEGORY 
-					<a href="#" ng-click="collapseAll()">Collapse All</a>
-					
-					<br>
-
+			  		<div class="clearfix">
+					<h1> {{category.name}} </h1><div style="display: inline-block; float: left" data-toggle="modal" data-target="#addBlurbModal"><a href="#" >Add Blurb</a></div>
+					<a href="#" ng-click="collapseAll()" style="float:right">Collapse All</a>
+					</div>
 					<div id="accordion">
 					  <div class="card" ng-repeat="bookmark in category.bookmarks">
 					    <div class="card-header" id="heading{{bookmark.title}}">
@@ -75,41 +74,41 @@
 
 
 	<!-- Modal -->
-<div id="myModal" class="modal fade" role="dialog">
+<div id="addBlurbModal" class="modal fade" role="dialog">
   <div class="modal-dialog">
 
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
+      	<h4 class="modal-title">Add Blurb</h4>
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Add Blurb</h4>
       </div>
       <div class="modal-body">
         
 <form name="signUpForm" ng-submit="newBookmark()" novalidate>
       <div id="signUpForm">
         <div class='formInputs justify-content-center'>
-          <div class="formItem col-sm-6 offset-sm-3">
+          <div class="formItem col-sm-12">
             <h6>Category</h6>
             <select name="categories" id="categories" class="form-control" ng-model="bookmark.category">
               <option ng-repeat="category in categoriesList">{{category}}</option>
   {{categoryList}}
             </select>
           </div>
-          <div class="formItem col-sm-6 offset-sm-3">
+          <div class="formItem col-sm-12">
             <h6>Title</h6>
             <input type="text" id="title" name="title" class="form-control" ng-model="bookmark.title" required>
             {{bookmark.title}}
           </div>
-          <div class="formItem col-sm-6 offset-sm-3">
+          <div class="formItem col-sm-12">
             <h6>Link:</h6>
             <input type="text" id="link" name="link" class="form-control" ng-model="bookmark.url"  required>
           </div>
-          <div class="formItem col-sm-6 offset-sm-3">
+          <div class="formItem col-sm-12">
             <h6>Description</h6>
             <textarea id="description" name="description" class="form-control" ng-model="bookmark.description" required rows="15"> </textarea>
           </div>
-          <div class="formItem col-sm-6 offset-sm-3">
+          <div class="formItem col-sm-12">
             <h6>Private?</h6>
             <input type="radio" id="private" name="private" class="" value="true" ng-model="bookmark.private"  > Yes<br>
 
@@ -147,7 +146,7 @@
 
 <!-- Modal -->
 <div id="addCategoryModal" class="modal fade" role="dialog">
-  <div class="modal-dialog">
+  <div class="modal-dialog top-margin-30">
 
     <!-- Modal content-->
     <div class="modal-content">

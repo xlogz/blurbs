@@ -12,7 +12,6 @@ var controller = {};
 controller.addCategory = function(req,res){
 	console.log('received addCategory request');
 	console.log(req.headers.title);
-	console.log(req);
 	var category = new Category({
 		name: req.headers.title,
 		owner: req.headers.userid 
@@ -248,8 +247,8 @@ controller.myBlurbs = function(req, res){
 
 
 controller.myCategories = function(req, res){
-
-	User.findOne({name: req.headers.name}).populate({path: 'categories', populate: {path: 'bookmarks'}}).exec(function(err,results){
+	console.log(req)
+	User.findOne({username: req.headers.name}).populate({path: 'categories', populate: {path: 'bookmarks'}}).exec(function(err,results){
 		if(err){
 			res.status(401).send(results);
 		}else{

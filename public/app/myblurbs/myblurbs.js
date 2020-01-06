@@ -1,8 +1,5 @@
-mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbService', function($scope, authService, $http, blurbService){
+mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbService', '$rootScope', function($scope, authService, $http, blurbService,$rootScope){
 	var user = $scope.getUserId();
-	$scope.userObj;
-	$scope.categories = [];
-	$scope.categoryList = [];
 	$scope.collapsed = true;
 
 	$('.nav-item').on('click', function (e) {
@@ -52,31 +49,11 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 
 
 
-	 $scope.myCategories = function(username, callback){
-	 	var userId = authService.getUserDBObject(username, function(userObject){
-	 		$scope.userObject = userObject;
 
-	 		console.log('this is the user object, retrieved for my categories');
-	 		console.log(userObject);
-	 		$http({
-				method: 'GET',
-				url: '/blurb/mycategories',
-				headers: {name : username}
-			}).then(function(user){
-				$scope.user = user.data;
 
-				blurbService.createCategoriesObj(user, function(categoriesArray){
-					$scope.categories = categoriesArray;
-					console.log($scope.categories);
-					blurbService.createCategoriesList(categoriesArray, function(categoriesList){
-						console.log(categoriesList);
-						$scope.categoriesList = categoriesList;
-					})
-				})
-				
+	 $scope.myCategories = function(userObject, callback){
 
-			})
-	 	})
+	 		blurbService.getCategories(userObject);
 	 }
 
 	 $scope.myCategoryList = function(){
@@ -108,38 +85,16 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 		})
 	}
 
-	var init = function(){
-		var myCategoriesPromise = new Promise(function(resolve, reject){
-			$scope.myCategories()
-			if($scope.categories !== []){
-				console.log('it worked! beginning promise');
-				resolve('Stuff Worked');
-			}else{
-				reject(Error('It broke'))
-			}
-		});
 
-		var myCategoriesListPromise = function(){
-			return new Promise(function(resolve,reject){
-				var message = "The promise worked. loading categories list";
-				resolve(message);
+	blurbService.populateUserData();
 
-			})
-		} 
-		
-		
-	}
-	
+	// $scope.getUserInfo(0, function(username){
+	// 		console.log('this is the username being passed to getMyCategories');
+	// 		console.log(username);
+	// 		$scope.myCategories(username, function(){
+	// 			$('#myTab li:nth-child(2) a').tab('show');
+	// 		});
+	// });
 
-	$scope.getUserInfo(0, function(username){
-			console.log('this is the username being passed to getMyCategories');
-			console.log(username);
-			$scope.myCategories(username, function(){
-				$('#myTab li:nth-child(2) a').tab('show');
-			});
-	});
-
-
-	init();
 	
 }])

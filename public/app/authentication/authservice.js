@@ -18,8 +18,12 @@ mainApp.service('authService', authService);
 
     function getAccessToken(cb) {
 
-
-      return accessToken;
+      if(cb){
+         cb(accessToken)
+      }else{
+         return accessToken;
+      }
+      
     }
 
     function login() {
@@ -68,13 +72,19 @@ mainApp.service('authService', authService);
 
     }
 
-    function renewTokens() {
+    function renewTokens(cb) {
       angularAuth0.checkSession({},
         function(err, result) {
           if (err) {
             console.log(err);
           } else {
-            localLogin(result);
+              localLogin(result);
+            if(cb){
+              cb(result)
+            }else{
+              return result;
+            }
+            
           }
         }
       );
@@ -109,9 +119,9 @@ mainApp.service('authService', authService);
       })
     }
 
-    function getUserInfo (userid, cb){
+    function getUserInfo (token, cb){
             console.log('getUserInfo');
-             getUserId(getAccessToken(), function(id){
+             getUserId(token, function(id){
               console.log('this is the id we received from get user info');
                 console.log(id);
                 username = id;
@@ -120,25 +130,20 @@ mainApp.service('authService', authService);
                 }else{
                   return id;
                 }
-              
-
-
               });
               
             }
  
 
               
-            
+        
             
 
       function getUserId (token, cb){
             console.log('getUserId');
-            var token2 = getAccessToken();
             var response = response;
             var results;
-            console.log(token2);
-           
+           console.log('this is the token being fetched');
             //use token to retrieve appropriate id
            $http({
             method: 'get',
@@ -165,8 +170,9 @@ mainApp.service('authService', authService);
                 
                 console.log('here are the results of getUserId');
                 console.log(userObject);
+                username = userObject.username;
                 if(cb){
-                  cb(userObject.username)
+                  cb(userObject)
                 }else{
                   return userObject;
                 }
