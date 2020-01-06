@@ -67,7 +67,7 @@ var port = process.env.PORT || 3000
 console.log('Bookmark is listening on ' + port);
 app.listen(port);
 
-
+app.route('/blurb/category').put(blurb.addCategory);
 app.route('/blurb/bookmark').put(blurb.addBlurb);
 app.route('/blurb/myblurbs').get(blurb.myBlurbs);
 app.route('/blurb/mycategories').get(blurb.myCategories);

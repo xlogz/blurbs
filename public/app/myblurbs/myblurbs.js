@@ -10,7 +10,6 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 	  $(this).tab('show')
 	})
 
-	$('#myTab li:first-child a').tab('show');
 
 	$('.card .collapse').collapse('show');
 
@@ -38,6 +37,18 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 	// 								 {id: "3", title: "This is an example blurb", url: "http://www.yoururlhere.com", description: "This is your third link that you've added. Lorum Ipsum Potato Tomato Pokemon Supercalifragilisticexpialidocious. Lorum Ipsum Potato Tomato Pokemon Supercalifragilisticexpialidocious. Lorum Ipsum Potato Tomato Pokemon Supercalifragilisticexpialidocious"}]}, 
 
 	//  ];
+
+	$scope.newCategory = function(){
+		var categoryTitle = $scope.category.title;
+		blurbService.createNewCategory(categoryTitle, function(result){
+			$scope.getUserInfo(0, function(username){
+				console.log('this is the username being passed to getMyCategories');
+				console.log(username);
+				$scope.myCategories(username);
+			});
+		})
+
+	}
 
 
 
@@ -123,8 +134,10 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 	$scope.getUserInfo(0, function(username){
 			console.log('this is the username being passed to getMyCategories');
 			console.log(username);
-			$scope.myCategories(username);
-		})
+			$scope.myCategories(username, function(){
+				$('#myTab li:nth-child(2) a').tab('show');
+			});
+	});
 
 
 	init();

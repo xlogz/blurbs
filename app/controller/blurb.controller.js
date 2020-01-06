@@ -9,6 +9,29 @@ var request = require('request');
 
 var controller = {};
 
+controller.addCategory = function(req,res){
+	console.log('received addCategory request');
+	console.log(req.headers.title);
+	console.log(req);
+	var category = new Category({
+		name: req.headers.title,
+		owner: req.headers.userid 
+	});
+
+	category.save(function(error, category){
+		User.updateOne({_id: req.headers.userid}, {$push: {categories: category._id}}).then(function(error,success){
+			if(error){
+
+				console.log(error);
+				res.status(200).send(error);
+			}else{
+				console.log('New category successfully added');
+				res.status(201).send(category._id);
+			}
+		})
+	})
+}
+
 controller.addBlurb = function(req, res){
 	console.log('');
 	console.log('attempting to add blurb');
@@ -33,6 +56,7 @@ controller.addBlurb = function(req, res){
 		Category.updateOne({_id: req.headers.categoryid}, {$push: {bookmarks: bookmark._id}}).then(function(error,success){
 			if(error){
 				console.log(error);
+				res.status(401).send(error);
 			}else{
 				console.log('New bookmark successfully added');
 				res.status(201).send(bookmark._id);

@@ -28,6 +28,36 @@ mainApp.service('blurbService', ['$http', 'authService', function($http, authSer
 	 	})
 	}
 
+	function createNewCategory (title, cb){
+		var info = {};
+		info.title = title;
+		var user = authService.getUserInfo(0, function(user){
+			authService.getUserDBObject(user, function(userObject){
+				info.userid = userObject.data[0]._id;
+				console.log('sending info.userId to /blurb/category');
+				console.log(info.userId);
+				$http({
+					method: 'PUT',
+					url: '/blurb/category',
+					headers: info
+				}).then(function(error,result){
+					if(error){
+						console.log(error);
+						return error;
+					}else{
+						console.log(result);
+						if(cb){
+							console.log(result);
+							cb(result)
+						}else{
+							return result
+						}
+					}
+				})
+			});
+		});
+	}
+
 	function createCategoriesObj (user, cb){
 		var result = []
 
@@ -134,6 +164,7 @@ mainApp.service('blurbService', ['$http', 'authService', function($http, authSer
 		categoriesList : categoriesList,
 		userObj : userObj,
 		getCategoryId: getCategoryId,
-		addBlurb: addBlurb
+		addBlurb: addBlurb,
+		createNewCategory: createNewCategory
 	}
 }]);
