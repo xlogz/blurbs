@@ -5,6 +5,13 @@
       <div id="signUpForm">
         <div class='formInputs justify-content-center'>
           <div class="formItem col-sm-6 offset-sm-3">
+            <h6>Category</h6>
+            <select name="categories" id="categories">
+              <option ng-repeat="category in categoryList">{{category}}</option>
+
+            </select>
+          </div>
+          <div class="formItem col-sm-6 offset-sm-3">
             <h6>Title</h6>
             <input type="text" id="title" name="title" class="form-control" ng-model="bookmark.title" required>
             {{bookmark.title}}
@@ -34,6 +41,8 @@
       </div>
     <div class="col-sm-6 offset-sm-3 end-of-form">
       <div class="submitbutton">
+            <button type="submit" ng-disabled="signUpForm.$invalid" class="clear col-sm-10 offset-sm-1" id="create-event-button"><a href="" ng-click = "getUserCategoryList()">categoryList</a></button>
+
             <button type="submit" ng-disabled="signUpForm.$invalid" class="clear col-sm-10 offset-sm-1" id="create-event-button"><a href="" ng-click = "addBlurb()">add blurb</a></button>
 
             <button type="submit" ng-disabled="signUpForm.$invalid" class="clear col-sm-10 offset-sm-1" id="create-event-button"><a href="" ng-click = "getIdToken()">getIDToken</a></button>

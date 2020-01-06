@@ -82,7 +82,7 @@ mainApp.config(['$stateProvider', 'angularAuth0Provider', '$urlRouterProvider', 
 
 }]);
 
-mainApp.controller('mainCtrl',['authService', '$scope', '$http', function(authService,$scope, $http){
+mainApp.controller('mainCtrl',['authService', 'blurbService', '$scope', '$http',  function(authService,blurbService,$scope, $http){
 
   if (localStorage.getItem('isLoggedIn') === 'true') {
 
@@ -94,10 +94,10 @@ mainApp.controller('mainCtrl',['authService', '$scope', '$http', function(authSe
 
     }
     setTimeout(function(){
-      authService.getUserId(); 
+      authService.getUserInfo(); 
     }, 500);
  
-
+    //authService methods
   $scope.isAuthenticated = authService.isAuthenticated;
   $scope.logout = authService.logout;
   $scope.login = authService.login;
@@ -110,6 +110,9 @@ mainApp.controller('mainCtrl',['authService', '$scope', '$http', function(authSe
   $scope.getUserDBObject = authService.getUserDBObject;
   $scope.username = authService.username;
   $scope.email = authService.email;
+
+  //blurbService methods
+  $scope.getCategories = blurbService.getCategories;
     
   
 }])

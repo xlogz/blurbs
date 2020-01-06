@@ -16,7 +16,8 @@ mainApp.service('authService', authService);
       return idToken;
     }
 
-    function getAccessToken() {
+    function getAccessToken(cb) {
+
 
       return accessToken;
     }
@@ -108,26 +109,28 @@ mainApp.service('authService', authService);
       })
     }
 
-    // function getUserInfo (userid){
-    //         console.log('getUserInfo');
-    //         var userid2 = getUserId(getAccessToken().username)
-    //           console.log(userid2);
+    function getUserInfo (userid, cb){
+            console.log('getUserInfo');
+             getUserId(getAccessToken(), function(id){
+              console.log('this is the id we received from get user info');
+                console.log(id);
+                username = id;
+                if(cb){
+                  cb(id)
+                }else{
+                  return id;
+                }
+              
 
-    //           $http({
-    //             method: 'put',
-    //             url: '/get/userInfo',
-    //             data: {userid: id}
-    //             // data: authResult
-    //           }).then(function(response, err){
-    //             console.log('this is the response from get user info')
-    //             console.log(response);
-    //             console.log(err);
 
-    //           })
+              });
+              
+            }
+ 
+
+              
             
-    //         console.log(userid2);
-
-    // }
+            
 
       function getUserId (token, cb){
             console.log('getUserId');
@@ -140,7 +143,7 @@ mainApp.service('authService', authService);
            $http({
             method: 'get',
             url: 'https://dev-kihm7h2g.auth0.com/userinfo',
-            headers: {Authorization: 'Bearer '+ token2},
+            headers: {Authorization: 'Bearer '+ token},
             data: token 
             // data: authResult
           }).then(function(response, err){
@@ -160,15 +163,19 @@ mainApp.service('authService', authService);
                 userObject.email = response.data[0].email;
                 userObject = response.data[0];
                 
-
+                console.log('here are the results of getUserId');
+                console.log(userObject);
+                if(cb){
+                  cb(userObject.username)
+                }else{
+                  return userObject;
+                }
               });
               
 
 
           })
-          console.log('here are the results of getUserId');
-          console.log(userObject);
-          return userObject;
+
     }
 
 
@@ -236,6 +243,7 @@ mainApp.service('authService', authService);
       getAll: getAll,
       getUserId: getUserId,
       getTest: getTest,
+      getUserInfo: getUserInfo,
       getUserDBObject: getUserDBObject,
       username: username,
       email: email

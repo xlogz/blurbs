@@ -211,7 +211,7 @@ controller.myBlurbs = function(req, res){
 
 controller.myCategories = function(req, res){
 
-	User.findOne({_id: req.headers.id}).populate({path: 'categories', populate: {path: 'bookmarks'}}).exec(function(err,results){
+	User.findOne({name: req.headers.name}).populate({path: 'categories', populate: {path: 'bookmarks'}}).exec(function(err,results){
 		if(err){
 			res.status(401).send(results);
 		}else{

@@ -1,7 +1,8 @@
-mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', function($scope, authService, $http){
+mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbService', function($scope, authService, $http, blurbService){
 	var user = $scope.getUserId();
 	$scope.userObj;
 	$scope.categories = [];
+	$scope.categoryList = [];
 
 	$('.nav-item').on('click', function (e) {
 	  e.preventDefault()
@@ -23,45 +24,43 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', function($
 
 	//  ];
 
-	 $scope.myCategories = function(){
-	 	var userId = authService.getUserDBObject(user.username, function(userObject){
+	 $scope.myCategories = function(username, callback){
+	 	var userId = authService.getUserDBObject(username, function(userObject){
 	 		$scope.userObject = userObject;
-	 		var tempObj = {}
+
 	 		console.log('this is the user object, retrieved for my categories');
 	 		console.log(userObject);
 	 		$http({
 				method: 'GET',
 				url: '/blurb/mycategories',
-				headers: {id : userObject.data[0]._id}
+				headers: {name : username}
 			}).then(function(user){
 				$scope.user = user.data;
-				console.log('these are the user');
-				console.log(user);
 
-				for(var i = 0; i < user.data.categories.length; i++){
-					var howManyBookmarks =user.data.categories[i].bookmarks.length;
-					var bookmarks = [];
-					var category = user.data.categories[i];
-					tempObj.name = user.data.categories[i].name;
-					tempObj.bookmarks = [];
-					console.log('tempObj');
-					console.log(tempObj);
-					console.log(user.data.categories[i].name);
-					console.log(user.data.categories[i].bookmarks);
-					console.log(user.data.categories[i].bookmarks.length);
-					for(var z = 0; z < howManyBookmarks; z++){
-						bookmarks.push(category.bookmarks[z]);
-
-					}
-					tempObj.bookmarks = bookmarks;
-					$scope.categories.push(tempObj);
-				}
-
+				blurbService.createCategoriesObj(user, function(categoriesArray){
+					$scope.categories = categoriesArray;
+					blurbService.createCategoriesList(categoriesArray, function(categoriesList){
+						console.log(categoriesList);
+						$scope.categoriesList = categoriesList;
+					})
+				})
+				
 
 			})
 	 	})
-	 	console.log($scope.categories);
 	 }
+
+	 $scope.myCategoryList = function(){
+	 	var results = [];
+	 	$scope.categories.forEach(function(categoryObj){
+	 		results.push(categoryObj.name);
+	 	})
+	 	console.log('this is the result for categoryList');
+	 	console.log(results);
+	 	$scope.categoryList = results;
+	 }
+
+
 	$scope.myBlurbs = function(){
 		
 		var userID = authService.getUserDBObject(user.username, function(userObject){
@@ -81,7 +80,31 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', function($
 	}
 
 	var init = function(){
-		$scope.myCategories();
+		var myCategoriesPromise = new Promise(function(resolve, reject){
+			$scope.myCategories()
+			if($scope.categories !== []){
+				console.log('it worked! beginning promise');
+				resolve('Stuff Worked');
+			}else{
+				reject(Error('It broke'))
+			}
+		});
+
+		var myCategoriesListPromise = function(){
+			return new Promise(function(resolve,reject){
+				var message = "The promise worked. loading categories list";
+				resolve(message);
+
+			})
+		} 
+		
+		$scope.getUserInfo(0, function(username){
+			console.log('this is the username being passed to getMyCategories');
+			console.log(username);
+			$scope.myCategories(username);
+		})
 	}
+	
 	init();
+	
 }])

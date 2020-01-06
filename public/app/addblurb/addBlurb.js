@@ -1,7 +1,42 @@
-mainApp.controller('addBlurbCtrl', ['$scope', '$http', 'authService', function($scope, $http, authService){
-	
+mainApp.controller('addBlurbCtrl', ['$scope', '$http', 'authService', 'blurbService', function($scope, $http, authService, blurbService){
 
-	
+
+	$scope.myCategories = function(name, callback){
+	 	var userId = authService.getUserDBObject(name, function(userObject){
+	 		$scope.userObject = userObject;
+
+	 		console.log('this is the user object, retrieved for my categories');
+	 		console.log(userObject);
+	 		$http({
+				method: 'GET',
+				url: '/blurb/mycategories',
+				headers: {id : userObject.data[0]._id}
+			}).then(function(user){
+				$scope.user = user.data;
+
+				blurbService.createCategoriesObj(user, function(categoriesArray){
+					$scope.categories = categoriesArray;
+					blurbService.createCategoriesList(categoriesArray, function(categoriesList){
+						$scope.categoriesList = categoriesList;
+					})
+				})
+				
+
+			})
+	 	})
+	 }
+
+	 $scope.myCategoryList = function(){
+	 	var results = [];
+	 	$scope.categories.forEach(function(categoryObj){
+	 		results.push(categoryObj.name);
+	 	})
+	 	console.log('this is the result for categoryList');
+	 	console.log(results);
+	 	$scope.categoryList = results;
+	 }
+
+
 	
 
 	$scope.addBlurb = function(){
@@ -33,9 +68,22 @@ mainApp.controller('addBlurbCtrl', ['$scope', '$http', 'authService', function($
 
 	}
 
+	$scope.getUserCategoryList = function(){
+		console.log($scope.categoryList);
+	}
+
 	$scope.logbookmark = function(){
 		console.log($scope.bookmark);
 	}
 	
+		var init = function(){
+			console.log()
+			$scope.myCategories($scope.getUserId());
+		}
+
+		
+
+	init();
+
 
 }])
