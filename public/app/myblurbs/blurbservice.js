@@ -30,12 +30,15 @@ mainApp.service('blurbService', ['$http', 'authService', function($http, authSer
 
 	function createCategoriesObj (user, cb){
 		var result = []
-		for(var i = 0; i < user.data.categories.length; i++){
+
+		if(user.data.categories.length){
+			for(var i = 0; i < user.data.categories.length; i++){
 			var howManyBookmarks = user.data.categories[i].bookmarks.length;
 			var bookmarks = [];
 			var category = user.data.categories[i];
 			var tempObj = {};
 			tempObj.name = user.data.categories[i].name;
+			tempObj.id = user.data.categories[i]._id;
 			tempObj.bookmarks = [];
 			for(var z = 0; z < howManyBookmarks; z++){
 				bookmarks.push(category.bookmarks[z]);
@@ -43,11 +46,17 @@ mainApp.service('blurbService', ['$http', 'authService', function($http, authSer
 			}
 			tempObj.bookmarks = bookmarks;
 			result.push(tempObj);
-		}if(cb){
-			cb(result);
+			}
+
+			if(cb){
+				cb(result);
+			}else{
+				return result;
+			}
 		}else{
-			return result;
+			return [];
 		}
+		
 	
 	}
 
@@ -64,12 +73,67 @@ mainApp.service('blurbService', ['$http', 'authService', function($http, authSer
 		}
 	}
 
+	function getCategoryId (categories, name, cb){
+		var categoryList = categories;
+		var categoryName = name;
+		var id;
+		for(var i = 0; i < categoryList.length; i++){
+			if(categoryList[i].name === categoryName){
+				id = categoryList[i].id;
+			}
+			
+		}
+		if(cb){
+			cb(id);
+		}else{
+			return id;
+		}
+	}
+
+	function addBlurb(bookmark, cb){
+		var submit = bookmark;	
+		var user = authService.getUserInfo(0, function(user){
+			console.log('getting user to pass into get user object');
+			console.log(user)
+
+			authService.getUserDBObject(user, function(userObject){
+				console.log('this is the userobject from add blurb');
+				console.log(userObject);
+				getCategoryId(submit.categories, submit.category, function(id){
+		
+					submit.categoryId = id;
+					submit.author = userObject.data[0]._id;
+					console.log('sending info to add a new blurb');
+	
+					console.log(id);
+
+					$http({
+						method: 'put',
+						url: '/blurb/bookmark',
+						headers: submit
+					}).then(function(id){
+						console.log('This is the ID of the blurb we just added in the database');
+						console.log(id);
+
+						return id;
+					})
+				});
+				
+			});
+
+		});
+	}
+
+
+
 	return{
 		createCategoriesObj: createCategoriesObj,
 		createCategoriesList: createCategoriesList,
 		populateUserData: populateUserData,
 		categories : categories,
 		categoriesList : categoriesList,
-		userObj : userObj
+		userObj : userObj,
+		getCategoryId: getCategoryId,
+		addBlurb: addBlurb
 	}
 }]);

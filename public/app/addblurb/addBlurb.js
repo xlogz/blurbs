@@ -1,8 +1,8 @@
 mainApp.controller('addBlurbCtrl', ['$scope', '$http', 'authService', 'blurbService', function($scope, $http, authService, blurbService){
 
 
-	$scope.myCategories = function(name, callback){
-	 	var userId = authService.getUserDBObject(name, function(userObject){
+	$scope.myCategories = function(username, callback){
+	 	var userId = authService.getUserDBObject(username, function(userObject){
 	 		$scope.userObject = userObject;
 
 	 		console.log('this is the user object, retrieved for my categories');
@@ -10,13 +10,14 @@ mainApp.controller('addBlurbCtrl', ['$scope', '$http', 'authService', 'blurbServ
 	 		$http({
 				method: 'GET',
 				url: '/blurb/mycategories',
-				headers: {id : userObject.data[0]._id}
+				headers: {name : username}
 			}).then(function(user){
 				$scope.user = user.data;
 
 				blurbService.createCategoriesObj(user, function(categoriesArray){
 					$scope.categories = categoriesArray;
 					blurbService.createCategoriesList(categoriesArray, function(categoriesList){
+						console.log(categoriesList);
 						$scope.categoriesList = categoriesList;
 					})
 				})
@@ -26,50 +27,31 @@ mainApp.controller('addBlurbCtrl', ['$scope', '$http', 'authService', 'blurbServ
 	 	})
 	 }
 
-	 $scope.myCategoryList = function(){
-	 	var results = [];
-	 	$scope.categories.forEach(function(categoryObj){
-	 		results.push(categoryObj.name);
-	 	})
-	 	console.log('this is the result for categoryList');
-	 	console.log(results);
-	 	$scope.categoryList = results;
-	 }
-
-
 	
-
 	$scope.addBlurb = function(){
-
-		var user = authService.getUserId();
-		console.log('getting user to pass into get user object');
-		console.log(user.username)
-
-		var userObject = authService.getUserDBObject(user.username, function(userObject){
-			console.log('userObject');
-			console.log(userObject);
-			$scope.bookmark.author = userObject.data[0]._id;
-			console.log('sending info to add a new blurb');
-			console.log( $scope.bookmark)
-
-
-			$http({
-				method: 'put',
-				url: '/blurb/bookmark',
-				headers: $scope.bookmark
-			}).then(function(id){
-				console.log('This is the ID of the blurb we just added in the database');
-				console.log(id);
-				$scope.bookmark = {};
-				return id;
-			})
-		});
+		var info = {};
 		
+		info.title = $scope.bookmark.title;
+		info.url = $scope.bookmark.url;
+		info.description = $scope.bookmark.description;
+		info.private = $scope.bookmark.private;
+		info.category = $scope.bookmark.category;
+		info.categories = $scope.categories;
+
+		blurbService.addBlurb(info);
+
+		$scope.bookmark = {};
 
 	}
 
+
+		
+		
+
+	
+
 	$scope.getUserCategoryList = function(){
-		console.log($scope.categoryList);
+		console.log($scope.categoriesList);
 	}
 
 	$scope.logbookmark = function(){

@@ -1,14 +1,14 @@
 <section ng-controller="addBlurbCtrl">
   <div style="height: 76px"></div>
-<div style="height: 300px"></div>
+<div style="height: 100px"></div>
       <form name="signUpForm" ng-submit="newBookmark()" novalidate>
       <div id="signUpForm">
         <div class='formInputs justify-content-center'>
           <div class="formItem col-sm-6 offset-sm-3">
             <h6>Category</h6>
-            <select name="categories" id="categories">
-              <option ng-repeat="category in categoryList">{{category}}</option>
-
+            <select name="categories" id="categories" class="form-control" ng-model="bookmark.category">
+              <option ng-repeat="category in categoriesList">{{category}}</option>
+  {{categoryList}}
             </select>
           </div>
           <div class="formItem col-sm-6 offset-sm-3">
