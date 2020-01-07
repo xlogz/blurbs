@@ -1,4 +1,4 @@
-mainApp.controller('registerCtrl', ['$scope', 'angularAuth0', '$http', function($scope, angularAuth0, $http){
+mainApp.controller('registerCtrl', ['$scope', 'angularAuth0', '$http', '$state', function($scope, angularAuth0, $http, $state){
 
 	$scope.errorMessage = "none";
 
@@ -52,6 +52,7 @@ mainApp.controller('registerCtrl', ['$scope', 'angularAuth0', '$http', function(
 					console.log('success sign up and added to database');
 					console.log(response);
 					return response;
+					$state.go('home');
 				})
 				
 			

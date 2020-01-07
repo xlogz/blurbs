@@ -187,7 +187,6 @@ controller.getUserObject = function(req, res){
 controller.addBlurb = function(req, res){
 	console.log('');
 	console.log('attempting to add blurb');
-	console.log(req.headers);
 	console.log(req.headers.bookmark);
 	console.log('req.body.data' + req.headers.title);
 	console.log(JSON.stringify(req.headers.bookmark))

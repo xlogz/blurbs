@@ -1,14 +1,55 @@
 mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbService', '$rootScope', function($scope, authService, $http, blurbService,$rootScope){
 	var user = $scope.getUserId();
 	$scope.collapsed = true;
+	$scope.currentTabId = "";
 
-	$('.nav-item').on('click', function (e) {
-	  e.preventDefault()
-	  $(this).tab('show')
+	$('.navbar-nav .nav-item').on('click', function (e) {
+	  e.preventDefault();
+	  $(this).tab('show');
+	})
+
+
+	$('body').on('click', '.nav-tabs .nav-item', function(e){
+		console.log('nav link clicked');
+		console.log(e);
+		$scope.currentTabId = e.target.id;
+
 	})
 
 
 	$('.card .collapse').collapse('show');
+
+	$scope.addBlurb = function(){
+
+		console.log('clicking addBlurb');
+		var info = {};
+		
+		info.title = $scope.bookmark.title;
+		info.url = $scope.bookmark.url;
+		info.description = $scope.bookmark.description;
+		info.private = $scope.bookmark.private;
+		info.category = $scope.bookmark.category;
+		info.categories = $scope.categories;
+
+		blurbService.addBlurb(info, $rootScope.user);
+
+		$scope.bookmark = {};
+
+		$('#addBlurbModal').modal('toggle');
+				
+		blurbService.populateUserData(function(){
+			console.log('going back to original tab');
+			console.log($scope.currentTabId);
+			setTimeout(function(){
+				$('#' + $scope.currentTabId).tab('show');
+			},20)
+			
+		});
+
+		
+				
+
+	}
 
 
 	$scope.collapseAll = function(){
@@ -41,7 +82,7 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 			$scope.getUserInfo(0, function(username){
 				console.log('this is the username being passed to getMyCategories');
 				console.log(username);
-				$scope.myCategories(username);
+				blurbService.populateUserData();
 			});
 		})
 

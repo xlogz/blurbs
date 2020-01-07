@@ -25,7 +25,9 @@
 			<div class="tab-content" id="myTabContent">
 			  	<div class="tab-pane fade" id="{{category.name}}" role="tabpanel" aria-labelledby="home-tab" ng-repeat="category in categories">
 			  		<div class="clearfix">
-					<h1> {{category.name}} </h1><div style="display: inline-block; float: left" data-toggle="modal" data-target="#addBlurbModal"><a href="#" >Add Blurb</a></div>
+					<h1> {{category.name}} </h1>
+					<div style="display: inline-block; float: left" data-toggle="modal" data-target="#addBlurbModal">
+						<a href="#" >Add Blurb</a></div>
 					<a href="#" ng-click="collapseAll()" style="float:right">Collapse All</a>
 					</div>
 					<div id="accordion">
@@ -85,7 +87,7 @@
       </div>
       <div class="modal-body">
         
-<form name="signUpForm" ng-submit="newBookmark()" novalidate>
+<form name="signUpForm" novalidate>
       <div id="signUpForm">
         <div class='formInputs justify-content-center'>
           <div class="formItem col-sm-12">
@@ -106,7 +108,7 @@
           </div>
           <div class="formItem col-sm-12">
             <h6>Description</h6>
-            <textarea id="description" name="description" class="form-control" ng-model="bookmark.description" required rows="15"> </textarea>
+            <textarea id="description" name="description" class="form-control" ng-model="bookmark.description" required rows="3"> </textarea>
           </div>
           <div class="formItem col-sm-12">
             <h6>Private?</h6>
@@ -124,7 +126,7 @@
 
       </div>
     </form>
- <button type="submit" ng-disabled="signUpForm.$invalid" class="clear col-sm-10 offset-sm-1" id="create-event-button"><a href="" ng-click = "addBlurb()">add blurb</a></button>
+ <button class="col-sm-10 offset-sm-1 primary" id="create-blurb-button" ng-click="addBlurb()">Add Blurb</button>
 
 
 

@@ -1,15 +1,16 @@
-mainApp.service('blurbService', ['$http', 'authService', '$rootScope', function($http, authService, $rootScope){
+mainApp.service('blurbService', ['$http', 'authService', '$rootScope',  function($http, authService, $rootScope){
 	var categories = [];
 	var categoriesList = [];
 	var userObj;
 
-	function populateUserData (){
+	function populateUserData (cb){
 		authService.getUserDBObject($rootScope.username, function(userObject){
 					getCategories(userObject, function(results){
 					console.log('populating user data');
 					console.log(userObject)
 					$rootScope.categories = results.categories;
 					$rootScope.categoriesList = results.categoriesList;
+					cb();
 				});
 			})
 	}
@@ -28,14 +29,15 @@ mainApp.service('blurbService', ['$http', 'authService', '$rootScope', function(
 			method: 'PUT',
 			url: '/blurb/category',
 			headers: info
-		}).then(function(error,result){
-			if(error){
-				console.log(error);
-				return error;
-			}else{
-				console.log(result);
+		}).then(function(categoryId){
+			if(categoryId){
+				populateUserData();
+				console.log(categoryId);
+				return categoryId;
+
 				if(cb){
-					populateUserData();
+					console.log('successfully added categories');
+					
 					console.log(result);
 					cb(result)
 				}else{
