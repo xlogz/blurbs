@@ -36,22 +36,22 @@ mainApp.service('blurbService', ['$http', 'authService', '$rootScope',  function
 			method: 'PUT',
 			url: '/blurb/category',
 			headers: info
-		}).then(function(categoryId){
-			if(categoryId){
+		}).then(function(categoryId,cb){
+			console.log(categoryId)
+			
 				populateUserData();
 				console.log(categoryId);
-				return categoryId;
 
 				if(cb){
 					console.log('successfully added categories');
 					
-					console.log(result);
-					cb(result)
+					console.log(categoryId);
+					cb(categoryId)
 				}else{
 					populateUserData();
-					return result
+					return categoryId
 				}
-			}
+			
 		});
 	}
 

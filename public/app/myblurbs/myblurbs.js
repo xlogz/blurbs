@@ -107,13 +107,17 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 		}
 			$scope.error=false;
 			$('#addCategoryModal').modal('toggle');
+
+		
+			
+
 			var categoryTitle = $scope.category.title;
 			blurbService.createNewCategory(categoryTitle, function(result){
-			$scope.getUserInfo(0, function(username){
-			console.log('this is the username being passed to getMyCategories');
-			console.log(username);
-			blurbService.populateUserData();
-			});
+				console.log('this is the id of the new category');
+				console.log(result.data);
+
+				$('#' + $scope.result.data + '-tab').tab('show');
+
 		})
 
 		

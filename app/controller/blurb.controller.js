@@ -18,15 +18,11 @@ controller.addCategory = function(req,res){
 	});
 
 	category.save(function(error, category){
-		User.updateOne({_id: req.headers.userid}, {$push: {categories: category._id}}).then(function(error,success){
-			if(error){
-
-				console.log(error);
-				res.status(200).send(error);
-			}else{
+		User.updateOne({_id: req.headers.userid}, {$push: {categories: category._id}}).then(function(item){
+				console.log(category);
 				console.log('New category successfully added');
 				res.status(201).send(category._id);
-			}
+			
 		})
 	})
 }
