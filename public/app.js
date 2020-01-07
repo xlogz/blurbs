@@ -32,10 +32,16 @@ mainApp.config(['$stateProvider', 'angularAuth0Provider', '$urlRouterProvider', 
     templateUrl: './app/home/home.html'
   }
 
-    var registerState = {
+  var registerState = {
     name: 'register',
     url: '/register',
     templateUrl: './app/authentication/register.html'
+  }
+
+  var thanksState = {
+    name: 'thanks',
+    url: '/thanks',
+    templateUrl: './app/authentication/thanks.html'
   }
 
   var signInState = {
@@ -59,6 +65,7 @@ mainApp.config(['$stateProvider', 'angularAuth0Provider', '$urlRouterProvider', 
   $stateProvider.state(registerState);
   $stateProvider.state(signInState);
   $stateProvider.state(callBackState);
+  $stateProvider.state(thanksState);
 
   var AUTH0_CLIENT_ID='x4QhXO346dfoY4wzVnWttmDAvFbQogAS'; 
   var AUTH0_DOMAIN='dev-kihm7h2g.auth0.com'; 
@@ -97,8 +104,9 @@ mainApp.controller('mainCtrl',['authService', 'blurbService', '$scope', '$http',
           console.log(authObject);
           $rootScope.username = authObject.username;
           console.log($scope.username);
-          $scope.getUserDBObject($scope.username, function(userObject){
+          $scope.getUserDBObject($rootScope.username, function(userObject){
             console.log(userObject);
+
             blurbService.getCategories(userObject, function(results){
               console.log(results);
               $rootScope.user = results.user;

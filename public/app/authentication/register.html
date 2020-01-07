@@ -16,7 +16,7 @@
 
 	<div class="col-sm-4 offset-sm-4 sign-up-caption" align="center">Sign up for free</div>
 <!-- 	<div class="line col-sm-6 offset-sm-3"></div> -->
-    <form name="signUpForm" ng-submit="signUp()" novalidate>
+    <form name="signUpForm" ng-submit="signUp()">
       <div id="signUpForm">
         <div class='formInputs justify-content-center'>
           <div class="formItem col-sm-6 offset-sm-3">
@@ -43,27 +43,23 @@
           	<h6>Profile Picture (Link to image)</h6>
           	<input type="url" id="image" name="image" class="form-control" data-ng-model="credentials.image" placeholder="http://www.yoururl.com/image.jpg">
           </div> -->
-        </div>
-
-      <div class="errorBox">
-        <div ng-show="errMsg">
-          {{errorMessage}}
-          
-        </div>
-      </div>
-		<div class="col-sm-6 offset-sm-3 end-of-form">
-			<div class="submitbutton">
-        		<button type="submit" ng-disabled="signUpForm.$invalid" class="clear col-sm-10 offset-sm-1" id="create-event-button"><a href="" ng-click = "signUp()">Sign Up</a></button>
-      		</div>
-
-      		<h6 align=center ng-click="signUp()">Already have an account? Log in</h6>
-		</div>
+        <div class="errorBox" ng-show="error" class="formItem col-sm-6 offset-sm-3">
+            <div  ng-repeat="errors in errorMessage">
+            {{errors}}
       
-        
-          
+            </div>
+        </div>
+     
+        </div>
+    		<div class="col-sm-6 offset-sm-3 end-of-form">
+    			<div class="submitbutton">
+            		<button type="submit" ng-disabled="signUpForm.$invalid" class="clear col-sm-10 offset-sm-1" id="create-event-button"><a href="" ng-click = "signUp()">Sign Up</a></button>
+          		</div>
 
-      </div>
-    </form>
+          		<h6 align=center ng-click="signUp()">Already have an account? Log in</h6>
+    		</div>
+     </div>
+  </form>
 
   </div>
 

@@ -2,6 +2,8 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 	var user = $scope.getUserId();
 	$scope.collapsed = true;
 	$scope.currentTabId = "";
+	$scope.error = false;
+	$scope.errorMessage = [];
 
 	$('.navbar-nav .nav-item').on('click', function (e) {
 	  e.preventDefault();
@@ -10,14 +12,27 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 
 
 	$('body').on('click', '.nav-tabs .nav-item', function(e){
-		console.log('nav link clicked');
-		console.log(e);
 		$scope.currentTabId = e.target.id;
+		$scope.currentCategory = e.target.text;
 
-	})
+	});
+
+
+
+	
+
 
 
 	$('.card .collapse').collapse('show');
+
+	function checkForInvalidChar(target){
+		var string = target;
+
+		var invalidChars = new RegExp(/^[0-9a-zA-Z]+$/);
+		var results = invalidChars.test(string);
+
+		return results;
+	}
 
 	$scope.addBlurb = function(){
 
@@ -28,7 +43,7 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 		info.url = $scope.bookmark.url;
 		info.description = $scope.bookmark.description;
 		info.private = $scope.bookmark.private;
-		info.category = $scope.bookmark.category;
+		info.category = $scope.currentCategory;
 		info.categories = $scope.categories;
 
 		blurbService.addBlurb(info, $rootScope.user);
@@ -77,14 +92,33 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 	//  ];
 
 	$scope.newCategory = function(){
-		var categoryTitle = $scope.category.title;
-		blurbService.createNewCategory(categoryTitle, function(result){
+		console.log(!checkForInvalidChar($scope.category.title));
+
+		if(!checkForInvalidChar($scope.category.title)){
+			$scope.errorMessage.push("Valid entry is letters and numbers");
+			$scope.error = true;
+			return;
+		}
+
+		if($scope.category.title.length < 3){
+			$scope.errorMessage.push("Minimum character length of 3");
+			$scope.error = true;
+			return
+		}
+			$scope.error=false;
+			$('#addCategoryModal').modal('toggle');
+			var categoryTitle = $scope.category.title;
+			blurbService.createNewCategory(categoryTitle, function(result){
 			$scope.getUserInfo(0, function(username){
-				console.log('this is the username being passed to getMyCategories');
-				console.log(username);
-				blurbService.populateUserData();
+			console.log('this is the username being passed to getMyCategories');
+			console.log(username);
+			blurbService.populateUserData();
 			});
 		})
+
+		
+
+		
 
 	}
 

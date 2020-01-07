@@ -5,12 +5,19 @@ mainApp.service('blurbService', ['$http', 'authService', '$rootScope',  function
 
 	function populateUserData (cb){
 		authService.getUserDBObject($rootScope.username, function(userObject){
+			console.log($rootScope.username);
+			console.log(userObject);
 					getCategories(userObject, function(results){
 					console.log('populating user data');
 					console.log(userObject)
 					$rootScope.categories = results.categories;
 					$rootScope.categoriesList = results.categoriesList;
-					cb();
+					if(cb){
+						cb();
+					}
+					else{
+						return results;
+					}
 				});
 			})
 	}

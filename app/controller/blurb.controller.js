@@ -52,14 +52,11 @@ controller.addBlurb = function(req, res){
 	console.log(bookmark);
 	console.log(req.headers.categoryid);
 
-		Category.updateOne({_id: req.headers.categoryid}, {$push: {bookmarks: bookmark._id}}).then(function(error,success){
-			if(error){
-				console.log(error);
-				res.status(401).send(error);
-			}else{
+		Category.updateOne({_id: req.headers.categoryid}, {$push: {bookmarks: bookmark._id}}).then(function(item){
+			
 				console.log('New bookmark successfully added');
 				res.status(201).send(bookmark._id);
-			}
+			
 		})
 
 

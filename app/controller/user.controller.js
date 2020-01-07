@@ -3,6 +3,7 @@ var User = mongoose.model('User');
 var Bookmark = mongoose.model('Bookmark');
 var Category = mongoose.model('Category');
 var Token = mongoose.model('Token');
+var Email = mongoose.model('Email');
 
 var request = require('request');
 
@@ -39,60 +40,109 @@ controller.putUserBookmark = function(req, res){
 
 controller.signup = function(req, res){
 	var credentials = {};
+	var results = {};
+	results.valid = true;
+	results.messages = [];
 	credentials = req.body.credentials;
 
 	console.log(req.body.credentials);
 	credentials.categories = [];
 	console.log('signing up...');
 
-	console.log(req.body.credentials);
-	var user = new User(req.body.credentials);
+
+	console.log('looking up user: '+ credentials.username);
+	User.find({username: credentials.username}).then(function(user){
+		console.log('this is user object we received from looking up user');
+		console.log(user[0]);
+		if(user[0] !== undefined){
+			
+			console.log('username has already been taken');
+			results.valid = false;
+			results.messages.push("The username has been taken");
+			
+		}
+
+		console.log('looking up email: '+ credentials.email);
+		Email.find({email: credentials.email}).then(function(email){
+		console.log('this is user object we received from looking up email');
+		console.log(email[0]);
+		if(email[0] !== undefined){
+			console.log(email);
+			console.log('email has already been taken')
+
+			results.valid = false;
+			results.messages.push("The email has already been registered");
+			
+		}
+
+		if(!results.valid){
+		console.log('this is results object we are sending');
+		console.log(results);
+		res.status(200).send(results);
+		}else{
+			var user = new User(req.body.credentials);
+			user.save(function(err, results){
+			if(err){
+				console.log(err);
+				return err;
+			}else{
+				console.log('successfully saved user');
+				var bookmark = new Bookmark({
+				title: "These are your bookmarks",
+				url: "http://www.sample.com",
+				description: "Here's a sample of a bookmark. You can add as many bookmarks to your categories!",
+				private: true,
+				author: user._id
+				});
+				bookmark.save();
+
+				var category = new Category({
+				name: "Welcome",
+				bookmarks: bookmark._id,
+				owner: user._id
+				});
+				category.save();
+
+				User.updateOne({_id: user._id}, {$push: {categories: category._id}}, function(error, success){
+				if(err){
+					console.log(error)
+				}else{
+					console.log('Successfully Added Category to User');
+
+					var email = new Email({
+						email: user.email,
+						userid: user._id
+					});
+
+					email.save();
+				}
+			} )
+
+				user.save();
 
 
+
+				console.log(results._id)
+				console.log(results);
+			}
+			res.send(results);
+		
+
+		})
 
 	
 
+	}
+	
 
-	user.save(function(err, results){
-		if(err){
-			console.log(err);
-			return err;
-		}else{
-			console.log('successfully saved user');
-			var bookmark = new Bookmark({
-			title: "These are your bookmarks",
-			url: "http://www.sample.com",
-			description: "Here's a sample of a bookmark. You can add as many bookmarks to your categories!",
-			private: true,
-			author: user._id
-			});
-			bookmark.save();
-
-			var category = new Category({
-			name: "Welcome",
-			bookmarks: bookmark._id,
-			owner: user._id
-			});
-			category.save();
-
-			User.updateOne({_id: user._id}, {$push: {categories: category._id}}, function(error, success){
-			if(err){
-				console.log(error)
-			}else{
-				console.log('Successfully Added Category to User');
-			}
-		} )
-
-			user.save();
+})
 
 
-
-			console.log(results._id)
-			console.log(results);
-		}
-		res.send(results);
 	})
+	
 
+
+	
 }
 
 controller.authToken = function(req, res){
@@ -171,6 +221,9 @@ controller.getUserObject = function(req, res){
 	console.log('getting user DB ID by name');
 	console.log(req.headers.name);
 	User.find({username: req.headers.name}, function(err, item){
+
+		console.log(err);
+		console.log(item);
 		if(err){
 			console.log('There was an error when retrieving user db id by username');
 			console.log(err);

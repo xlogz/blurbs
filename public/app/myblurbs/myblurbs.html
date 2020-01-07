@@ -62,7 +62,7 @@
 							<div >
 								<div class="col-sm-10">
 									<h6>Title</h6>
-									<input type="text" id="title" name="title" class="form-control" ng-model="category.title" required>
+									<input type="text" id="category-title" name="title" class="form-control" ng-model="category.title" required>
 								</div>
 							</div>
 						</div>
@@ -87,14 +87,14 @@
       </div>
       <div class="modal-body">
         
-<form name="signUpForm" novalidate>
-      <div id="signUpForm">
+	<form name="addBlurbForm" novalidate>
+      <div id="addBlurbForm">
         <div class='formInputs justify-content-center'>
           <div class="formItem col-sm-12">
             <h6>Category</h6>
-            <select name="categories" id="categories" class="form-control" ng-model="bookmark.category">
-              <option ng-repeat="category in categoriesList">{{category}}</option>
-  {{categoryList}}
+            <!-- <select name="categories" id="categories" class="form-control" ng-model="bookmark.category"> -->
+              <!-- <option ng-repeat="category in categoriesList">{{category}}</option> -->
+  {{currentCategory}}
             </select>
           </div>
           <div class="formItem col-sm-12">
@@ -119,21 +119,13 @@
           
         </div>
 
-   
- 
-        
-          
 
       </div>
     </form>
- <button class="col-sm-10 offset-sm-1 primary" id="create-blurb-button" ng-click="addBlurb()">Add Blurb</button>
-
-
-
-
-
+ 		
       </div>
       <div class="modal-footer">
+      	<button type="button" class="btn btn-default btn-primary" ng-click="addBlurb()">Submit</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>
@@ -164,7 +156,8 @@
 							<div >
 								<div class="col-sm-10">
 									<h6>Title</h6>
-									<input type="text" id="title" name="title" class="form-control" ng-model="category.title" required>
+									<input type="text" id="add-category-modal" name="title" class="form-control" ng-model="category.title" required>
+									<p ng-show="error" ng-repeat="error in errorMessage">{{error}}</p>
 								</div>
 							</div>
 						</div>
@@ -173,7 +166,7 @@
 
       </div>
       <div class="modal-footer">
-      	<button type="button" class="btn btn-default btn-primary" data-dismiss="modal" ng-click="newCategory()">Submit</button>
+      	<button type="button" class="btn btn-default btn-primary" ng-click="newCategory()">Submit</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>
