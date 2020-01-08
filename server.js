@@ -69,7 +69,8 @@ console.log('Bookmark is listening on ' + port);
 app.listen(port);
 
 app.route('/blurb/category').put(blurb.addCategory);
-app.route('/blurb/bookmark').put(blurb.addBlurb);
+app.route('/blurb/bookmark/add').put(blurb.addBlurb);
+app.route('/blurb/bookmark/remove').put(blurb.deleteBlurb);
 app.route('/blurb/myblurbs').get(blurb.myBlurbs);
 app.route('/blurb/mycategories').get(blurb.myCategories);
 

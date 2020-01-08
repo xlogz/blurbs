@@ -1,4 +1,4 @@
-var mainApp = angular.module('main', ['ui.router', 'auth0.auth0', ]);
+var mainApp = angular.module('main', ['ui.router', 'auth0.auth0' ]);
 
 mainApp.config(['$stateProvider', 'angularAuth0Provider', '$urlRouterProvider', '$locationProvider', function($stateProvider,angularAuth0Provider,$urlRouterProvider,$locationProvider) {
   var homeState = {

@@ -6,4 +6,4 @@ var EmailSchema = new Schema({
 	userid: String,
 })
 
-module.exports = mongoose.model('Email', EmailSchema)
+module.exports = mongoose.model('Email', EmailSchema);

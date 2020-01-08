@@ -37,20 +37,21 @@ mainApp.service('blurbService', ['$http', 'authService', '$rootScope',  function
 			url: '/blurb/category',
 			headers: info
 		}).then(function(categoryId,cb){
-			console.log(categoryId)
+			console.log(categoryId);
 			
-				populateUserData();
-				console.log(categoryId);
-
-				if(cb){
+				populateUserData(function(){
+					if(cb){
 					console.log('successfully added categories');
 					
 					console.log(categoryId);
 					cb(categoryId)
-				}else{
-					populateUserData();
+					}else{
 					return categoryId
-				}
+					}
+				});
+				console.log(categoryId);
+
+				
 			
 		});
 	}
@@ -152,31 +153,44 @@ mainApp.service('blurbService', ['$http', 'authService', '$rootScope',  function
 
 	function addBlurb(bookmark, userObj, cb){
 		var submit = bookmark;	
-		console.log($rootScope.categories);
 
-				getCategoryId($rootScope.categories, submit.category, function(id){
-		
-					submit.categoryId = id;
-					submit.author = $rootScope.user._id;
-					console.log('sending info to add a new blurb');
-	
-					console.log(id);
+		getCategoryId($rootScope.categories, submit.category, function(id){
 
-					$http({
-						method: 'put',
-						url: '/blurb/bookmark',
-						headers: submit
-					}).then(function(id){
-						console.log('This is the ID of the blurb we just added in the database');
-						console.log(id);
+			submit.categoryId = id;
+			submit.author = $rootScope.user._id;
+			console.log('sending info to add a new blurb');
 
-						return id;
-					})
-				
-				
-			
+			console.log(id);
 
+			$http({
+				method: 'put',
+				url: '/blurb/bookmark/add',
+				headers: submit
+			}).then(function(id){
+				console.log('This is the ID of the blurb we just added in the database');
+				console.log(id);
+
+				return id;
+			})
 		});
+	}
+
+	function deleteBlurb(object, cb){
+		submit = object;
+		$http({
+				method: 'put',
+				url: '/blurb/bookmark/remove',
+				headers: submit
+			}).then(function(results){
+				console.log('This is the results of the blurb we just added in the database');
+				console.log(results);
+				if(cb){
+					cb(results);
+				}else{
+					return id;	
+				}
+				
+			})
 	}
 
 
@@ -191,6 +205,7 @@ mainApp.service('blurbService', ['$http', 'authService', '$rootScope',  function
 		getCategories: getCategories,
 		getCategoryId: getCategoryId,
 		addBlurb: addBlurb,
-		createNewCategory: createNewCategory
+		createNewCategory: createNewCategory,
+		deleteBlurb: deleteBlurb,
 	}
 }]);

@@ -21,7 +21,7 @@ controller.addCategory = function(req,res){
 		User.updateOne({_id: req.headers.userid}, {$push: {categories: category._id}}).then(function(item){
 				console.log(category);
 				console.log('New category successfully added');
-				res.status(201).send(category._id);
+				res.status(201).send(category);
 			
 		})
 	})
@@ -66,6 +66,49 @@ controller.addBlurb = function(req, res){
 		// } )
 	})
 	
+}
+
+controller.deleteBlurb = function(req, res){
+	var results = {}
+
+	console.log("deleting blurb - id:" + req.headers.bookmarkid + ' in category: ' + req.headers.categoryid);
+	console.log(req.headers);
+
+	Bookmark.findOneAndDelete({_id: req.headers.bookmarkid}).then(function(err, results){
+		console.log('this is the result of finding and removing entry in bookmark collection')
+		console.log(results);
+
+		Category.updateOne({_id: req.headers.categoryid}, {pull: {bookmarks: req.headers.bookmarkid}}).then(function(item){
+			
+				console.log('bookmark successfully removed from category');
+				console.log(item);
+				res.status(201).send(item);
+			
+		})
+	});
+
+
+
+
+	// Bookmark.deleteOne({id: req.headers.bookmarkid}, function(err, result){
+	// 	console.log(err);
+	// 	if(err){
+	// 		results.message = "An error has occured." + err
+	// 	}else{
+	// 		console.log('bookmark successfully deleted')
+	// 		console.log(result);
+	// 		res.status(200);
+	// 		Category.updateOne({_id : req.headers.categoryid}, {$pull: [{'_id': req.headers.bookmarkid}]}).then(function(item){
+	// 			console.log("Bookmark successfully removed from category");
+	// 			console.log(item);
+
+	// 			results.message = "Bookmark was successfully removed from category";
+	// 			results.item = item;
+	// 		})
+	// 	}
+
+	// 	res.send(results);
+	// });
 }
 
 

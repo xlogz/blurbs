@@ -5,6 +5,22 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 	$scope.error = false;
 	$scope.errorMessage = [];
 
+
+	// $scope.categories = [
+	// 	{name: "Welcome", bookmarks:[{id: "1", title: "This is an example blurb", url: "http://www.yoururlhere.com", description: "This is your homepage where you can see all of the categories for your bookmarks. You can add them to an existing category or add one here"},
+	// 								 {id: "2", title: "This is an example blurb", url: "http://www.yoururlhere.com", description: "This is a second link with more information about your home page"},
+	// 								 {id: "3", title: "This is an example blurb", url: "http://www.yoururlhere.com", description: "This is your third link that you've added. Lorum Ipsum Potato Tomato Pokemon Supercalifragilisticexpialidocious. Lorum Ipsum Potato Tomato Pokemon Supercalifragilisticexpialidocious. Lorum Ipsum Potato Tomato Pokemon Supercalifragilisticexpialidocious"}]}, 
+	// 	{name: "Welcome", bookmarks:[{id: "1", title: "This is an example blurb", url: "http://www.yoururlhere.com", description: "This is your homepage where you can see all of the categories for your bookmarks. You can add them to an existing category or add one here"},
+	// 								 {id: "2", title: "This is an example blurb", url: "http://www.yoururlhere.com", description: "This is a second link with more information about your home page"},
+	// 								 {id: "3", title: "This is an example blurb", url: "http://www.yoururlhere.com", description: "This is your third link that you've added. Lorum Ipsum Potato Tomato Pokemon Supercalifragilisticexpialidocious. Lorum Ipsum Potato Tomato Pokemon Supercalifragilisticexpialidocious. Lorum Ipsum Potato Tomato Pokemon Supercalifragilisticexpialidocious"}]}, 
+	// 	{name: "Welcome", bookmarks:[{id: "1", title: "This is an example blurb", url: "http://www.yoururlhere.com", description: "This is your homepage where you can see all of the categories for your bookmarks. You can add them to an existing category or add one here"},
+	// 								 {id: "2", title: "This is an example blurb", url: "http://www.yoururlhere.com", description: "This is a second link with more information about your home page"},
+	// 								 {id: "3", title: "This is an example blurb", url: "http://www.yoururlhere.com", description: "This is your third link that you've added. Lorum Ipsum Potato Tomato Pokemon Supercalifragilisticexpialidocious. Lorum Ipsum Potato Tomato Pokemon Supercalifragilisticexpialidocious. Lorum Ipsum Potato Tomato Pokemon Supercalifragilisticexpialidocious"}]}, 
+
+	//  ];
+
+
+
 	$('.navbar-nav .nav-item').on('click', function (e) {
 	  e.preventDefault();
 	  $(this).tab('show');
@@ -60,9 +76,36 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 			},20)
 			
 		});
+	}
 
-		
-				
+	$scope.deleteBlurbData = function(bookmarkid, categoryid){
+		$scope.bookmarkToDelete = bookmarkid;
+		$scope.categoryOfBookmarkToDelete = categoryid;
+		console.log('storing ids into scope');
+		console.log($scope.bookmarkToDelete + ' ' +bookmarkid);
+		console.log($scope.categoryOfBookmarkToDelete + ' ' +categoryid);
+
+		$('#deleteBlurbModal').modal('toggle');
+	}
+	$scope.deleteBlurb = function(element){
+		var submit = {};
+		submit.bookmarkid = $scope.bookmarkToDelete;
+		submit.categoryid = $scope.categoryOfBookmarkToDelete;
+		console.log('submitting following object to send delete info')
+		console.log(submit);
+		blurbService.deleteBlurb(submit, function(results){
+			console.log('sucessfully deleted blurb. here are the results:');
+			console.log(results);
+			blurbService.populateUserData(function(){
+			console.log('going back to original tab');
+			console.log($scope.currentTabId);
+			setTimeout(function(){
+				$('#' + $scope.currentTabId).tab('show');
+			},20)
+			
+			});
+		});
+
 
 	}
 
@@ -78,24 +121,12 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 	}
 
 
-	// $scope.categories = [
-	// 	{name: "Welcome", bookmarks:[{id: "1", title: "This is an example blurb", url: "http://www.yoururlhere.com", description: "This is your homepage where you can see all of the categories for your bookmarks. You can add them to an existing category or add one here"},
-	// 								 {id: "2", title: "This is an example blurb", url: "http://www.yoururlhere.com", description: "This is a second link with more information about your home page"},
-	// 								 {id: "3", title: "This is an example blurb", url: "http://www.yoururlhere.com", description: "This is your third link that you've added. Lorum Ipsum Potato Tomato Pokemon Supercalifragilisticexpialidocious. Lorum Ipsum Potato Tomato Pokemon Supercalifragilisticexpialidocious. Lorum Ipsum Potato Tomato Pokemon Supercalifragilisticexpialidocious"}]}, 
-	// 	{name: "Welcome", bookmarks:[{id: "1", title: "This is an example blurb", url: "http://www.yoururlhere.com", description: "This is your homepage where you can see all of the categories for your bookmarks. You can add them to an existing category or add one here"},
-	// 								 {id: "2", title: "This is an example blurb", url: "http://www.yoururlhere.com", description: "This is a second link with more information about your home page"},
-	// 								 {id: "3", title: "This is an example blurb", url: "http://www.yoururlhere.com", description: "This is your third link that you've added. Lorum Ipsum Potato Tomato Pokemon Supercalifragilisticexpialidocious. Lorum Ipsum Potato Tomato Pokemon Supercalifragilisticexpialidocious. Lorum Ipsum Potato Tomato Pokemon Supercalifragilisticexpialidocious"}]}, 
-	// 	{name: "Welcome", bookmarks:[{id: "1", title: "This is an example blurb", url: "http://www.yoururlhere.com", description: "This is your homepage where you can see all of the categories for your bookmarks. You can add them to an existing category or add one here"},
-	// 								 {id: "2", title: "This is an example blurb", url: "http://www.yoururlhere.com", description: "This is a second link with more information about your home page"},
-	// 								 {id: "3", title: "This is an example blurb", url: "http://www.yoururlhere.com", description: "This is your third link that you've added. Lorum Ipsum Potato Tomato Pokemon Supercalifragilisticexpialidocious. Lorum Ipsum Potato Tomato Pokemon Supercalifragilisticexpialidocious. Lorum Ipsum Potato Tomato Pokemon Supercalifragilisticexpialidocious"}]}, 
-
-	//  ];
 
 	$scope.newCategory = function(){
 		console.log(!checkForInvalidChar($scope.category.title));
 
 		if(!checkForInvalidChar($scope.category.title)){
-			$scope.errorMessage.push("Valid entry is letters and numbers");
+			$scope.errorMessage.push("Enter alphanumeric characters");
 			$scope.error = true;
 			return;
 		}
@@ -117,6 +148,7 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 				console.log(result.data);
 
 				$('#' + $scope.result.data + '-tab').tab('show');
+				return;
 
 		})
 
@@ -146,23 +178,24 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 	 }
 
 
-	$scope.myBlurbs = function(){
+	// $scope.myBlurbs = function(){
 		
-		var userID = authService.getUserDBObject(user.username, function(userObject){
-			$scope.userObj = userObject;
-			console.log('getmyblurbs userobject');
-			console.log(userObject);
-			$http({
-				method: 'GET',
-				url: '/blurb/myblurbs',
-				headers: {id : userObject.data[0]._id}
-			}).then(function(bookmarks){
-				$scope.bookmarks = bookmarks.data;
-				console.log('these are the bookmarks');
-				console.log(bookmarks);
-			})
-		})
-	}
+	// 	var userID = authService.getUserDBObject(user.username, function(userObject){
+	// 		$scope.userObj = userObject;
+	// 		console.log('getmyblurbs userobject');
+	// 		console.log(userObject);
+	// 		$http({
+	// 			method: 'GET',
+	// 			url: '/blurb/myblurbs',
+	// 			headers: {id : userObject.data[0]._id}
+	// 		}).then(function(bookmarks){
+	// 			console.log('these are the bookmarks!!!!!!!!!!');
+	// 			$scope.bookmarks = bookmarks.data;
+	// 			console.log('these are the bookmarks');
+	// 			console.log(bookmarks);
+	// 		})
+	// 	})
+	// }
 
 
 	blurbService.populateUserData();

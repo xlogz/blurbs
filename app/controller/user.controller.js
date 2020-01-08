@@ -125,13 +125,13 @@ controller.signup = function(req, res){
 				console.log(results._id)
 				console.log(results);
 			}
-			res.send(results);
+			
 		
 
 		})
 
 	
-
+		res.send(results);
 	}
 	
 
