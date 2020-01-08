@@ -85,9 +85,9 @@
 
 body{
 /*background-image: linear-gradient( 0deg, rgba(3,127,163,1) -0.1%, rgba(0,47,108,1) 102.5% );*/
-background-image: url('../images/background.png');
-background-repeat: no-repeat;
-background-position: right bottom;
+background-image: url('../images/background.png'),
+background-repeat: no-repeat,
+background-position: right bottom
 
 }
 div{
@@ -97,4 +97,10 @@ div{
 
 .top-margin-30{
   top: 30%;
+}
+
+.btn-grey {
+	color: #FFF !important;
+	background-color: #383838, !important
+	border-color: #383838 !important
 }

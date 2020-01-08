@@ -2,6 +2,7 @@ mainApp.service('blurbService', ['$http', 'authService', '$rootScope',  function
 	var categories = [];
 	var categoriesList = [];
 	var userObj;
+	var lastCategoryId
 
 	function populateUserData (cb){
 		authService.getUserDBObject($rootScope.username, function(userObject){
@@ -12,6 +13,7 @@ mainApp.service('blurbService', ['$http', 'authService', '$rootScope',  function
 					console.log(userObject)
 					$rootScope.categories = results.categories;
 					$rootScope.categoriesList = results.categoriesList;
+					$rootScope.lastCategoryId = userObject.data[0].categories[userObject.data[0].categories-1];
 					if(cb){
 						cb();
 					}
@@ -36,7 +38,7 @@ mainApp.service('blurbService', ['$http', 'authService', '$rootScope',  function
 			method: 'PUT',
 			url: '/blurb/category',
 			headers: info
-		}).then(function(categoryId,cb){
+		}).then(function(categoryId){
 			console.log(categoryId);
 			
 				populateUserData(function(){
@@ -122,7 +124,6 @@ mainApp.service('blurbService', ['$http', 'authService', '$rootScope',  function
 		var resultObj = {};
 		var username = userObject.data[0].username;
 
-		console.log(userObject);
 	 		$http({
 				method: 'GET',
 				url: '/blurb/mycategories',
@@ -133,7 +134,8 @@ mainApp.service('blurbService', ['$http', 'authService', '$rootScope',  function
 
 				createCategoriesObj(user, function(categoriesArray){
 					resultObj.categories = categoriesArray;
-
+					$rootScope.lastcategoryId = resultObj.categories[resultObj.categories.length-1].id
+					console.log($rootScope.lastcategoryId);
 					createCategoriesList(categoriesArray, function(categoriesList){
 						console.log(categoriesList);
 						resultObj.categoriesList = categoriesList;

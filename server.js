@@ -87,3 +87,6 @@ app.route('/users/authtoken').put(user.authToken);
 app.route('/users/userObject').get(user.getUserObject);
 
 
+app.get('/*',function (req, res) {
+        res.render('index');
+    });

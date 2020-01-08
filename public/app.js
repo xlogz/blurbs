@@ -54,8 +54,9 @@ mainApp.config(['$stateProvider', 'angularAuth0Provider', '$urlRouterProvider', 
     name: 'callback',
     url: '/callback',
     templateUrl: './app/callback/callback.html',
-
   }
+
+
 
   $stateProvider.state(homeState);
   $stateProvider.state(myBlurbsState);
@@ -66,6 +67,7 @@ mainApp.config(['$stateProvider', 'angularAuth0Provider', '$urlRouterProvider', 
   $stateProvider.state(signInState);
   $stateProvider.state(callBackState);
   $stateProvider.state(thanksState);
+
 
   var AUTH0_CLIENT_ID='x4QhXO346dfoY4wzVnWttmDAvFbQogAS'; 
   var AUTH0_DOMAIN='dev-kihm7h2g.auth0.com'; 

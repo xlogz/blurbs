@@ -145,9 +145,12 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 			var categoryTitle = $scope.category.title;
 			blurbService.createNewCategory(categoryTitle, function(result){
 				console.log('this is the id of the new category');
-				console.log(result.data);
-
-				$('#' + $scope.result.data + '-tab').tab('show');
+				console.log(result.data._id);
+				console.log($rootScope.categories[$rootScope.categories.length-1]._id);
+				setTimeout(function(){
+					$('#' + result.data._id + '-tab').tab('show');
+				},20);
+				
 				return;
 
 		})
