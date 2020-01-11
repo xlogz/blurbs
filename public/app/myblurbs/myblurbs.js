@@ -46,6 +46,7 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 		var results = invalidChars.test(string);
 
 		return results;
+
 	}
 
 	$scope.addBlurb = function(){
@@ -213,7 +214,7 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 	 authService.validateToken(authCookie, function(username){
 	 	$scope.username = username;
 	 	console.log(username)
-	 	authService.getUserObject(username, function(userObj){
+	 	authService.getUserObject($scope.username, function(userObj){
 		console.log('making changes');
 	 	console.log(userObj);
 	 	blurbService.getCategories(userObj, function(results){
