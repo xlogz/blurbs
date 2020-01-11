@@ -207,9 +207,12 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 	 	$scope.categoryList = results;
 	 }
 
+	 var authCookie = $cookies.get('auth');
 
-	 authService.getUserObject(function(userObj){
-console.log('making changes');
+	 authService.validateToken(authCookie, function(username){
+
+	 	authService.getUserObject(username, function(userObj){
+		console.log('making changes');
 	 	console.log(userObj);
 	 	blurbService.getCategories(userObj, function(results){
 	 		$scope.categories = results.categories;
@@ -220,6 +223,9 @@ console.log('making changes');
 
 	 	});
 	 })
+
+	 })
+	 
 	 
 
 	// $scope.myBlurbs = function(){

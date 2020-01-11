@@ -11,13 +11,13 @@ mainApp.service('authService', authService);
     var user = "";
     var userObject;
 
-    function getUserObject(cb){
+    function getUserObject(name,cb){
       console.log('getting user db object for');
-      console.log(user);
+      console.log(name);
       $http({
         method: 'GET',
         url: 'users/userobject',
-        headers: {'username' : user}
+        headers: {'username' : name}
       }).then(function(userObj){
         console.log('results from retrieving getUserObj');
         console.log(userObj)
