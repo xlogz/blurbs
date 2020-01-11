@@ -1,4 +1,4 @@
-mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbService', '$rootScope', function($scope, authService, $http, blurbService,$rootScope){
+mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbService', '$rootScope', ,'$cookies', function($scope, authService, $http, blurbService,$rootScope,$cookies){
 	$scope.user = authService.user;
 	$scope.collapsed = true;
 	$scope.currentTabId = "";
