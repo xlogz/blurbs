@@ -6,7 +6,7 @@ mainApp.service('blurbService', ['$http', 'authService', '$rootScope',  function
 
 	function populateUserData (name, cb){
 		var data = {};
-			 authService.getUserObject(function(userObj){
+			 authService.getUserObject(name, function(userObj){
 	 		getCategories(userObj, function(results){
 	 		data.categories = results.categories;
 	 		data.categoriesList = results.categoriesList;

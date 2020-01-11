@@ -62,26 +62,17 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 		console.log('passing in userObject to addBlurb');
 		console.log($scope.userObject);
 		blurbService.addBlurb(info, $scope.userObject, function(){
+			blurbService.populateUserData($scope.user,function(data){
+			console.log('this is the data after populateUserData was retrieved');
+			console.log(data);
+			$scope.categories = data.categories;
+			$scope.categoriesList = data.categoriesList;
+			$scope.userObject = data.userObject;
 
-
-			authService.validateToken(authCookie, function(username){
-		 	console.log(username)
-		 	authService.getUserObject(username, function(userObj){
-			console.log('making changes');
-		 	console.log(userObj);
-		 	blurbService.getCategories(userObj, function(results){
-		 		$scope.categories = results.categories;
-		 		$scope.categiesList = results.categoriesList;
-		 		$scope.userObject = userObj;
-		 		console.log('this is the user Obj after getting categories');
-		 		console.log($scope.userObject);
-		 		setTimeout(function(){
-					$('#' + $scope.currentTabId).tab('show');
-				},20)
-
-
-			});
-		
+			setTimeout(function(){
+				$('#' + $scope.currentTabId).tab('show');
+			},20)
+		})
 		});
 
 		$scope.bookmark = {};
@@ -121,34 +112,17 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 		blurbService.deleteBlurb(submit, function(results){
 			console.log('sucessfully deleted blurb. here are the results:');
 			console.log(results);
-
-
-			authService.validateToken(authCookie, function(username){
-	 	console.log(username)
-	 	authService.getUserObject(username, function(userObj){
-		console.log('making changes');
-	 	console.log(userObj);
-	 	blurbService.getCategories(userObj, function(results){
-	 		$scope.categories = results.categories;
-	 		$scope.categiesList = results.categoriesList;
-	 		$scope.userObject = userObj;
-	 		console.log('this is the user Obj after getting categories');
-	 		console.log($scope.userObject);
-
-	 		setTimeout(function(){
+			blurbService.populateUserData($scope.user, function(data){
+			console.log('going back to original tab');
+			console.log($scope.currentTabId);
+			$scope.categories = data.categories;
+			$scope.categoriesList = data.categoriesList;
+			$scope.userObject = data.userObject
+			setTimeout(function(){
 				$('#' + $scope.currentTabId).tab('show');
 			},20)
-
-	 	});
-	 })
-
-	 })
-
-
 			
-			
-			
-			
+			});
 		});
 
 
@@ -191,7 +165,7 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 			blurbService.createNewCategory($scope.userObject,categoryTitle, function(result){
 				console.log('this is the id of the new category');
 				console.log(result.data._id);
-				console.log('this is the current scope user');
+				console.log('this is the ')
 				console.log($scope.user);
 				blurbService.populateUserData($scope.user, function(data){
 				console.log('going back to original tab');
@@ -208,7 +182,7 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 				
 
 				})
-			});
+
 		
 
 		
@@ -237,6 +211,7 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 	 var authCookie = $cookies.get('auth');
 
 	 authService.validateToken(authCookie, function(username){
+	 	$scope.username = username;
 	 	console.log(username)
 	 	authService.getUserObject(username, function(userObj){
 		console.log('making changes');
