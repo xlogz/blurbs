@@ -210,7 +210,7 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 	 var authCookie = $cookies.get('auth');
 
 	 authService.validateToken(authCookie, function(username){
-
+	 	console.log(username)
 	 	authService.getUserObject(username, function(userObj){
 		console.log('making changes');
 	 	console.log(userObj);
