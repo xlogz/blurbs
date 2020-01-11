@@ -6,14 +6,13 @@ mainApp.service('blurbService', ['$http', 'authService', '$rootScope',  function
 
 	function populateUserData (name, cb){
 		var data = {};
-			 authService.getUserObject(name, function(userObj){
+
 			 	console.log('userObj getting passed to getCategories');
 			 	console.log(userObj);
 
-	 		getCategories(userObj, function(results){
+	 		getCategories(name, function(results){
 	 		data.categories = results.categories;
 	 		data.categoriesList = results.categoriesList;
-	 		data.userObject = userObj;
 	 		console.log('this is the user Obj after getting categories');
 	 		if(cb){
 	 			cb(data)
@@ -22,7 +21,7 @@ mainApp.service('blurbService', ['$http', 'authService', '$rootScope',  function
 	 		}
 
 	 	});
-	 })
+
 	}
 
 	function createNewCategory (user, title, cb){
@@ -106,17 +105,17 @@ mainApp.service('blurbService', ['$http', 'authService', '$rootScope',  function
 
 
 
-	function getCategories(userObject, cb){
+	function getCategories(username, cb){
 		var resultObj = {};
 
 		console.log('get categories userObject');
-		console.log(userObject);
-		var username = userObject.data[0].username;
+		console.log(username);
+		var user = username;
 		
 	 		$http({
 				method: 'GET',
 				url: '/blurb/mycategories',
-				headers: {name : username}
+				headers: {name : user}
 			}).then(function(user){
 				console.log(user);
 				resultObj.user = user.data;
