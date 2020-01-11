@@ -59,6 +59,8 @@ mainApp.service('blurbService', ['$http', 'authService', '$rootScope',  function
 	}
 
 	function createCategoriesObj (user, cb){
+		console.log('this is user passed into createCategoriesObj');
+		console.log(user);
 		var result = []
 		console.log(user.data.categories.length);
 		if(user.data.categories.length){
