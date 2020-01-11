@@ -69,7 +69,7 @@ mainApp.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$c
 
 }]);
 
-mainApp.controller('mainCtrl',['authService', '$scope', '$cookies', function(authService,$scope,$cookies){
+mainApp.controller('mainCtrl',['authService', '$scope', '$cookies','$rootScope', function(authService,$scope,$cookies,$rootScope){
 
   $('.nav-item').on('click', function(){
   console.log('navbar item clicked');
@@ -84,6 +84,7 @@ mainApp.controller('mainCtrl',['authService', '$scope', '$cookies', function(aut
     console.log(userObj);
     console.log(userObj + ' has been verified');
     var userInfo = authService.getUserObject();
+    $rootScope.user = userObj;
 
     $scope.categories
   });
