@@ -16,9 +16,9 @@ console.log('loading controller');
 controller.validateToken = function(req, res){
 	var results = {};
 	results.status = 201;
-	console.log(req.body);
+	console.log(req.headers);
 	console.log('this is the req.body.authToken from validateToken');
-	Token.find({token: req.body.authToken}).then(function(user){
+	Token.find({token: req.headers.token}).then(function(user){
 	console.log('results from searching authtoken');
 		if(user){
 			console.log('user found');
