@@ -64,23 +64,23 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 		blurbService.addBlurb(info, $scope.userObject, function(){
 
 
-authService.validateToken(authCookie, function(username){
-	 	console.log(username)
-	 	authService.getUserObject(username, function(userObj){
-		console.log('making changes');
-	 	console.log(userObj);
-	 	blurbService.getCategories(userObj, function(results){
-	 		$scope.categories = results.categories;
-	 		$scope.categiesList = results.categoriesList;
-	 		$scope.userObject = userObj;
-	 		console.log('this is the user Obj after getting categories');
-	 		console.log($scope.userObject);
-	 		setTimeout(function(){
-				$('#' + $scope.currentTabId).tab('show');
-			},20)
-			
+			authService.validateToken(authCookie, function(username){
+		 	console.log(username)
+		 	authService.getUserObject(username, function(userObj){
+			console.log('making changes');
+		 	console.log(userObj);
+		 	blurbService.getCategories(userObj, function(results){
+		 		$scope.categories = results.categories;
+		 		$scope.categiesList = results.categoriesList;
+		 		$scope.userObject = userObj;
+		 		console.log('this is the user Obj after getting categories');
+		 		console.log($scope.userObject);
+		 		setTimeout(function(){
+					$('#' + $scope.currentTabId).tab('show');
+				},20)
 
-			
+
+			});
 		
 		});
 
@@ -208,7 +208,7 @@ authService.validateToken(authCookie, function(username){
 				
 
 				})
-
+			});
 		
 
 		
