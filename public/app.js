@@ -85,7 +85,7 @@ mainApp.controller('mainCtrl',['authService', '$scope', '$cookies','$rootScope',
     $scope.user = username;
     console.log(username);
     console.log(username + ' has been verified');
-    var userInfo = authService.getUserObject(userObj, function(userObj){
+    var userInfo = authService.getUserObject(username, function(userObj){
       $rootScope.user = userObj;
       $scope.user = userObj;
       console.log('initial loading of userObj');
