@@ -209,7 +209,7 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 
 
 	 authService.getUserObject(function(userObj){
-	 	console.log('getting user obj');
+console.log('making changes');
 	 	console.log(userObj);
 	 	blurbService.getCategories(userObj, function(results){
 	 		$scope.categories = results.categories;
