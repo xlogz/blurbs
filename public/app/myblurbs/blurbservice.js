@@ -105,8 +105,11 @@ mainApp.service('blurbService', ['$http', 'authService', '$rootScope',  function
 
 	function getCategories(userObject, cb){
 		var resultObj = {};
+
+		console.log('get categories userObject');
+		console.log(userObject);
 		var username = userObject.data[0].username;
-	
+		
 	 		$http({
 				method: 'GET',
 				url: '/blurb/mycategories',
