@@ -128,7 +128,11 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 			},20)
 			
 			});
+
 		});
+		$('deleteBlurbModal').modal('toggle');
+
+
 
 
 	}
