@@ -81,11 +81,13 @@ mainApp.controller('mainCtrl',['authService', '$scope', '$cookies','$rootScope',
   console.log(authCookie);
   if(authService.isAuthenticated()){
     var user = authService.validateToken(authCookie, function(username){
+    $rootScope.username = username;
+    $scope.user = username;
     console.log(username);
     console.log(username + ' has been verified');
     var userInfo = authService.getUserObject(userObj, function(userObj){
       $rootScope.user = userObj;
-      $scope.username = userObj;
+      $scope.user = userObj;
       console.log('initial loading of userObj');
       console.log(userObj);
     });

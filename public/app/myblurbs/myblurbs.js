@@ -62,8 +62,10 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 		info.categories = $scope.categories;
 		console.log('passing in userObject to addBlurb');
 		console.log($scope.userObject);
-		blurbService.addBlurb(info, $scope.userObject, function(){
-			blurbService.populateUserData($scope.user,function(data){
+		console.log('here is rootSCopeusername in addBlurb');
+		console.log($rootScope.username);
+		blurbService.addBlurb(info, $scope.userObject, function(id){
+			blurbService.populateUserData($rootScope.username,function(data){
 			console.log('this is the data after populateUserData was retrieved');
 			console.log(data);
 			$scope.categories = data.categories;
