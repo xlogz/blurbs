@@ -165,7 +165,8 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 			blurbService.createNewCategory($scope.userObject,categoryTitle, function(result){
 				console.log('this is the id of the new category');
 				console.log(result.data._id);
-
+				console.log('this is the current scope user');
+				console.log($scope.user);
 				blurbService.populateUserData($scope.user, function(data){
 				console.log('going back to original tab');
 				console.log($scope.currentTabId);
