@@ -7,8 +7,8 @@ mainApp.service('blurbService', ['$http', 'authService', '$rootScope',  function
 	function populateUserData (name, cb){
 		var data = {};
 
-			 	console.log('userObj getting passed to getCategories');
-			 	console.log(userObj);
+			 	console.log('name getting passed to getCategories');
+			 	console.log(name);
 
 	 		getCategories(name, function(results){
 	 		data.categories = results.categories;
