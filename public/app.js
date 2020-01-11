@@ -80,13 +80,16 @@ mainApp.controller('mainCtrl',['authService', '$scope', '$cookies','$rootScope',
   console.log('this is the authtoken for logging in');
   console.log(authCookie);
   if(authService.isAuthenticated()){
-    var user = authService.validateToken(authCookie, function(userObj){
-    console.log(userObj);
-    console.log(userObj + ' has been verified');
-    var userInfo = authService.getUserObject();
-    $rootScope.user = userObj;
-
-    $scope.categories
+    var user = authService.validateToken(authCookie, function(username){
+    console.log(username);
+    console.log(username + ' has been verified');
+    var userInfo = authService.getUserObject(userObj, function(userObj){
+      $rootScope.user = userObj;
+      $scope.username = userObj;
+      console.log('initial loading of userObj');
+      console.log(userObj);
+    });
+    
   });
   }
 
