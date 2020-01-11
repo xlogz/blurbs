@@ -55,10 +55,10 @@
         </div>
       </li> -->
       <li class="nav-item">
-        <a class="nav-link" href="#" ng-show="!isAuthenticated()" ng-click="login()">Sign In</a>
+        <a class="nav-link" ui-sref="signin" ng-show="!isAuthenticated()">Sign In</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#" ng-show="isAuthenticated()" ng-click="logout()">Sign Out</a>
+        <a class="nav-link" ng-click="logout()" ng-show="isAuthenticated()">Sign Out</a>
       </li>
     </ul>
 <!--     <form class="form-inline my-2 my-lg-0">
@@ -81,9 +81,9 @@
 	</script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+  <script src="https://code.angularjs.org/1.5.5/angular-cookies.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.min.js"></script>
-  <script src="https://cdn.auth0.com/js/auth0/9.11/auth0.min.js"></script>
-  <script type="text/javascript" src="js/angular-auth0.min.js"></script>
+
 
 
 
@@ -97,7 +97,12 @@
   <script src="app/addBlurb/addBlurb.js"></script>
   <script src="app/myblurbs/myblurbs.js"></script>
   <script src="app/blurbs/blurbs.js"></script>	
-	
+  <script src="app/noaccess/noaccess.js"></script>  
+	 <script src="app/addBlurb/addBlurb.js"></script>
+  <script src="app/myblurbs/myblurbs.js"></script>
+  <script src="app/blurbs/blurbs.js"></script>
+  <script src ="app/myblurbs/blurbservice.js"></script>
+  <script src="app/blurbs/blurbs.js"></script>  
 
         
     </body>

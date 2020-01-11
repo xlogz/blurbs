@@ -1,6 +1,6 @@
-var mainApp = angular.module('main', ['ui.router', 'auth0.auth0', ]);
+var mainApp = angular.module('main', ['ui.router', 'ngCookies']);
 
-mainApp.config(['$stateProvider', 'angularAuth0Provider', '$urlRouterProvider', '$locationProvider', function($stateProvider,angularAuth0Provider,$urlRouterProvider,$locationProvider) {
+mainApp.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$cookiesProvider', function($stateProvider,$urlRouterProvider,$locationProvider,$cookiesProvider) {
   var homeState = {
     name: 'home',
     url: '/home',
@@ -48,7 +48,12 @@ mainApp.config(['$stateProvider', 'angularAuth0Provider', '$urlRouterProvider', 
     name: 'callback',
     url: '/callback',
     templateUrl: './app/callback/callback.html',
+  }
 
+  var noAccesState = {
+    name: 'noaccess',
+    url: '/noaccess',
+    templateUrl: './app/noaccess/noaccess.html',
   }
 
   $stateProvider.state(homeState);
@@ -59,43 +64,52 @@ mainApp.config(['$stateProvider', 'angularAuth0Provider', '$urlRouterProvider', 
   $stateProvider.state(registerState);
   $stateProvider.state(signInState);
   $stateProvider.state(callBackState);
-
-  var AUTH0_CLIENT_ID='x4QhXO346dfoY4wzVnWttmDAvFbQogAS'; 
-  var AUTH0_DOMAIN='dev-kihm7h2g.auth0.com'; 
-  var AUTH0_CALLBACK_URL='http://localhost:3000/#/callback';
-   // Initialization for the angular-auth0 library
-    angularAuth0Provider.init({
-      clientID: AUTH0_CLIENT_ID,
-      domain: AUTH0_DOMAIN,
-      responseType: 'token id_token',
-      redirectUri: AUTH0_CALLBACK_URL,
-      scope: 'openid'
-    });
-
-
-
-    /// Comment out the line below to run the app
-    // without HTML5 mode (will use hashes in routes)
-
-
+  $stateProvider.state(noAccesState);
 
 
 }]);
 
-mainApp.controller('mainCtrl',['authService', '$scope', function(authService,$scope){
+mainApp.controller('mainCtrl',['authService', '$scope', '$cookies', function(authService,$scope,$cookies){
 
-  if (localStorage.getItem('isLoggedIn') === 'true') {
+  $('.nav-item').on('click', function(){
+  console.log('navbar item clicked');
+  $('#navbarSupportedContent').removeClass('show');
+  });
 
-      authService.renewTokens();
-    } else {
-      // Handle the authentication
-      // result in the hash
-      authService.handleAuthentication();
-    }
+  var authCookie = $cookies.get('auth');
+  console.log('this is the authtoken for logging in');
+  console.log(authCookie);
+  if(authService.isAuthenticated()){
+    var user = authService.validateToken(authCookie, function(userObj){
+    console.log(userObj);
+    console.log(userObj + ' has been verified');
+    var userInfo = authService.getUserObject();
 
+    $scope.categories
+  });
+  }
+
+
+  
+
+  
+  
+  $scope.user = authService.user;
+  
+  $scope.getUserObject = authService.getUserObject;
   $scope.isAuthenticated = authService.isAuthenticated;
   $scope.logout = authService.logout;
   $scope.login = authService.login;
+  $scope.validateToken = authService.validateToken;
+  $scope.user = authService.user;
   
 }])
 
+mainApp.directive('preventDefault', function(){
+  return function(scope, element, attrs){
+    angular.element(element.bind('click', function(event){
+      event.preventDefault();
+      event.stopPropagation();
+    }))
+  }
+})

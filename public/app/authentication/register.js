@@ -1,33 +1,59 @@
-mainApp.controller('registerCtrl', ['$scope', 'angularAuth0', function($scope, angularAuth0){
+mainApp.controller('registerCtrl', ['$scope', '$http', '$state', function($scope, $http, $state){
 
-	$scope.errorMessage = "none";
+	$scope.errorMessage = [];
+	$scope.hasError = false;
 
 
 	$scope.credentials = {};
 	$scope.credentials.firstname = "";
 	$scope.credentials.lastname = "";
 	$scope.credentials.username = "";
-	$scope.credentials.password = "";
 	$scope.credentials.email = "";
+	$scope.credentials.password = "";
 
 
 	$scope.signUp = function(){
 		console.log('first name' + $scope.credentials.firstname);
 		console.log('last name' + $scope.credentials.lastname);
 		console.log('username' + $scope.credentials.username);
+		var firstname = $scope.credentials.firstname;
+		var lastname = $scope.credentials.lastname;
+		var username = $scope.credentials.username;
+		var email = $scope.credentials.email;
+		var password = $scope.credentials.password;
 
-		angularAuth0.signup({
-			client_id: 'x4QhXO346dfoY4wzVnWttmDAvFbQogAS', 
-			connection: 'Username-Password-Authentication',
-			username: $scope.credentials.username,
-			email: $scope.credentials.email,
-			password: $scope.credentials.password,
-			user_metadata: {firstname: $scope.credentials.firstname, lastname: $scope.credentials.lastname}
+		var allUserInfo = $scope.credentials;
 
-		}, function(err){
-			if(err) return console.log(err)
-			return alert('success signup without login')
-		});
+
+			 	$http({
+					method: 'PUT',
+					url: 'users/signup',
+					headers: {
+						'Content-Type' : "application/json"
+					},
+					data: {'credentials' : allUserInfo}
+				}).then( function(response){
+					if(response.data.taken === true){
+						console.log('there were errors in signing up');
+						$scope.hasError = true;
+						$scope.errorMessage = response.data.error;
+						console.log($scope.errorMessage);
+					}else{
+						console.log('success sign up and added to database');
+						console.log(response);
+						$state.go('home');
+					}
+					
+					
+
+
+				})
+			
+			
+		
+	}
+	$scope.checkForError = function(){
+		return $scope.hasError;
 	}
 
 

@@ -1,5 +1,59 @@
-<div class="container">
-	<div class="row">
-		<h3>Add Blurb</h3>
-	</div>
-</div>
+
+<section ng-controller="addBlurbCtrl">
+<!--  <div class="line col-sm-6 offset-sm-3"></div> -->
+  <div style="height: 76px"></div>
+  <div style="height: 4em"></div>
+  <div class="container">
+    <div class="col-sm6 offset-sm-3">
+      <h2>Add New Link</h2>
+    </div>
+    
+    <form name="signUpForm" ng-submit="newBookmark()" novalidate>
+      <div id="signUpForm">
+        <div class='formInputs justify-content-center'>
+          <div class="formItem col-sm-6 offset-sm-3">
+            <h6>Title</h6>
+            <input type="text" id="title" name="title" class="form-control" data-ng-model="bookmark.title" required>
+          </div>
+          <div class="formItem col-sm-6 offset-sm-3">
+            <h6>Link:</h6>
+            <input type="text" id="link" name="link" class="form-control" data-ng-model="bookmark.link"  required>
+          </div>
+          <div class="formItem col-sm-6 offset-sm-3">
+            <h6>Description</h6>
+            <textarea id="description" name="description" class="form-control" data-ng-model="bookmark.description" required rows="15"> </textarea>
+          </div>
+          <div class="formItem col-sm-6 offset-sm-3">
+            <h6>Private?</h6>
+            <input type="radio" id="private" name="private" class="" value="yes" data-ng-model="bookmark.private"  > Yes<br>
+
+            <input type="radio" id="not-private" name="not-private" class="" value="no"  data-ng-model="bookmark.private" checked> No
+          </div>
+          
+         <!--  <div class="formItem col-sm-6 offset-sm-3">
+            <h6>Profile Picture (Link to image)</h6>
+            <input type="url" id="image" name="image" class="form-control" data-ng-model="bookmark.image" placeholder="http://www.yoururl.com/image.jpg">
+          </div> -->
+        </div>
+
+      <div class="errorBox">
+        <div ng-show="errMsg">
+          {{errorMessage}}
+          
+        </div>
+      </div>
+    <div class="col-sm-6 offset-sm-3 end-of-form">
+      <div class="submitbutton">
+            <button type="submit" ng-disabled="signUpForm.$invalid" class="clear col-sm-10 offset-sm-1" id="create-event-button"><a href="" ng-click = "newBookmark()">Add link</a></button>
+          </div>
+    </div>
+      
+        
+          
+
+      </div>
+    </form>
+
+  </div>
+  
+</section>

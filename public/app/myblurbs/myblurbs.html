@@ -1,0 +1,219 @@
+<section ng-controller="myBlurbsCtrl">
+	<div style="height: 76px"></div>
+	
+
+
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-sm-2" id="tab-menu">
+			<ul class="nav flex-column nav-tabs" id="myTab" role="tablist">
+			  <li class="nav-item">
+			    <a class="nav-link" id="home-tab" data-toggle="modal" data-target="#addCategoryModal" href="#add-category" role="tab" aria-controls="home" aria-selected="true" >Add Category</a>
+			  </li>
+
+			  <li class="nav-item" ng-repeat="category in categories">
+			    <a class="nav-link" id="{{category.id}}-tab" data-toggle="tab" href="#{{category.name}}" role="tab" aria-controls="#{{category.id}}" aria-selected="true" >{{category.name}}</a>
+			  </li>
+			  <div>
+			  </div>
+			  
+			</ul>
+		</div>
+
+		<div class="col-sm-9 tab-content" ng-repeat="category in categories" id="">
+			
+			<div class="tab-content" id="myTabContent">
+			  	<div class="tab-pane fade" id="{{category.name}}" role="tabpanel" aria-labelledby="home-tab" ng-repeat="category in categories">
+			  		<div class="clearfix">
+					<h1> {{category.name}} </h1>
+					<div style="display: inline-block; float: left" data-toggle="modal" data-target="#addBlurbModal">
+						<a href="#" >Add Blurb</a></div>
+					<a href="#" ng-click="collapseAll()" style="float:right">Collapse All</a>
+					</div>
+					<div id="accordion">
+					  <div class="card" ng-repeat="bookmark in category.bookmarks">
+					    <div class="card-header" id="heading{{bookmark.title}}">
+					      <h5 class="mb-0">
+					        <button class="btn btn-link" data-toggle="collapse" data-target="#collapse{{bookmark._id}}" aria-expanded="true" aria-controls="collapse{{bookmark._id}}">
+					          {{bookmark.title}}
+					        </button>
+
+					        <button class="btn btn-alert btn-md btn-grey" style="float: right" ng-click="deleteBlurbData(bookmark._id,category.id)">Delete</button>
+					      </h5>
+					    </div>
+
+					    <div id="collapse{{bookmark._id}}" class="collapse show" show aria-labelledby="heading{{bookmark.title}}" >
+					      <div class="card-body">
+					        {{bookmark.url}}
+					        <br>
+					        <br>
+					        {{bookmark.description}}
+					      </div>
+					    </div>
+					  </div>
+					</div>
+				</div>
+
+
+				<div class="tab-pane fade active" id="add-category" role="tabpanel" aria-labelledby="add-category-tab" >
+					<h1> Add Category </h1> CATEGORY
+
+
+					<form name="addCategoryForm" ng-submit="newCategory()">
+						<div id="addCategoryForm">
+							<div >
+								<div class="col-sm-10">
+									<h6>Title</h6>
+									<input type="text" id="category-title" name="title" class="form-control" ng-model="category.title" required>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+
+	<!-- Modal -->
+<div id="addBlurbModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+      	<h4 class="modal-title">Add Blurb</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        
+	<form name="addBlurbForm" novalidate>
+      <div id="addBlurbForm">
+        <div class='formInputs justify-content-center'>
+          <div class="formItem col-sm-12">
+            <h6>Category</h6>
+            <!-- <select name="categories" id="categories" class="form-control" ng-model="bookmark.category"> -->
+              <!-- <option ng-repeat="category in categoriesList">{{category}}</option> -->
+  {{currentCategory}}
+            </select>
+          </div>
+          <div class="formItem col-sm-12">
+            <h6>Title</h6>
+            <input type="text" id="title" name="title" class="form-control" ng-model="bookmark.title" required>
+            {{bookmark.title}}
+          </div>
+          <div class="formItem col-sm-12">
+            <h6>Link:</h6>
+            <input type="text" id="link" name="link" class="form-control" ng-model="bookmark.url"  required>
+          </div>
+          <div class="formItem col-sm-12">
+            <h6>Description</h6>
+            <textarea id="description" name="description" class="form-control" ng-model="bookmark.description" required rows="3"> </textarea>
+          </div>
+          <div class="formItem col-sm-12">
+            <h6>Private?</h6>
+            <input type="radio" id="private" name="private" class="" value="true" ng-model="bookmark.private"  > Yes<br>
+
+            <input type="radio" id="not-private" name="not-private" class="" value="false"  ng-model="bookmark.private" checked> No
+          </div>
+          
+        </div>
+
+
+      </div>
+    </form>
+ 		
+      </div>
+      <div class="modal-footer">
+      	<button type="button" class="btn btn-default btn-primary" ng-click="addBlurb()">Submit</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+
+
+<!-- Modal -->
+<div id="addCategoryModal" class="modal fade" role="dialog">
+  <div class="modal-dialog top-margin-30">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+      	<h4 class="modal-title">Add New Category</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        
+      </div>
+      <div class="modal-body">
+        
+		<form name="addCategoryForm" ng-submit="newCategory()">
+						<div id="addCategoryForm">
+							<div >
+								<div class="col-sm-10">
+									<h6>Title</h6>
+									<input type="text" id="add-category-modal" name="title" class="form-control" ng-model="category.title" required>
+									<p ng-show="error" ng-repeat="error in errorMessage">{{error}}</p>
+								</div>
+							</div>
+						</div>
+					</form>
+
+
+      </div>
+      <div class="modal-footer">
+      	<button type="button" class="btn btn-default btn-primary" ng-click="newCategory()">Submit</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+
+<!-- Modal -->
+<div id="deleteBlurbModal" class="modal fade" role="dialog">
+  <div class="modal-dialog top-margin-30">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+      	<h4 class="modal-title">Please confirm</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        
+      </div>
+      <div class="modal-body">
+        
+		<form name="deleteBlurbForm" ng-submit="deleteBlurb()">
+						<div id="deleteBlurbForm">
+							<div >
+								<div class="col-sm-10">
+									<h6>Are you sure you want to delete this?</h6>
+									
+								</div>
+							</div>
+						</div>
+					</form>
+
+
+      </div>
+      <div class="modal-footer">
+      	<button type="button" class="btn btn-default btn-danger" ng-click="deleteBlurb()">Delete</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+</section>

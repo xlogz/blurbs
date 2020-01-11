@@ -46,17 +46,18 @@
         </div>
 
       <div class="errorBox">
-        <div ng-show="errMsg">
-          {{errorMessage}}
-          
+        <div ng-show="checkForError()" ng-repeat="message in errorMessage"  class="col-sm-6 offset-sm-3" align="center">
+         {{message}}
         </div>
       </div>
 		<div class="col-sm-6 offset-sm-3 end-of-form">
 			<div class="submitbutton">
-        		<button type="submit" ng-disabled="signUpForm.$invalid" class="clear col-sm-10 offset-sm-1" id="create-event-button"><a href="" ng-click = "signUp()">Sign Up</a></button>
+        		<button type="submit" ng-disabled="signUpForm.$invalid" class="clear col-sm-10 offset-sm-1" id="create-event-button" ng-click = "signUp()">Sign Up</button>
       		</div>
-
-      		<h6 align=center ng-click="signUp()">Already have an account? Log in</h6>
+          <div class="create-account" align=center>
+            <h6>Already have an account? <a ui-sref="signin">Log in</a></h6>
+          </div>
+      		
 		</div>
       
         

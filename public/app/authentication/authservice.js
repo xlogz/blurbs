@@ -1,50 +1,55 @@
 mainApp.service('authService', authService);
 
-  authService.$inject = ['$state', 'angularAuth0', '$timeout'];
+  authService.$inject = ['$state', '$timeout', '$cookies', '$http'];
 
-  function authService($state, angularAuth0, $timeout) {
+  function authService($state,  $timeout, $cookies, $http) {
 
     var accessToken;
     var idToken;
     var expiresAt;
 
-    function getIdToken() {
-      return idToken;
-    }
+    var user = "";
+    var userObject;
 
-    function getAccessToken() {
-      return accessToken;
-    }
-
-    function login() {
-      angularAuth0.authorize();
-    }
-
-    function handleAuthentication() {
-      angularAuth0.parseHash(function(err, authResult) {
-        if (authResult && authResult.accessToken && authResult.idToken) {
-          localLogin(authResult);
-          $state.go('home');
-        } else if (err) {
-          $timeout(function() {
-            $state.go('home');
-          });
-          console.log(err);
-          alert('Error: ' + err.error + '. Check the console for further details.');
+    function getUserObject(cb){
+      console.log('getting user db object for');
+      console.log(user);
+      $http({
+        method: 'GET',
+        url: 'users/userobject',
+        headers: {'username' : user}
+      }).then(function(userObj){
+        console.log('results from retrieving getUserObj');
+        console.log(userObj)
+        userObject = userObj;
+        userObject.categories = userObject.categories;
+        if(cb){
+          cb(userObj);
+        }else{
+          return userObj;
         }
-      });
+      })
     }
 
-    function localLogin(authResult) {
-      // Set isLoggedIn flag in localStorage
-      localStorage.setItem('isLoggedIn', 'true');
-      // Set the time that the access token will expire at
-      expiresAt = (authResult.expiresIn * 1000) + new Date().getTime();
-      accessToken = authResult.accessToken;
-      idToken = authResult.idToken;
-
+    function validateToken(token,cb){
+      console.log('this is the token being passed in to validateToken');
+      console.log(token);
+      $http({
+        method: 'GET',
+        url: 'users/validatetoken',
+        headers: {'token' : token}
+      }).then(function(userTokenObj){
+        console.log(userTokenObj);
+        user = userTokenObj.data[0].username;
+        id = userTokenObj.data[0]._id;
+        console.log('user validated');
+        console.log(userTokenObj);
+        console.log(user + ' is now logged in');
+        cb(user);
+      })
     }
 
+    
     function renewTokens() {
       angularAuth0.checkSession({},
         function(err, result) {
@@ -59,33 +64,55 @@ mainApp.service('authService', authService);
 
     function logout() {
       // Remove isLoggedIn flag from localStorage
-      localStorage.removeItem('isLoggedIn');
+      localStorage.removeItem('username');
       // Remove tokens and expiry time
       accessToken = '';
       idToken = '';
       expiresAt = 0;
-
-      angularAuth0.logout({
-        returnTo: window.location.origin
-      });
-
+      $cookies.remove('auth');
+      console.log('logged out. username is now : ' + localStorage.getItem('username'));
       $state.go('home');
     }
 
     function isAuthenticated() {
-      // Check whether the current time is past the 
-      // access token's expiry time
 
-      return localStorage.getItem('isLoggedIn') === 'true' && new Date().getTime() < expiresAt;
+     if ($cookies.get("auth")) {
+      return true;
+    } else {
+      // Handle the authentication
+      // result in the hash
+      return false;
+    }
+    }
+
+    function loadUserFromCookie(auth){
+      $http({
+        method: 'PUT',
+        url: 'users/validatetoken',
+        headers: {
+          'Content-Type' : "application/json"
+        },
+        data: {'hashedToken' : auth }
+      }).then( function (response){
+        if(response){
+          console.log(response.data[0].username);
+          user = response.data[0].username;
+          return user;
+        }else{
+          console.log('no response from server');
+          return false;
+        }
+      });
     }
 
     return {
-      login: login,
-      getIdToken: getIdToken,
-      getAccessToken: getAccessToken,
-      handleAuthentication: handleAuthentication,
+      userObject : userObject,
+      getUserObject : getUserObject,
+      validateToken : validateToken,
       logout: logout,
       isAuthenticated: isAuthenticated,
-      renewTokens: renewTokens
+      renewTokens: renewTokens,
+      loadUserFromCookie: loadUserFromCookie,
+      user: user
     }
   }
