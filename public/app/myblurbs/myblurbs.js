@@ -112,7 +112,7 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 		blurbService.deleteBlurb(submit, function(results){
 			console.log('sucessfully deleted blurb. here are the results:');
 			console.log(results);
-			blurbService.populateUserData($scope.user, function(data){
+			blurbService.populateUserData($scope.username, function(data){
 			console.log('going back to original tab');
 			console.log($scope.currentTabId);
 			$scope.categories = data.categories;
