@@ -34,7 +34,7 @@ controller.deleteCategory = function(req, res){
 	var results = {}
 	results.message = [];
 
-	User.updateOne({username: username},{ $pull {categories: categoryId}).then(function(results){
+	User.updateOne({username: username},{ $pull : {categories: categoryId}}).then(function(results){
 		results.message.push(results);
 
 		Category.findOneAndDelete({_id : categoryId}).then(function(results){
