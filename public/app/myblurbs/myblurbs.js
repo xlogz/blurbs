@@ -118,7 +118,7 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 				setTimeout(function(){
 					$('.nav-tabs .nav-item:nth-child(2)').tab('show');
 				},20)
-			}
+			});
 
 		})
 	}
