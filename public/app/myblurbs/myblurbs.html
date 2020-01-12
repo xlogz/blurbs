@@ -27,7 +27,7 @@
 			  		<div class="clearfix">
 					<h1> {{category.name}} </h1> 
 
-					<button class="btn-default" ng-click="deleteCategoryData({{category._id}}"> Delete Category</button>
+					<button class="btn btn-alert btn-md btn-grey" ng-click="deleteCategoryData({{category.id}})"> Delete Category</button>
 					<div style="display: inline-block; float: left" data-toggle="modal" data-target="#addBlurbModal">
 						<a href="#" >Add Blurb</a></div>
 					<a href="#" ng-click="collapseAll()" style="float:right">Collapse All</a>
