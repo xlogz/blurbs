@@ -3,6 +3,7 @@ var blurb = require('../controller/blurb.controller.js');
 
 module.exports = function(app){
 
+	app.route('/blurb/category/delete').put(blurb.deleteCategory);
 	app.route('/blurb/category').put(blurb.addCategory);
 	app.route('/blurb/bookmark/add').put(blurb.addBlurb);
 	app.route('/blurb/bookmark/remove').put(blurb.deleteBlurb);

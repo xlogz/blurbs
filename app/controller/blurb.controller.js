@@ -27,6 +27,24 @@ controller.addCategory = function(req,res){
 	})
 }
 
+controller.deleteCategory = function(req, res){
+	console.log(req.headers);
+	var categoryId = req.headers.categoryid;
+	var username = req.headers.username;
+	var results = {}
+	results.message = [];
+
+	User.updateOne({username: username},{ $pull {categories: categoryId}).then(function(results){
+		results.message.push(results);
+
+		Category.findOneAndDelete({_id : categoryId}).then(function(results){
+			results.message.push(results);
+			res.send(results);
+		});
+	})
+
+}
+
 controller.addBlurb = function(req, res){
 	console.log('');
 	console.log('attempting to add blurb');

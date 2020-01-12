@@ -99,6 +99,30 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 		// });
 	}
 
+	$scope.deleteCategoryData = function(categoryid){
+		$scope.categoryToDelete = categoryid;
+		$('#deleteCategoryModal').modal('toggle');
+	}
+
+	$scope.deleteCategory = function(element){
+		var submit = {};
+		submit.categoryid = $scope.categoryToDelete;
+		blurbService.deleteCategory(submit, $scope.username,function(result){
+			console.log('this is the result of delete Cateogry');
+			console.log(result);
+
+			blurbService.populateUserData($scope.username, function(data){
+				$scope.categories = data.categories;
+				$scope.categoriesList = data.categoriesList;
+				$scope.userObject = data.userObject
+				setTimeout(function(){
+					$('.nav-tabs .nav-item:nth-child(2)').tab('show');
+				},20)
+			}
+
+		})
+	}
+
 	$scope.deleteBlurbData = function(bookmarkid, categoryid){
 		$scope.bookmarkToDelete = bookmarkid;
 		$scope.categoryOfBookmarkToDelete = categoryid;
@@ -176,7 +200,7 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 				console.log(result.data._id);
 				console.log('this is the ')
 				console.log($scope.user);
-				blurbService.populateUserData($scope.user, function(data){
+				blurbService.populateUserData($scope.username, function(data){
 				console.log('going back to original tab');
 				console.log($scope.currentTabId);
 				$scope.categories = data.categories;

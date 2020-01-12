@@ -58,6 +58,24 @@ mainApp.service('blurbService', ['$http', 'authService', '$rootScope',  function
 		});
 	}
 
+	function deleteCategory (user, info, cb){
+		console.log('deleting following info');
+		console.log(info);
+		submit = info;
+		submit.username = user;
+		http({
+			method: 'PUT',
+			url: 'blurb/category/delete',
+			headers: submit }).then(function(result){
+				console.log(result);
+				if(cb){
+					cb(result);
+				}else{
+					return result;
+				}
+			})
+	}
+
 	function createCategoriesObj (user, cb){
 		console.log('this is user passed into createCategoriesObj');
 		console.log(user);
