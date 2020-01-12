@@ -28,17 +28,24 @@ controller.addCategory = function(req,res){
 }
 
 controller.deleteCategory = function(req, res){
+	console.log('this is the deleteCategory headers');
 	console.log(req.headers);
 	var categoryId = req.headers.categoryid;
 	var username = req.headers.username;
-	var results = {}
-	results.message = [];
+	var result = {}
+	result.message = [];
+
+	console.log('deleting ' + categoryId + ' from ' + username);
 
 	User.updateOne({username: username},{ $pull : {categories: categoryId}}).then(function(results){
-		results.message.push(results);
+		result.message.push(results);
+		console.log('results of updating');
+		console.log(results);
 
 		Category.findOneAndDelete({_id : categoryId}).then(function(results){
-			results.message.push(results);
+			result.message.push(results);
+			console.log('results of finding one and deleting');
+			console.log(results);
 			res.send(results);
 		});
 	})

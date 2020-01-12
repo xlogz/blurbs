@@ -100,6 +100,7 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 	}
 
 	$scope.deleteCategoryData = function(categoryid){
+		console.log('deleteCAtegoryData clicked');
 		$scope.categoryToDelete = categoryid;
 		$('#deleteCategoryModal').modal('toggle');
 	}
@@ -110,7 +111,7 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 		blurbService.deleteCategory(submit, $scope.username,function(result){
 			console.log('this is the result of delete Cateogry');
 			console.log(result);
-
+			$('#deleteCategoryModal').modal('toggle');
 			blurbService.populateUserData($scope.username, function(data){
 				$scope.categories = data.categories;
 				$scope.categoriesList = data.categoriesList;

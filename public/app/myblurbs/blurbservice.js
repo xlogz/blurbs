@@ -60,10 +60,12 @@ mainApp.service('blurbService', ['$http', 'authService', '$rootScope',  function
 
 	function deleteCategory (user, info, cb){
 		console.log('deleting following info');
-		console.log(info);
-		submit = info;
-		submit.username = user;
-		http({
+
+		var submit = {}
+		submit.username = info;
+		submit.categoryid = user.categoryid;
+		console.log(submit);
+		$http({
 			method: 'PUT',
 			url: 'blurb/category/delete',
 			headers: submit }).then(function(result){
@@ -247,6 +249,7 @@ mainApp.service('blurbService', ['$http', 'authService', '$rootScope',  function
 
 
 	return{
+		deleteCategory: deleteCategory,
 		createCategoriesObj: createCategoriesObj,
 		createCategoriesList: createCategoriesList,
 		populateUserData: populateUserData,
