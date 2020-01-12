@@ -13,11 +13,12 @@ mainApp.service('authService', authService);
 
     function getUserObject(name,cb){
       console.log('getting user db object for');
-      console.log(name);
+      console.log(name.data[0].username);
+      var username = name.data[0].username;
       $http({
         method: 'GET',
         url: 'users/userobject',
-        headers: {'username' : name}
+        headers: {'username' : username}
       }).then(function(userObj){
         console.log('results from retrieving getUserObj');
         console.log(userObj)
@@ -45,7 +46,7 @@ mainApp.service('authService', authService);
         console.log('user validated');
         console.log(userTokenObj);
         console.log(user + ' is now logged in');
-        cb(user);
+        cb(userTokenObj);
       })
     }
 

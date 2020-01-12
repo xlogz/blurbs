@@ -193,10 +193,10 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 			$('#addCategoryModal').modal('toggle');
 
 		
-			
+			console.log($scope.userid);
 
 			var categoryTitle = $scope.category.title;
-			blurbService.createNewCategory($scope.userObject,categoryTitle, function(result){
+			blurbService.createNewCategory($scope.userid,categoryTitle, function(result){
 				console.log('this is the id of the new category');
 				console.log(result.data._id);
 				console.log('this is the ')
@@ -246,7 +246,13 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 
 	 authService.validateToken(authCookie, function(username){
 	 	$scope.username = $rootScope.user || username;
+
+	 	$scope.userid = username.data[0].userid;
+
 	 	console.log(username)
+
+	 	console.log('this is the users ID');
+	 	console.log($scope.userid);
 	 	
 	 	blurbService.getCategories(username, function(results){
 	 		$scope.categories = results.categories;

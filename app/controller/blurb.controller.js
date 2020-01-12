@@ -12,6 +12,7 @@ var controller = {};
 controller.addCategory = function(req,res){
 	console.log('received addCategory request');
 	console.log(req.headers.title);
+	console.log(req.headers.userid);
 	var category = new Category({
 		name: req.headers.title,
 		owner: req.headers.userid 
@@ -20,6 +21,7 @@ controller.addCategory = function(req,res){
 	category.save(function(error, category){
 		User.updateOne({_id: req.headers.userid}, {$push: {categories: category._id}}).then(function(item){
 				console.log(category);
+				console.log(item);
 				console.log('New category successfully added');
 				res.status(201).send(category);
 			

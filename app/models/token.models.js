@@ -11,6 +11,7 @@ var TokenSchema = new Schema({
 		default: '',
 	},
 	token: String,
+	userid: String,
 	hashedToken: String,
 	expires: Date,
 	salt: String

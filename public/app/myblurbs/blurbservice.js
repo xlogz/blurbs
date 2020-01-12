@@ -31,10 +31,10 @@ mainApp.service('blurbService', ['$http', 'authService', '$rootScope',  function
 		console.log('sending info.userId to /blurb/category');
 		console.log('this is the user user id');
 		console.log(user);
-		console.log(user.data[0]._id);
+
 
 		
-		info.userid = user.data[0]._id;
+		info.userid = user;
 
 		$http({
 			method: 'PUT',
@@ -101,6 +101,8 @@ mainApp.service('blurbService', ['$http', 'authService', '$rootScope',  function
 			}
 
 			if(cb){
+				console.log('these are the results of create category list');
+				console.log(result);
 				cb(result);
 			}else{
 				return result;
@@ -131,8 +133,8 @@ mainApp.service('blurbService', ['$http', 'authService', '$rootScope',  function
 		var resultObj = {};
 
 		console.log('get categories userObject');
-		console.log(username);
-		var user = username;
+		console.log(username.data[0].username);
+		var user = username.data[0].username;
 		
 	 		$http({
 				method: 'GET',

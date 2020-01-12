@@ -173,6 +173,7 @@ controller.signin = function(req, res){
 					console.log('found user');
 					// var expirationDate = Math.floor ((new Date().getTime() + (60*60*48*1000))/1000);
 					results.result = "Successfully logged in!";
+					console.log(item);
 					results.loggedin = true;
 					var payload = {user: req.body.credentials.username};
 					var options = {expiresIn: '2d'}
@@ -183,7 +184,8 @@ controller.signin = function(req, res){
 					console.log(token);
 
 					console.log('saving token entry with username');
-					var dbToken = new Token({username: req.body.credentials.username, hashedToken: token});
+					console.log(item[0]._id);
+					var dbToken = new Token({username: req.body.credentials.username, hashedToken: token, userid: item[0]._id});
 					dbToken.save(function(error,result){
 						if(err){
 							console.log('there was an error adding token to db');
@@ -258,7 +260,7 @@ controller.authTokenUpdate = function(req, res){
 
 controller.getUserObject = function(req, res){
 	console.log('getting user DB ID by name');
-	console.log(req.headers.username);
+	console.log(req.headers.username.username);
 	User.find({username: req.headers.username}, function(err, item){
 
 		console.log(err);
