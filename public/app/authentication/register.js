@@ -41,7 +41,7 @@ mainApp.controller('registerCtrl', ['$scope', '$http', '$state', function($scope
 					}else{
 						console.log('success sign up and added to database');
 						console.log(response);
-						$state.go('home');
+						$state.go('thankyou');
 					}
 					
 					
