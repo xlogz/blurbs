@@ -12,6 +12,12 @@
       <div id="signUpForm">
         <div class='formInputs justify-content-center'>
           <div class="formItem col-sm-6 offset-sm-3">
+            <h6>Category</h6>
+            <select name="categories" id="" class="form-control" required>
+              <option value="{{category.id}}" ng-repeat="category in categories" class="form-control">{{category.name}}</option>
+            </select>
+          </div>
+          <div class="formItem col-sm-6 offset-sm-3">
             <h6>Title</h6>
             <input type="text" id="title" name="title" class="form-control" data-ng-model="bookmark.title" required>
           </div>

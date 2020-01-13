@@ -27,10 +27,11 @@
 				
 			  	<div class="tab-pane fade" id="{{category.name}}" role="tabpanel" aria-labelledby="home-tab" ng-repeat="category in categories">
 			  		<div class="clearfix">
-			  			<div show-on-hover style="height: 100px">
+			  			<div show-on-hover style="height: 75px">
 					<h1 style="display: inline-block"> {{category.name}} </h1> <button class=" deleteCategoryButton btn btn-danger btn-md hide" ng-click="deleteCategoryData(category.id)" style="margin-bottom: 15px"> Delete</button>
+
 					</div>
-					<br>
+<hr>
 					<br>
 					<div style="display: inline-block; float: left" data-toggle="modal" data-target="#addBlurbModal">
 						<a href="#" >Add Blurb</a></div>
@@ -38,10 +39,11 @@
 						Sort By </br>
 				<a href="#" ng-click="sortBy('createdon')" >Creation Date</a> | 
 				<a href="#" ng-click="sortBy('title')" >Name</a>
-					<a href="#" ng-click="collapseAll()" style="float:right">Collapse All</a>
+				<input type="text" ng-model = "searchContent" placeholder="Search here..." style="float:right;margin-bottom: 15px">
+					<!-- <a href="#" ng-click="collapseAll()" style="float:right">Collapse All</a> -->
 					</div>
 					<div id="accordion">
-					  <div class="card" ng-repeat="bookmark in category.bookmarks | orderBy: property:reverse">
+					  <div class="card" ng-repeat="bookmark in category.bookmarks | orderBy: property:reverse | filter: searchContent">
 					    <div class="card-header" id="heading{{bookmark.title}}">
 					      <h5 class="mb-0">
 					        <button class="btn btn-link" data-toggle="collapse" data-target="#collapse{{bookmark._id}}" aria-expanded="true" aria-controls="collapse{{bookmark._id}}">
