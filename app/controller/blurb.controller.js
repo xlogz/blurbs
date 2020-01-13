@@ -60,6 +60,7 @@ controller.addBlurb = function(req, res){
 	console.log(req.headers);
 	console.log(req.headers.bookmark);
 	console.log('req.body.data' + req.headers.title);
+	var date = new Date();
 	console.log(JSON.stringify(req.headers.bookmark))
 	var bookmark = new Bookmark({
 		_id: new mongoose.Types.ObjectId(),
@@ -67,7 +68,8 @@ controller.addBlurb = function(req, res){
 		url: req.headers.url,
 		description: req.headers.description,
 		private: req.headers.private,
-		author: req.headers.author
+		author: req.headers.author,
+		createdon: date
 	})
 
 	bookmark.save(function(err, bookmark){

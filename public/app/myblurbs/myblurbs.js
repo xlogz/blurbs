@@ -267,7 +267,13 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 
 	 })
 	 
-	 
+	 $scope.property = "title";
+	 $scope.reverse = true;
+
+	 $scope.sortBy = function(property){
+	 	$scope.reverse = ($scope.property === property) ?$scope.reverse : false;
+	 	$scope.property = property;
+	 }
 
 	// $scope.myBlurbs = function(){
 		
@@ -301,3 +307,18 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 
 	
 }])
+
+mainApp.directive('showOnHover', function(){
+	return {
+		link: function(scope, element) {
+			console.log(element[0].nextElement);
+			element.on('mouseenter', function(){
+				$('.deleteCategoryButton').removeClass('hide');
+			})
+			element.on('mouseleave', function(){
+				$('.deleteCategoryButton').addClass('hide');
+			})
+		}
+	}
+
+})

@@ -88,6 +88,9 @@
 .create-account{
 	padding: 15px 15px;
 }
+.hide {
+	display:none;
+}
 
 body{
 /*background-image: linear-gradient( 0deg, rgba(3,127,163,1) -0.1%, rgba(0,47,108,1) 102.5% );*/
