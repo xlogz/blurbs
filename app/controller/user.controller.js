@@ -104,7 +104,7 @@ controller.signup = function(req, res){
 			results.result = result;
 		}else{
 			console.log('successfully saved user with unique ID');
-			console.log(results);
+			console.log(err);
 			var date = new Date();
 			console.log('bookmark created on' + date);
 
@@ -130,7 +130,6 @@ controller.signup = function(req, res){
 					console.log('couldnt save user');
 					console.log(error)
 				}else{
-					user.save();
 					console.log('Successfully Added Category to User');
 				}
 				
