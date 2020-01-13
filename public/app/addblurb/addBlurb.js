@@ -8,26 +8,26 @@ mainApp.controller('addBlurbCtrl', ['$scope', '$http', 'authService', 'blurbServ
 		var authCookie = $cookies.get('auth');
 
 		authService.validateToken(authCookie, function(username){
-	 	$scope.username = $rootScope.user || username;
+		 	$scope.username = $rootScope.user || username;
 
-	 	$scope.userid = username.data[0].userid;
+		 	$scope.userid = username.data[0].userid;
 
-	 	console.log(username)
+		 	console.log(username)
 
-	 	console.log('this is the users ID');
-	 	console.log($scope.userid);
-	 	
-	 	blurbService.getCategories(username, function(results){
-	 		$scope.categories = results.categories;
-	 		$scope.categiesList = results.categoriesList;
-	 		$scope.username = username;
-	 		$rootScope.username = username;
-	 		console.log('this is the user Obj after getting categories');
-	 		console.log($scope.userObject);
+		 	console.log('this is the users ID');
+		 	console.log($scope.userid);
+		 	
+		 	blurbService.getCategories(username, function(results){
+		 		$scope.categories = results.categories;
+		 		$scope.categiesList = results.categoriesList;
+		 		$scope.username = username;
+		 		$rootScope.username = username;
+		 		console.log('this is the user Obj after getting categories');
+		 		console.log($scope.userObject);
 
-	 	
-	 })
+		 	
+		 	});
 
-	})
+		});
 	}
 }])
