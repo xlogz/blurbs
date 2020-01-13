@@ -25,7 +25,7 @@ mainApp.controller('addBlurbCtrl', ['$scope', '$http', 'authService', 'blurbServ
 		 		console.log('this is the user Obj after getting categories');
 		 		console.log($scope.userObject);
 
-		 	
+		 	 
 		 	});
 
 		});
