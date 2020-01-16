@@ -75,6 +75,14 @@
 	font-family: 'Georgia','Times New Roman', serif;
 }
 
+.vertical-center {
+	min-height: 100%;
+	min-height: 100vh;
+
+	display: flex;
+	align-items: center;
+}
+
 .nav-link{
 	cursor: pointer;
 }
@@ -96,10 +104,57 @@ body{
 /*background-image: linear-gradient( 0deg, rgba(3,127,163,1) -0.1%, rgba(0,47,108,1) 102.5% );*/
 background-image: url('../images/background.png');
 background-repeat: no-repeat;
-background-position: right bottom;
+background-position: right top;
+font-size: 14px;
 
 }
 div{
 	color: black;
+	
+}
+
+#tab-menu{
+	min-width: 175px;
+}
+
+#home-tab{
+	z-index: 99;
+}
+
+
+#tab-hamburger{
+	display: none;
+}
+
+
+#myTabContent{
+	background-color: white;
+}
+@media only screen and (max-width: 634px){
+
+	.btn{
+		font-size = .6rem
+	}
+	
+	.deleteCategoryButton{
+		display: inline-block;
+	}
+
+	#tab-hamburger {
+		display: inline-block;
+		float: right;
+		color: white;
+		width: 25px;
+		height: 25px;
+	}
+
+	#home-tab { 
+	display: inline-block;
+	
+	 }
+
+	 #category-list{
+		display:none;
+	}
 	
 }

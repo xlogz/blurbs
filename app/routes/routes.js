@@ -9,6 +9,7 @@ module.exports = function(app){
 	app.route('/blurb/bookmark/remove').put(blurb.deleteBlurb);
 	app.route('/blurb/myblurbs').get(blurb.myBlurbs);
 	app.route('/blurb/mycategories').get(blurb.myCategories);
+	app.route('/blurb/sublink/add').put(blurb.addSubLink);
 
 
 

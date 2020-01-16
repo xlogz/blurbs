@@ -9,8 +9,10 @@
 			<ul class="nav flex-column nav-tabs" id="myTab" role="tablist">
 			  <li class="nav-item">
 			    <a class="nav-link" id="home-tab" data-toggle="modal" data-target="#addCategoryModal" href="#add-category" role="tab" aria-controls="home" aria-selected="true" >Add Category</a>
-			  </li>
 
+			    <div id="tab-hamburger"><img src="images/down-arrow.png"></div>
+			  </li>
+				
 			  <li class="nav-item" ng-repeat="category in categories">
 			    <a class="nav-link" id="{{category.id}}-tab" data-toggle="tab" href="#{{category.name}}" role="tab" aria-controls="#{{category.id}}" aria-selected="true" >{{category.name}}</a>
 			  </li>
@@ -19,6 +21,9 @@
 			  
 			</ul>
 		</div>
+
+<!-- 		Template to load for child bookmarks -->
+
 
 		<div class="col-sm-9 tab-content"  id="">
 			
@@ -29,6 +34,7 @@
 			  		<div class="clearfix">
 			  			<div show-on-hover style="height: 75px">
 					<h1 style="display: inline-block"> {{category.name}} </h1> <button class=" deleteCategoryButton btn btn-danger btn-md hide" ng-click="deleteCategoryData(category.id)" style="margin-bottom: 15px"> Delete</button>
+					<input type="text" ng-model = "searchContent" placeholder="Search here..." style="float:right;margin-bottom: 15px; margin-top: 10px">
 
 					</div>
 <hr>
@@ -39,33 +45,12 @@
 						Sort By </br>
 				<a href="#" ng-click="sortBy('createdon')" >Creation Date</a> | 
 				<a href="#" ng-click="sortBy('title')" >Name</a>
-				<input type="text" ng-model = "searchContent" placeholder="Search here..." style="float:right;margin-bottom: 15px">
-					<!-- <a href="#" ng-click="collapseAll()" style="float:right">Collapse All</a> -->
+				
+					<a href="#" ng-click="collapseAll()" style="float:right">Collapse All</a>
 					</div>
 					<div id="accordion">
-					  <div class="card" ng-repeat="bookmark in category.bookmarks | orderBy: property:reverse | filter: searchContent">
-					    <div class="card-header" id="heading{{bookmark.title}}">
-					      <h5 class="mb-0">
-					        <button class="btn btn-link" data-toggle="collapse" data-target="#collapse{{bookmark._id}}" aria-expanded="true" aria-controls="collapse{{bookmark._id}}">
-					          {{bookmark.title}}
-					        </button>
-							
-					        <button class="btn btn-alert btn-md btn-grey" style="float: right" ng-click="deleteBlurbData(bookmark._id,category.id)">Delete</button>
-
-					      </h5>
-					    </div>
-
-					    <div id="collapse{{bookmark._id}}" class="collapse show" show aria-labelledby="heading{{bookmark.title}}" >
-					      <div class="card-body">
-					        {{bookmark.url}} 
-
-					        <p style="float: right; font-size: .7em" >{{bookmark.createdon}}</p>
-					        <br>
-					        <br>
-					        {{bookmark.description}}
-					      </div>
-					    </div>
-					  </div>
+					  <div ng-include="'/app/myblurbs/tree.html'" onload=
+					        "relativelinks=category.bookmarks">
 					</div>
 				</div>
 
@@ -271,6 +256,57 @@
 </div>
 
 
+</div>
+
+
+
+
+
+
+	<!-- Modal -->
+<div id="addSubLinkModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+      	<h4 class="modal-title">Add Sub-Link</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        
+	<form name="addSubLinkForm" novalidate>
+      <div id="addSubLinkForm">
+        <div class='formInputs justify-content-center'>
+          
+          <div class="formItem col-sm-12">
+            <h6>Title</h6>
+            <input type="text" id="title" name="title" class="form-control" ng-model="sublink.title" required>
+            {{sublink.title}}
+          </div>
+          <div class="formItem col-sm-12">
+            <h6>Link:</h6>
+            <input type="text" id="link" name="link" class="form-control" ng-model="sublink.url"  required>
+          </div>
+          <div class="formItem col-sm-12">
+            <h6>Description</h6>
+            <textarea id="description" name="description" class="form-control" ng-model="sublink.description" required rows="3"> </textarea>
+          </div>
+          
+        </div>
+
+
+      </div>
+    </form>
+ 		
+      </div>
+      <div class="modal-footer">
+      	<button type="button" class="btn btn-default btn-primary" ng-click="addSubLink()">Submit</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
 </div>
 
 </section>

@@ -248,6 +248,20 @@ mainApp.service('blurbService', ['$http', 'authService', '$rootScope',  function
 			})
 	}
 
+	function addSubLink (info, cb){
+		$http({
+			method: 'PUT',
+			url: '/blurb/sublink/add',
+			headers: info
+		}).then(function(results){
+			if(cb){
+				cb(results);
+			}else{
+				return results;
+			}
+		})
+	}
+
 
 
 	return{
@@ -263,5 +277,6 @@ mainApp.service('blurbService', ['$http', 'authService', '$rootScope',  function
 		addBlurb: addBlurb,
 		createNewCategory: createNewCategory,
 		deleteBlurb: deleteBlurb,
+		addSubLink: addSubLink
 	}
 }]);

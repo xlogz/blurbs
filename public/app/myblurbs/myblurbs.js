@@ -28,9 +28,27 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 	$('body').on('click', '.nav-tabs .nav-item', function(e){
 		$scope.currentTabId = e.target.id;
 		$scope.currentCategory = e.target.text;
-
+		if(hamburgerOpen === true){
+			$('#category-list').css('display', 'none');
+		}
 	});
 
+	$scope.hamburgerOpen = false;
+
+	$('#tab-hamburger').on('click', function(){
+		if($scope.hamburgerOpen === false){
+			$('#category-list').css('display', 'inline-block');
+			$('#category-list').addClass('animated');
+			$('#category-list').addClass('fadeIn');
+			$scope.hamburgerOpen = true;
+		}else{
+			$('#category-list').css('display', 'none');
+			$scope.hamburgerOpen = false;
+		}
+		
+		
+	})
+	
 
 
 	
@@ -84,8 +102,12 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 
 		$('#addBlurbModal').modal('toggle');
 
-		
-				
+
+		$scope.bookmark.title = "";
+		$scope.bookmark.url = "";
+		$scope.bookmark.description = "";
+		$scope.bookmark.private = "";
+
 		// blurbService.populateUserData($scope.user,function( data){
 		// 	console.log('going back to original tab');
 		// 	console.log($scope.currentTabId);
@@ -97,6 +119,42 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 		// 	},20)
 			
 		// });
+
+	}
+
+
+	$scope.addSubLinkData = function(bookmarkid, title){
+		$('#addSubLinkModal').modal('toggle');
+		$scope.bookmarkid = bookmarkid;
+	}
+
+	$scope.addSubLink = function(bookmarkid){
+		console.log('addSubLink clicked');
+		var info = {};
+
+		info.title = $scope.sublink.title;
+		info.url = $scope.sublink.url;
+		info.description = $scope.sublink.description;
+		info.bookmarkid = $scope.bookmarkid;
+		console.log('this is the bookmark we are attaching new link to: ' + info.bookmarkid)
+
+
+		blurbService.addSubLink(info, function(){
+			blurbService.populateUserData($scope.username, function(data){
+				setTimeout(function(){
+				},20)
+			});
+		});
+
+		$scope.sublink.title = "";
+		$scope.sublink.url = "";
+		$scope.sublink.description = ""
+
+		$('#addSubLinkModal').modal('toggle');
+
+
+
+		
 	}
 
 	$scope.deleteCategoryData = function(categoryid){
@@ -116,9 +174,9 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 				$scope.categories = data.categories;
 				$scope.categoriesList = data.categoriesList;
 				$scope.userObject = data.userObject
-				setTimeout(function(){
-					$('.nav-tabs .nav-item:nth-child(2)').tab('show');
-				},20)
+				// setTimeout(function(){
+				// 	$('.nav-tabs .nav-item:nth-child(2)').tab('show');
+				// },20)
 			});
 
 		})
@@ -225,7 +283,7 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 
 }
 
-
+	
 
 	 $scope.myCategories = function(userObject, callback){
 
@@ -255,12 +313,18 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 	 	console.log($scope.userid);
 	 	
 	 	blurbService.getCategories(username, function(results){
+	 		console.log('results from getCategories');
+	 		console.log(results);
 	 		$scope.categories = results.categories;
 	 		$scope.categiesList = results.categoriesList;
 	 		$scope.username = username;
 	 		$rootScope.username = username;
 	 		console.log('this is the user Obj after getting categories');
 	 		console.log($scope.userObject);
+	 		setTimeout(function(){
+	 			$('.nav-item:nth-child(2)').tab('show')
+	 		}, 50)
+	 		
 
 	 	
 	 })
@@ -314,9 +378,11 @@ mainApp.directive('showOnHover', function(){
 			console.log(element[0].nextElement);
 			element.on('mouseenter', function(){
 				$('.deleteCategoryButton').removeClass('hide');
+				$('.deleteCategoryButton').addClass('animated fadeIn')
 			})
 			element.on('mouseleave', function(){
 				$('.deleteCategoryButton').addClass('hide');
+				$('.deleteCategoryButton').removeClass('animated fadeIn')
 			})
 		}
 	}

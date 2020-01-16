@@ -1,3 +1,7 @@
-mainApp.controller('homeCtrl', ['$scope', 'authService', function($scope, authService){
-	
+mainApp.controller('homeCtrl', ['$scope', 'authService', '$rootScope', function($scope, authService, $rootScope){
+
+
+
 }])
+
+

@@ -1,0 +1,29 @@
+<div class="card" ng-repeat="link in relativelinks | orderBy: property:reverse | filter: searchContent">
+					    <div class="" id="heading{{link.title}}">
+					      <h5 class="mb-0">
+					        <button class="btn btn-link" data-toggle="collapse" data-target="#collapse{{link._id}}" aria-expanded="true" aria-controls="collapse{{link._id}}">
+					          {{link.title}}
+					        </button>
+							
+					        <button class="btn btn-alert btn-md btn-grey" style="float: right" ng-click="deleteBlurbData(link._id,category.id)">Delete</button>
+					        <button class="btn btn-alert btn-md btn-grey" style="float: right" ng-click="addSubLinkData(link._id)">Add Sub-Link</button>
+
+					      </h5>
+					    </div>
+
+					    <div id="collapse{{link._id}}" class="collapse show" show aria-labelledby="heading{{link.title}}" >
+					      <div class="card-body">
+					        {{link.url}} 
+
+					        <p style="float: right; font-size: .7em" >{{link.createdon}}</p>
+					        <br>
+					        <br>
+					        {{link.description}}
+								<br>
+								<br>
+					        	<div ng-include="'/app/myblurbs/tree.html'" onload="relativelinks=link.relativelinks">
+
+					      </div>
+					    </div>
+					  </div>
+					</div>

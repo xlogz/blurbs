@@ -107,7 +107,7 @@ controller.deleteBlurb = function(req, res){
 		console.log('this is the result of finding and removing entry in bookmark collection')
 		console.log(results);
 
-		Category.updateOne({_id: req.headers.categoryid}, {pull: {bookmarks: req.headers.bookmarkid}}).then(function(item){
+		Category.updateOne({_id: req.headers.categoryid}, {$pull: {bookmarks: req.headers.bookmarkid}}).then(function(item){
 			
 				console.log('bookmark successfully removed from category');
 				console.log(item);
@@ -115,6 +115,34 @@ controller.deleteBlurb = function(req, res){
 			
 		})
 	});
+}
+
+controller.addSubLink = function(req,res){
+	console.log('headers for adding of sublink');
+	console.log(req.headers);
+	var date = new Date();
+	var bookmarkObj = new Bookmark({
+						title: req.headers.title,
+						url: req.headers.url,
+						description: req.headers.description,
+						createdon: date
+	});
+	bookmarkObj.save(function(err, bookmark){
+		console.log(err);
+		console.log(bookmark);
+		console.log('adding new bookmark: ' + bookmark._id + ' to bookmark: ' + req.headers.bookmarkid)
+		if(err){
+			res.status(400).send(err);
+		}else{
+			Bookmark.updateOne({_id: req.headers.bookmarkid}, {$push : {relativelinks: bookmarkObj._id}}).then(function(results){
+			console.log('relevant bookmark added to bookmark');
+			console.log(results);
+
+			})
+		}
+
+	});
+
 }
 
 
@@ -144,7 +172,7 @@ controller.myBlurbs = function(req, res){
 
 
 controller.myCategories = function(req, res){
-	User.findOne({username: req.headers.name}).populate({path: 'categories', populate: {path: 'bookmarks'}}).exec(function(err,results){
+	User.findOne({username: req.headers.name}).populate({path: 'categories', populate: {path: 'bookmarks', populate: {path: 'relativelinks', populate: {path: 'relativelinks', populate: {path: 'relativelinks', populate: {path: 'relativelinks', populate: {path: 'relativelinks', populate: {path: 'relativelinks', populate: {path: 'relativelinks', populate: {path: 'relativelinks', populate: {path: 'relativelinks', populate: {path: 'relativelinks'}}}}}}}}}}}}).exec(function(err,results){
 		if(err){
 			res.status(401).send(results);
 		}else{
