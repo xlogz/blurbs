@@ -62,6 +62,12 @@ mainApp.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$c
     templateUrl: './app/authentication/thankyou.html'
   }
 
+  var profileState = {
+    name: 'profile',
+    url: '/profile',
+    templateUrl: './app/profile/profile.html'
+  }
+
   $stateProvider.state(homeState);
   $stateProvider.state(myBlurbsState);
   $stateProvider.state(addBlurbState);
@@ -71,7 +77,8 @@ mainApp.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$c
   $stateProvider.state(signInState);
   $stateProvider.state(callBackState);
   $stateProvider.state(noAccesState);
-    $stateProvider.state(thankYouState);
+  $stateProvider.state(thankYouState);
+  $stateProvider.state(profileState);
 
 
 }]);

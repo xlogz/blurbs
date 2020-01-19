@@ -30,13 +30,18 @@ var UserSchema = new Schema({
 		type: Schema.Types.ObjectId,
 		ref: 'Category'
 	}],
+
+	wall: [{
+		type: Schema.Types.ObjectId,
+		ref: 'Comment'
+	}]
 	// categories: {type: Array,
 	// 			name: String,
 	// 			bookmarks: {type: Array,
 	// 						id: {type: Schema.Types.ObjectId,
 	// 							ref: 'Bookmark'}}
 	// },
-
+,
 	friendsList:{
 		type: Array,
 		default: []

@@ -48,7 +48,21 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 		
 		
 	})
+
+	childrenCount = {};
 	
+
+	$scope.countChildren = function(index){
+		if(childrenCount[index] === undefined || childrenCount[index] === null){
+			childrenCount[index] = 1;
+		}else if(childrenCount[index] < 50){
+			childrenCount[index] += 1;
+		}else{
+			console.log('capped out');
+		}
+		console.log(childrenCount[index]);
+		console.log(childrenCount);
+	}
 
 
 	
@@ -372,19 +386,34 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 	
 }])
 
-mainApp.directive('showOnHover', function(){
+mainApp.directive('showOnHoverTitle', function(){
 	return {
 		link: function(scope, element) {
-			console.log(element[0].nextElement);
-			element.on('mouseenter', function(){
-				$('.deleteCategoryButton').removeClass('hide');
-				$('.deleteCategoryButton').addClass('animated fadeIn')
-			})
-			element.on('mouseleave', function(){
-				$('.deleteCategoryButton').addClass('hide');
-				$('.deleteCategoryButton').removeClass('animated fadeIn')
-			})
-		}
+			 element.on("mouseover", function(event){
+			 	console.log(element[0].children[1]);
+        element[0].children[1].style.opacity=1;
+        element[0].children[1].style.display='inline-block';
+      });
+      element.on("mouseleave", function(event){
+        element[0].children[1].style.opacity=1;
+        element[0].children[1].style.display='none';
+		})
+	}
+	}
+
+}).directive('showOnHover', function(){
+	return {
+		link: function(scope, element) {
+			 element.on("mouseover", function(event){
+			 	console.log(element[0].children[1]);
+        element[0].children[0].style.opacity=1;
+        element[0].children[0].style.display='inline-block';
+      });
+      element.on("mouseleave", function(event){
+        element[0].children[0].style.opacity=1;
+        element[0].children[0].style.display='none';
+		})
+	}
 	}
 
 })
