@@ -1,17 +1,150 @@
-<section ng-controller="profileCtr">
+<section ng-controller="profileCtrl">
   <div style="height: 76px"></div>
   <div style="height: 4em"></div>
 	<div class="container">
 		<div class="row">
-			<div class="col-sm-3">
-				Picture
-				Username
-				FirstName
-				LastNAme
+			<div class="col-lg-3 text-center">
+				<img src="../images/profile_default.png">
+				<br>
+				<br>
+				<h5>{{username}}</h5>
+				<div id="follow-user" ng-show="!sameUser && !isFollowing" ng-click="followUser()">Follow</div>
+				<div id="follow-user" ng-show="!sameUser && isFollowing" ng-click="unfollowUser()">Unfollow</div>
+				<br>
+				{{firstname}} {{lastname}}<br>
+				<span class="small">San Jose, CA</span>
+				<br>
+				<span class="small">Rep points: <br>
+				Total # of Bookmarks: 55</span>
 			</div>
-			<div class="col-sm-9">
-				Wall
+			<div class="col-lg-7">
+				<div edit-hover class="title-bar-20">
+				<h5 style="display: inline-block" class="serif-font">About Me</h5>
+				<button class=" edit-category-btn btn btn-primary btn-md hide" style="float:right"  data-toggle="modal" data-target="#editAboutMeModal" ng-show="sameUser">Edit</button>
+				</div>
+					
+				<hr>
+				<div></div>
+				<span class="" id="aboutMeText">
+				{{aboutMe}}
+				</span>
+				<br>
+				<br>
+				<div ng-show="isAuthenticated()">
+				<span class="small" ng-show="!sameUser">Post a message for {{username}}: </span>
+				<span class="small" ng-show="sameUser">Post a message on your wall: </span>
+				<form>
+					<textarea class="col-lg-12 form-control" rows=3 ng-model="message" id="wallTextField"></textarea>
+					<br>
+					<button class="btn btn-primary" style="float:right" ng-click="submitWallMessage()">Submit</button>
+				</form>
+				</div>
+				<br>
+				<br>
+					
+				<hr>
+				<h5 style="display: inline-block" class="serif-font">Wall</h5>
+
+
+<!-- 				Wall Comments -->
+				<div class="col-lg-9 offset-lg-1" ng-repeat="message in wall | orderBy: createdon:true | limitTo: 8">
+					<div class="comment-container">
+						<div edit-hover>
+							<h6 class="inline-block"> <a ui-sref="profile({username: message.author.username})">{{message.author.username}}</a></h6>
+							<div class="hide float-right ">
+
+								<button data-target="#deleteWallCommentModal" class="btn btn-default float-right text-12 grey" ng-click="deleteWallComment($index)" ng-show="sameUser || message.author.username === username">Delete</button>
+								<button data-target="#editWallCommentModal" class="btn btn-default float-right text-12 grey" ng-click="editWallComment(message.text, message._id)" ng-show="message.author.username === username">Edit</button>
+
+								
+							</div>
+						</div>
+
+						<div class="comment-text">
+							
+						{{message.text}}
+							
+
+						</div>
+						<hr>
+						
+					
+					</div>
+				</div>
+
+
+
+			</div>
+			<div class="col-lg-2">
+				<h5>Following</h5>
+				
+					<div ng-repeat="users in following">{{users.username}}</div>
+				
 			</div>
 		</div>
 	</div>
+
+
+
+<div id="editAboutMeModal" role="dialog" class="modal ">
+	<div class="modal-dialog top-margin-30">
+		<div class="modal-content">
+			<div class="modal-header">
+				<div class="modal-title">
+					Edit About Me
+				</div>
+			</div>
+			<div class="modal-body">
+				<textarea ng-model="aboutMeTextArea" id="aboutMeTextArea" rows="5" class="form-control"></textarea>
+	
+			</div>
+			<div class="modal-footer">
+				
+				<button type="button" class="btn btn-default btn-primary" ng-click="editAboutMe()">Submit</button>
+        		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+			    
+		</div>
+		
+	</div>
+</div>
+
+
+
+<div id="editWallCommentModal" class="modal" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<div class="modal-title">Edit Comment</div>
+			</div>		
+			<div class="modal-body">
+				<textarea ng-model="editWallCommentTextArea" id="editWallCommentTextArea" rows="6" class="form-control"></textarea>
+			</div>
+			<div class="modal-footer">	
+				<button type="button" class="btn btn-default btn-primary" ng-click="submitEditWallComment()">Submit</button>
+        		<button type="button" class="btn btn-default float-right inline-block" data-dismiss="modal" >Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+<div class="modal" role="dialog" id="deleteWallCommentModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">Confirmation</div>
+			<div class="modal-body">Please confirm that you'd like to delete your comment</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default btn-danger" ng-click="deleteCommentConfirmed()">Submit</button>
+				<button  type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
 </section>
+

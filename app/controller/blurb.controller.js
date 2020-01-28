@@ -19,7 +19,9 @@ controller.addCategory = function(req,res){
 	});
 
 	category.save(function(error, category){
-		User.updateOne({_id: req.headers.userid}, {$push: {categories: category._id}}).then(function(item){
+		console.log(req.headers.userid);
+		User.updateOne({_id: req.headers.userid}, {$push: {categories: category._id}}).then(function(err,item){
+				console.log(err);
 				console.log(category);
 				console.log(item);
 				console.log('New category successfully added');
@@ -39,7 +41,7 @@ controller.deleteCategory = function(req, res){
 
 	console.log('deleting ' + categoryId + ' from ' + username);
 
-	User.updateOne({username: username},{ $pull : {categories: categoryId}}).then(function(results){
+	User.updateOne({registeredUsername: username},{ $pull : {categories: categoryId}}).then(function(results){
 		result.message.push(results);
 		console.log('results of updating');
 		console.log(results);
@@ -59,7 +61,7 @@ controller.addBlurb = function(req, res){
 	console.log('attempting to add blurb');
 	console.log(req.headers);
 	console.log(req.headers.bookmark);
-	console.log('req.body.data' + req.headers.title);
+	console.log('req.body.data ' + req.headers.title);
 	var date = new Date();
 	console.log(JSON.stringify(req.headers.bookmark))
 	var bookmark = new Bookmark({
@@ -69,12 +71,15 @@ controller.addBlurb = function(req, res){
 		description: req.headers.description,
 		private: req.headers.private,
 		author: req.headers.author,
-		createdon: date
+		createdon: date,
+		depth: 1
 	})
 
 	bookmark.save(function(err, bookmark){
+		console.log('saving bookmark and adding to category')
 	console.log(bookmark._id)
 	console.log(bookmark);
+	console.log('this is the categoryid to add to');
 	console.log(req.headers.categoryid);
 
 		Category.updateOne({_id: req.headers.categoryid}, {$push: {bookmarks: bookmark._id}}).then(function(item){
@@ -121,11 +126,16 @@ controller.addSubLink = function(req,res){
 	console.log('headers for adding of sublink');
 	console.log(req.headers);
 	var date = new Date();
+	var depth = parseInt(req.headers.depth) + 1;
+	console.log('this should be the depth thats added');
+	console.log(depth);
 	var bookmarkObj = new Bookmark({
 						title: req.headers.title,
 						url: req.headers.url,
 						description: req.headers.description,
-						createdon: date
+						createdon: date,
+						depth: depth,
+						private: req.headers.private
 	});
 	bookmarkObj.save(function(err, bookmark){
 		console.log(err);
@@ -137,7 +147,7 @@ controller.addSubLink = function(req,res){
 			Bookmark.updateOne({_id: req.headers.bookmarkid}, {$push : {relativelinks: bookmarkObj._id}}).then(function(results){
 			console.log('relevant bookmark added to bookmark');
 			console.log(results);
-
+			res.status(200).send(results);
 			})
 		}
 
@@ -172,7 +182,7 @@ controller.myBlurbs = function(req, res){
 
 
 controller.myCategories = function(req, res){
-	User.findOne({username: req.headers.name}).populate({path: 'categories', populate: {path: 'bookmarks', populate: {path: 'relativelinks', populate: {path: 'relativelinks', populate: {path: 'relativelinks', populate: {path: 'relativelinks', populate: {path: 'relativelinks', populate: {path: 'relativelinks', populate: {path: 'relativelinks', populate: {path: 'relativelinks', populate: {path: 'relativelinks', populate: {path: 'relativelinks'}}}}}}}}}}}}).exec(function(err,results){
+	User.findOne({registeredUsername: req.headers.name}).populate({path: 'categories', populate: {path: 'bookmarks', populate: {path: 'relativelinks', populate: {path: 'relativelinks', populate: {path: 'relativelinks', populate: {path: 'relativelinks', populate: {path: 'relativelinks', populate: {path: 'relativelinks', populate: {path: 'relativelinks', populate: {path: 'relativelinks', populate: {path: 'relativelinks', populate: {path: 'relativelinks'}}}}}}}}}}}}).exec(function(err,results){
 		if(err){
 			res.status(401).send(results);
 		}else{
@@ -182,6 +192,47 @@ controller.myCategories = function(req, res){
 	})
 }
 
+controller.getLatestBlurbs = function(req, res){
+	var count = req.headers.count;
+	console.log('getting latest blurbs');
+
+	count = parseInt(count);
+
+	var results = Bookmark.find({private: false}).populate({path: 'author'}).sort({'createdon': -1}).limit(count).exec(function(err, bookmarks){
+		if(err){
+			console.log(err);
+		}else{
+			console.log(bookmarks);
+			res.status(201).send(bookmarks);
+		}
+	});
+	
+}
+
+
+controller.getRandomBlurbs = function(req, res){
+
+	Bookmark.countDocuments({private: false}, function(err, count){
+		var random = Math.abs(Math.floor(Math.random() * count));
+		console.log('random: ' + random)
+
+		Bookmark.find({private: false}).populate({path: 'author'}).skip(random).limit(1).exec(function(err, results){
+				
+				res.status(201).send(results);
+		})
+	});	
+}
+
+
+controller.getBlurbDetails = function(req, res){
+	Bookmark.find({_id: req.headers.id}).populate({path: 'author'}).then(function(err,bookmark){
+		if(err){
+			res.send(err);
+		}else{
+			res.status(200).send(bookmark);
+		}
+	})
+}
 
 
 module.exports = controller;

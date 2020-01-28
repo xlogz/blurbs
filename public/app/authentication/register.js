@@ -19,6 +19,7 @@ mainApp.controller('registerCtrl', ['$scope', '$http', '$state', function($scope
 		var firstname = $scope.credentials.firstname;
 		var lastname = $scope.credentials.lastname;
 		var username = $scope.credentials.username;
+		username = username.toLowerCase();
 		var email = $scope.credentials.email;
 		var password = $scope.credentials.password;
 

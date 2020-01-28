@@ -25,7 +25,6 @@ mainApp.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$c
     templateUrl: './app/blurbs/blurbs.html'
   }
 
-
   var aboutState = {
     name: 'about',
     url: '/about',
@@ -64,8 +63,14 @@ mainApp.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$c
 
   var profileState = {
     name: 'profile',
-    url: '/profile',
+    url: '/profile?username',
     templateUrl: './app/profile/profile.html'
+  }
+
+  var blurbState = {
+    name: 'blurb',
+    url: '/blurb?id',
+    templateUrl: './app/blurb/blurb.html'
   }
 
   $stateProvider.state(homeState);
@@ -79,11 +84,12 @@ mainApp.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$c
   $stateProvider.state(noAccesState);
   $stateProvider.state(thankYouState);
   $stateProvider.state(profileState);
+  $stateProvider.state(blurbState);
 
 
 }]);
 
-mainApp.controller('mainCtrl',['authService', '$scope', '$cookies','$rootScope', function(authService,$scope,$cookies,$rootScope){
+mainApp.controller('mainCtrl',['authService', '$scope', '$cookies','$rootScope', '$state', function(authService,$scope,$cookies,$rootScope,$state){
 
   $('.nav-item').on('click', function(){
   console.log('navbar item clicked');
@@ -96,17 +102,34 @@ mainApp.controller('mainCtrl',['authService', '$scope', '$cookies','$rootScope',
   if(authService.isAuthenticated()){
     var user = authService.validateToken(authCookie, function(username){
     $rootScope.username = username;
-    $scope.user = username;
+    $scope.username = username.data[0].username;
+    console.log($scope.username);
     console.log(username);
     console.log(username + ' has been verified');
     var userInfo = authService.getUserObject(username, function(userObj){
       $rootScope.user = userObj;
       $scope.user = userObj;
+      $scope.currentUserId = userObj.data[0]._id;
+      authService.currentUserId = $scope.currentUserId;
+
       console.log('initial loading of userObj');
       console.log(userObj);
     });
     
   });
+  }
+
+  $scope.goProfile = function(){
+    var username;
+    if(typeof $rootScope.username === "object" || $rootScope.username !== null){
+    username = $rootScope.username.data[0].username;
+    }
+    if(username){
+      console.log(username);
+      $state.go('profile',{username: username});
+    }else{
+      $state.go('noaccess');
+    }
   }
 
 
@@ -115,10 +138,15 @@ mainApp.controller('mainCtrl',['authService', '$scope', '$cookies','$rootScope',
   
   
   $scope.user = authService.user;
+
   
   $scope.getUserObject = authService.getUserObject;
   $scope.isAuthenticated = authService.isAuthenticated;
-  $scope.logout = authService.logout;
+  $scope.logout = function(){
+    $scope.username = null;
+    $rootScope.username = null;
+    authService.logout();
+  }
   $scope.login = authService.login;
   $scope.validateToken = authService.validateToken;
   $scope.user = authService.user;

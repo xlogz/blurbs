@@ -8,13 +8,21 @@ mainApp.service('authService', authService);
     var idToken;
     var expiresAt;
 
+    var currentUserId = "";
+
     var user = "";
     var userObject;
 
     function getUserObject(name,cb){
       console.log('getting user db object for');
-      console.log(name.data[0].username);
-      var username = name.data[0].username;
+      var username;
+      if(typeof name === "string"){
+        username = name;
+      }else{
+        username = name.data[0].username;
+      }
+      console.log(username);
+
       $http({
         method: 'GET',
         url: 'users/userobject',
@@ -71,6 +79,7 @@ mainApp.service('authService', authService);
       idToken = '';
       expiresAt = 0;
       $cookies.remove('auth');
+
       console.log('logged out. username is now : ' + localStorage.getItem('username'));
       $state.go('home');
     }
@@ -107,6 +116,7 @@ mainApp.service('authService', authService);
     }
 
     return {
+      currentUserId: currentUserId,
       userObject : userObject,
       getUserObject : getUserObject,
       validateToken : validateToken,

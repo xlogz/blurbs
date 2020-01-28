@@ -1,5 +1,88 @@
-<div class="container">
-	<div class="row">
-		<h3>Blurbs</h3>
+<section ng-controller="blurbsCtrl">
+	 <div style="height: 76px"></div>
+ 	 <div style="height: 4em"></div>
+	
+	<div class="container">
+		<div class="row">
+			<h6>Latest Bookmarks</h6><br>
+			<hr>
+		</div>
+		<div class="row" style="display: table; margin-bottom: 50px; width: 100%; ">
+			<div align=center>
+				<div style="display: table-cell; vertical-align: middle" id="latestBlurbsLeft">
+					<img src="../images/left-arrow.png">
+				</div>
+				<div class="container-container-container" style="max-width: 1200px; max-height: 160px; overflow-y: hidden; display: table-cell; width: 80%">
+				<div class="container-container"  id="latestBlurbsContainer" style="scroll-behavior: smooth; overflow-x: hidden; overflow-y: hidden; max-height: 220px;  max-width: 1000px; min-width: 200px; width: 800px">
+					<div class="card-container row" id="latestBlurbsCards" style="overflow-x: hidden; overflow-y: hidden; max-height: 220px; min-width: 2000px">
+						<div class="" style="width: 150px; position: relative;margin-left: 25px;margin-bottom: 20px;" ng-repeat="blurb in latestBlurbs">
+							<div class="card" style="min-height: 210px">
+								<div class="card-header"><a ui-sref="blurb({id: blurb._id})">{{blurb.title}}</a><span class="text-12"><br>By<br><a ui-sref="profile({username: blurb.author.username})">{{blurb.author.username}}</a></span></div>
+								<div class="card-body text-truncate" style="max-height: 100px;  "><span class="text-12" title="{{blurb.description}}">{{blurb.description}}</span></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div style="display: table-cell; vertical-align: middle" id="latestBlurbsRight">
+				<img src="../images/right-arrow.png">
+			</div>
+			<hr>
+			</div>
+		</div>
+
+
+
+
+
+
+
+
+
+				<div class="row">
+			<h6>Random Bookmarks</h6><br>
+			<hr>
+		</div>
+		<div class="row" style="display: table; margin-bottom: 50px; width: 100%; ">
+			<div align=center>
+				<div style="display: table-cell; vertical-align: middle" id="randomBlurbsLeft"><img src="../images/left-arrow.png"></div>
+				<div class="container-container-container" style="max-width: 1200px; max-height: 160px; overflow-y: hidden; display: table-cell; width: 80%">
+				<div class="container-container"  id="randomBlurbsContainer" style="scroll-behavior: smooth; overflow-x: hidden; overflow-y: hidden; max-height: 220px;  max-width: 1000px; min-width: 200px; width: 800px">
+					<div class="card-container row" style="overflow-x: hidden; overflow-y: hidden; max-height: 220px; min-width: 999999px">
+						<div class="" style="width: 150px; position: relative;margin-left: 25px;margin-bottom: 20px;" ng-repeat="blurb in randomBlurbs">
+							<div class="card" style="min-height: 210px">
+								<div class="card-header"><a ui-sref="blurb({id: blurb._id})">{{blurb.title}}</a><span class="text-12"><br>By<br><a ui-sref="profile({username: blurb.author.username})">{{blurb.author.username}}</a></span></div>
+								<div class="card-body text-truncate" style="max-height: 100px;  "><span class="text-12"  title="{{blurb.description}}">{{blurb.description}}</span></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div style="display: table-cell; vertical-align: middle" id="randomBlurbsRight"><img src="../images/right-arrow.png"></div>
+			<hr>
+			</div>
+		</div>
+
+
 	</div>
+
+
+
+
+
+
+
+<div style="height: 4em"></div>
+
+
 </div>
+
+
+
+
+
+
+		
+
+
+</section>

@@ -4,6 +4,7 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 	$scope.currentTabId = "";
 	$scope.error = false;
 	$scope.errorMessage = [];
+	$scope.treeCount = 0;
 
 
 	// $scope.categories = [
@@ -27,7 +28,10 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 
 	$('body').on('click', '.nav-tabs .nav-item', function(e){
 		$scope.currentTabId = e.target.id;
+		$rootScope.currentTabId = e.target.id;
 		$scope.currentCategory = e.target.text;
+		$rootScope.currentCategory = e.target.text;
+		console.log('currentCategory being set to: ' + $scope.currentCategory);
 		if(hamburgerOpen === true){
 			$('#category-list').css('display', 'none');
 		}
@@ -49,20 +53,33 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 		
 	})
 
-	childrenCount = {};
-	
+	childrenCount = [];
+	$scope.maxNum = 0;
 
-	$scope.countChildren = function(index){
-		if(childrenCount[index] === undefined || childrenCount[index] === null){
-			childrenCount[index] = 1;
-		}else if(childrenCount[index] < 50){
-			childrenCount[index] += 1;
-		}else{
-			console.log('capped out');
-		}
-		console.log(childrenCount[index]);
-		console.log(childrenCount);
-	}
+
+	// $scope.addDepth = function (arr, depth = 0) {
+	//   arr.forEach(obj => {
+	//     console.log(depth);
+	//     $scope.addDepth(obj.children, depth + 1)
+	//   })
+	// }
+
+	// $scope.countChildren = function(children, count=0){
+	// 	var hasChildren = false;
+	// 	console.log(count);
+	// 	if(count > $scope.maxNum){
+	// 		$scope.maxNum = count;
+	// 	}
+
+	// 		for(var i = 0; i < children.length; i++){
+				
+	// 				$scope.countChildren(children[i].relativelinks, count+1) 
+				
+			
+	// 	}
+	// 	console.log('the max num is ' + $scope.maxNum);
+
+	// }
 
 
 	
@@ -92,11 +109,10 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 		info.private = $scope.bookmark.private;
 		info.category = $scope.currentCategory;
 		info.categories = $scope.categories;
-		console.log('passing in userObject to addBlurb');
-		console.log($scope.userObject);
-		console.log('here is rootSCopeusername in addBlurb');
+		console.log('here is rootSCopeusername in addBlurb and current category');
 		console.log($rootScope.username);
-		blurbService.addBlurb(info, $rootScope.username, function(id){
+		console.log($rootScope.currentCategory);
+		blurbService.addBlurb(info, $rootScope.username, $rootScope.currentCategory,  function(id){
 			console.log('herr is scope.username');
 			console.log($scope.username);
 			blurbService.populateUserData($rootScope.username,function(data){
@@ -107,8 +123,10 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 			$scope.userObject = data.userObject;
 
 			setTimeout(function(){
-				$('#' + $scope.currentTabId).tab('show');
-			},20)
+				console.log('switching to the tab');
+				console.log($rootScope.currentTabId)
+				$('#' + $rootScope.currentTabId).tab('show');
+			},50)
 		})
 		});
 
@@ -137,9 +155,15 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 	}
 
 
-	$scope.addSubLinkData = function(bookmarkid, title){
-		$('#addSubLinkModal').modal('toggle');
-		$scope.bookmarkid = bookmarkid;
+	$scope.addSubLinkData = function(bookmarkid, depth){
+		if(depth === 5){
+			$('#maxSubLinkModal').modal('toggle');
+		}else{
+			$('#addSubLinkModal').modal('toggle');
+			$scope.bookmarkid = bookmarkid;
+			$scope.depth = depth;
+		}
+
 	}
 
 	$scope.addSubLink = function(bookmarkid){
@@ -150,12 +174,21 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 		info.url = $scope.sublink.url;
 		info.description = $scope.sublink.description;
 		info.bookmarkid = $scope.bookmarkid;
-		console.log('this is the bookmark we are attaching new link to: ' + info.bookmarkid)
+		info.depth = $scope.depth;
+		info.private = $scope.sublink.private
+		if($scope.depth === 5){
+			$scope.errorMessage = "Sublink for this branch has reached its maximum capacity";
+			$scope.error = true;
+		}else{
+			console.log('this is the bookmark we are attaching new link to: ' + info.bookmarkid)
 
 
 		blurbService.addSubLink(info, function(){
 			blurbService.populateUserData($scope.username, function(data){
-				setTimeout(function(){
+				setTimeout(function(){console.log(data);
+					setTimeout(function(){
+						$('#' + $scope.currentTabId).tab('show');
+					},20)
 				},20)
 			});
 		});
@@ -166,6 +199,8 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 
 		$('#addSubLinkModal').modal('toggle');
 
+		}
+		
 
 
 		
@@ -281,8 +316,10 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 				$scope.userObject = data.userObject
 
 
+
 				setTimeout(function(){
 					$('#' + result.data._id + '-tab').tab('show');
+					$rootScope.currentCategory = categoryTitle;
 				},20);
 				
 				
@@ -318,6 +355,7 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 
 	 authService.validateToken(authCookie, function(username){
 	 	$scope.username = $rootScope.user || username;
+	 	console.log(username);
 
 	 	$scope.userid = username.data[0].userid;
 
@@ -349,7 +387,7 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 	 $scope.reverse = true;
 
 	 $scope.sortBy = function(property){
-	 	$scope.reverse = ($scope.property === property) ?$scope.reverse : false;
+	 	$scope.reverse = ($scope.property === property) ? $scope.reverse : false;
 	 	$scope.property = property;
 	 }
 
@@ -390,7 +428,7 @@ mainApp.directive('showOnHoverTitle', function(){
 	return {
 		link: function(scope, element) {
 			 element.on("mouseover", function(event){
-			 	console.log(element[0].children[1]);
+
         element[0].children[1].style.opacity=1;
         element[0].children[1].style.display='inline-block';
       });
@@ -405,13 +443,13 @@ mainApp.directive('showOnHoverTitle', function(){
 	return {
 		link: function(scope, element) {
 			 element.on("mouseover", function(event){
-			 	console.log(element[0].children[1]);
+
         element[0].children[0].style.opacity=1;
-        element[0].children[0].style.display='inline-block';
+        // element[0].children[0].style.display='inline-block';
       });
       element.on("mouseleave", function(event){
-        element[0].children[0].style.opacity=1;
-        element[0].children[0].style.display='none';
+        // element[0].children[0].style.opacity=0;
+        // element[0].children[0].style.display='none';
 		})
 	}
 	}

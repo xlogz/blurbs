@@ -1,4 +1,4 @@
-mainApp.controller('signInCtrl', ['$scope', '$http', '$state', '$cookies', function($scope, $http, $state, $cookies){
+mainApp.controller('signInCtrl', ['$scope', '$http', '$state', '$cookies', 'authService', '$rootScope', function($scope, $http, $state, $cookies, authService, $rootScope){
 
 	$scope.errorMessage = "none";
 
@@ -50,7 +50,36 @@ mainApp.controller('signInCtrl', ['$scope', '$http', '$state', '$cookies', funct
 				})
 
 				localStorage.setItem("username",allUserInfo.username);
-				$state.go('home');
+
+				localStorage.setItem("initialLogin",true);
+
+
+				  var authCookie = $cookies.get('auth');
+				  console.log('this is the authtoken for logging in');
+				  console.log(authCookie);
+				  if(authService.isAuthenticated()){
+				    var user = authService.validateToken(authCookie, function(username){
+				    $rootScope.username = username;
+				    $scope.user = username;
+				    $scope.username = username.data[0].username;
+				    console.log($scope.username);
+				    console.log(username);
+				    console.log(username + ' has been verified');
+				    var userInfo = authService.getUserObject(username, function(userObj){
+				      $rootScope.user = userObj;
+				      $scope.user = userObj;
+				      $scope.currentUserId = userObj.data[0]._id;
+				      authService.currentUserId = $scope.currentUserId;
+				      console.log('initial loading of userObj');
+				      console.log(userObj);
+				      $state.go('home', {username: $scope.username});
+				    });
+				    
+				  });
+				  }
+
+
+				
 			}else{
 				$scope.hasError = true;
 				console.log('there is an error: ' + $scope.hasError)

@@ -1,5 +1,6 @@
 var user = require('../controller/user.controller.js');
 var blurb = require('../controller/blurb.controller.js');
+var comment = require('../controller/comment.controller.js');
 
 module.exports = function(app){
 
@@ -11,6 +12,16 @@ module.exports = function(app){
 	app.route('/blurb/mycategories').get(blurb.myCategories);
 	app.route('/blurb/sublink/add').put(blurb.addSubLink);
 
+	app.route('/blurb/latest').get(blurb.getLatestBlurbs);
+	app.route('/blurb/random').get(blurb.getRandomBlurbs);
+	app.route('/blurb/details').get(blurb.getBlurbDetails);
+
+	app.route('/comments/wall/submit').put(comment.submitWallMessage);
+	app.route('/comments/wall/retrieve').get(comment.retrieveWallMessages);
+	app.route('/comments/wall/edit').put(comment.editWallComment);
+	app.route('/comments/wall/delete').delete(comment.deleteWallComment);
+
+	app.route('/aboutme/edit').put(comment.editAboutMe);
 
 
 	app.route('/users/bookmarks').get(user.getUserBookmarks);
@@ -23,5 +34,8 @@ module.exports = function(app){
 	app.route('/users/authtokenupdate').put(user.authTokenUpdate);
 
 	app.route('/users/userobject').get(user.getUserObject);
+
+	app.route('/users/follow').put(user.followUser);
+	app.route('/users/followers').put(user.getFollowers);
 
 }

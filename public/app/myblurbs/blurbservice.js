@@ -191,15 +191,18 @@ mainApp.service('blurbService', ['$http', 'authService', '$rootScope',  function
 		}
 	}
 
-	function addBlurb(bookmark, userObj, cb){
+	function addBlurb(bookmark, userObj, category, cb){
 		var submit = bookmark;	
-
+		console.log('this is the bookmark item');
+		console.log(submit);
+		console.log('this is the category');
+		console.log(category);
 
 		getCategories(userObj, function(categoryObj){
 			console.log('here is the categoryObj from getCategories from addBlurb');
 			console.log(categoryObj);
 
-			getCategoryId(categoryObj.user.categories, submit.category, function(id){
+			getCategoryId(categoryObj.user.categories, category, function(id){
 
 			submit.categoryId = id;
 			submit.author = categoryObj.user._id;

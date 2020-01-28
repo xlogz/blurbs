@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+
 var BookMarkSchema = new Schema({
 	title: {
 		type: String,
@@ -18,9 +19,8 @@ var BookMarkSchema = new Schema({
 		type: Schema.Types.ObjectId, 
 		ref: 'Bookmark'
 	}],
-	children: {
+	depth: {
 		type: Number,
-		default: 0
 	},
 	private: {
 		type: Boolean,
@@ -38,5 +38,7 @@ var BookMarkSchema = new Schema({
 	}]
 
 })
+
+
 
 module.exports = mongoose.model('Bookmark', BookMarkSchema);

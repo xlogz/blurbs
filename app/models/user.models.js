@@ -13,6 +13,16 @@ var UserSchema = new Schema({
 		trim: true,
 		default: '',
 	},
+	location: {
+		type: String,
+		trim: true,
+		default: '',
+	},
+	aboutme: {
+		type: String,
+		trim: true,
+		default: ''
+	},
 	hash: String,
 	salt: String,
 	email: {
@@ -26,11 +36,15 @@ var UserSchema = new Schema({
 		trim: true,
 		default: '',
 	},
+	registeredUsername: {
+		type: String,
+		trim: true,
+		default: '',
+	},
 	categories: [{
 		type: Schema.Types.ObjectId,
 		ref: 'Category'
 	}],
-
 	wall: [{
 		type: Schema.Types.ObjectId,
 		ref: 'Comment'
@@ -42,11 +56,22 @@ var UserSchema = new Schema({
 	// 							ref: 'Bookmark'}}
 	// },
 ,
-	friendsList:{
-		type: Array,
-		default: []
-	},
-	createdon : Date
+	friendsList:[{
+		type: Schema.Types.ObjectId,
+		ref: 'User'
+		}],
+	following:[{
+		type: Schema.Types.ObjectId,
+		ref: 'User'
+	}],
+	followedby:[{
+		type: Schema.Types.ObjectId,
+		ref: 'User'
+	}],
+	createdon : Date,
+	reputation: Number,
+	totalbookmarks: Number,
+	notifications: Array
 
 });
 

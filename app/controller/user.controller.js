@@ -65,11 +65,14 @@ controller.signup = function(req, res){
 	console.log(req.body.credentials);
 	var userdetails = req.body.credentials;
 	userdetails.createdon = new Date();
+	var registeredUsername = req.body.credentials.username.toLowerCase();
+	userdetails.registeredUsername = registeredUsername;
+	console.log('this is the registeredusername (lowercase) ' + userdetails.registeredUsername)
 	
 	var usernameTaken;
 	var emailTaken;
 
-	User.exists({username: req.body.credentials.username}).then(function(taken){
+	User.exists({registeredUsername: registeredUsername}).then(function(taken){
 		console.log('this is the result of checking username existance: ' + taken);
 		if(taken){
 			usernameTaken = true;
@@ -153,10 +156,11 @@ controller.signin = function(req, res){
 	results.status = 202;
 	results.result = "";
 	var username = req.body.credentials.username;
+	username = username.toLowerCase();
 	console.log('this is what we received');
 	console.log(req.body);
 	var password = req.body.credentials.password;
-	User.find({username: username}, function(err, item){
+	User.find({registeredUsername: username}, function(err, item){
 		if(err){
 			res.status(201).send(err);
 		}else{
@@ -184,7 +188,7 @@ controller.signin = function(req, res){
 
 					console.log('saving token entry with username');
 					console.log(item[0]._id);
-					var dbToken = new Token({username: req.body.credentials.username, hashedToken: token, userid: item[0]._id});
+					var dbToken = new Token({username: username, hashedToken: token, userid: item[0]._id});
 					dbToken.save(function(error,result){
 						if(err){
 							console.log('there was an error adding token to db');
@@ -241,7 +245,8 @@ controller.authTokenUpdate = function(req, res){
 	console.log(req.body);
 	console.log('this is the username passed through');
 	console.log(req.body.username);
-	Token.updateOne({username: req.body.username}, {$set : {hashedToken: req.body.token}} ,function(err,item){
+	var username = req.body.username.toLowerCase();
+	Token.updateOne({username: username}, {$set : {hashedToken: req.body.token}} ,function(err,item){
 		if(err){
 			console.log('there was an error with finding the access token');
 			console.log(err);
@@ -259,8 +264,10 @@ controller.authTokenUpdate = function(req, res){
 
 controller.getUserObject = function(req, res){
 	console.log('getting user DB ID by name');
-	console.log(req.headers.username.username);
-	User.find({username: req.headers.username}, function(err, item){
+	console.log(req.headers.username);
+	var registeredUsername = req.headers.username.toLowerCase();
+	console.log(registeredUsername);
+	User.find({registeredUsername: registeredUsername}, function(err, item){
 
 		console.log(err);
 		console.log(item);
@@ -271,6 +278,7 @@ controller.getUserObject = function(req, res){
 		}else{
 			console.log('user was found. returning object');
 			console.log('this is the user item' + item);
+			console.log(item);
 			res.status(200).send(item);
 		}
 	})
@@ -332,6 +340,42 @@ controller.myBlurbs = function(req, res){
 		})
 
 	
+}
+
+controller.followUser = function(req, res){
+	console.log(req.body);
+	User.updateOne({_id: req.body.follower}, {$push : {following: req.body.followedUser}}, function(err,success){
+		if(err){
+			res.send(err);
+		}else{
+			console.log(success);
+
+			User.updateOne({_id: req.body.followedUser}, {$push : {followedby: req.body.follower}}, function(err,success){
+				if(err){
+					res.send(err);
+				}else{
+					res.status(200).send(success);
+					console.log(success);
+				}
+			})
+			
+		}
+	})
+}
+
+
+controller.getFollowers = function(req,res){
+	console.log('retrieving followers for id: ');
+	console.log(req.headers);
+	console.log(req.body.userid);
+
+	User.findOne({_id: req.body.userid})
+		.populate({path: 'following'})
+		.exec(function(err,results){
+			console.log('getting followers');
+			console.log(results);
+			res.status(200).send(results)
+		})
 }
 
 

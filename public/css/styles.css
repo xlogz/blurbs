@@ -97,15 +97,14 @@
 	padding: 15px 15px;
 }
 .hide {
-	display:none;
-}
+	opacity: 0;}
 
 body{
-/*background-image: linear-gradient( 0deg, rgba(3,127,163,1) -0.1%, rgba(0,47,108,1) 102.5% );*/
-background-image: url('../images/background.png');
+background-image: linear-gradient( rgba(135,242,255,1) 102.5%, 0deg, rgba(255,255,255,1) -0.1% );
+/*background-image: url('../images/background.png');*/
 background-repeat: no-repeat;
 background-position: right top;
-font-size: 14px;
+
 
 }
 div{
@@ -130,13 +129,69 @@ div{
 #myTabContent{
 	background-color: white;
 }
+
+.comment-profile-img{
+	display:inline-block;
+	margin: 20px 20px 20px 0px; 
+	border-radius: 15px;
+}
+
+.comment-text{
+	display:inline-block
+}
+
+.inline-block {
+	display: inline-block;
+}
+
+#aboutMeTextArea {
+	width: 100%;
+}
+
+.float-right{
+	float:right;
+}
+
+.fade-in{
+	transition: opacity .3s ease-in-out;
+}
+
+.text-12 {
+	font-size: 12px;
+}
+
+.grey{
+	color: grey;
+}
+
+body{
+	font-size: 14px;
+}
+
+#follow-user{
+	border-radius: 5px;
+	height: 25px;
+	background-color: #007bff;
+	color: white;
+	border-color: #007bff;
+	padding: 2px 10px 2px 10px;
+	margin-left: auto;
+	margin-right: auto;
+	transition: background-color .2s ease-in-out;
+	cursor: pointer;
+}
+
+#follow-user:hover{
+	background-color: #0069d9;
+}
+
 @media only screen and (max-width: 634px){
 
 	.btn{
 		font-size = .6rem
 	}
 	
-	.deleteCategoryButton{
+	.deleteCategoryButton,.edit-category-btn{
 		display: inline-block;
 	}
 
@@ -150,11 +205,18 @@ div{
 
 	#home-tab { 
 	display: inline-block;
-	
 	 }
+	
+
 
 	 #category-list{
 		display:none;
 	}
 	
+
+	.title-bar-20{
+		height: 20px;
+	}
+
+
 }

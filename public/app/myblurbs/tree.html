@@ -6,14 +6,14 @@
 					        </button>
 							<div style="float:right; display:none">
 					        <button class="btn btn-alert btn-md btn-grey" style="float: right" ng-click="deleteBlurbData(link._id,category.id)">Delete</button>
-					        <button class="btn btn-alert btn-md btn-grey" style="float: right" ng-click="addSubLinkData(link._id)">Add Sub-Link</button>
+					        <button class="btn btn-alert btn-md btn-grey" style="float: right" ng-click="addSubLinkData(link._id, link.depth)">Add Sub-Link</button>
 							</div>
 					      </h5>
 					    </div>
 
 					    <div id="collapse{{link._id}}" class="collapse show" show aria-labelledby="heading{{link.title}}" >
 					      <div class="card-body">
-					        {{link.url}} 
+					        <a href="{{link.url}}">{{link.url}}</a> 
 
 					        <p style="float: right; font-size: .7em" >{{link.createdon}}</p>
 					        <br>
