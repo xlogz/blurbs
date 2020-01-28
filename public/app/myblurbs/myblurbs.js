@@ -125,7 +125,7 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 			setTimeout(function(){
 				console.log('switching to the tab');
 				console.log($rootScope.currentTabId)
-				$('#' + $rootScope.currentTabId).tab('show');
+				$('#' + $rootScope.currentTabId + '-tab').tab('show');
 			},50)
 		})
 		});
@@ -314,13 +314,17 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 				$scope.categories = data.categories;
 				$scope.categoriesList = data.categoriesList;
 				$scope.userObject = data.userObject
-
-
+				$rootScope.currentTabId = result.data._id
+				console.log('this is the currentTabId after creating '
+					 + result.data.title)
+				console.log($rootScope.currentTabId);
 
 				setTimeout(function(){
+					$rootScope.currentTabId = result.data._id
 					$('#' + result.data._id + '-tab').tab('show');
+					
 					$rootScope.currentCategory = categoryTitle;
-				},20);
+				},50);
 				
 				
 

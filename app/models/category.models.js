@@ -10,7 +10,8 @@ var CategorySchema = new Schema({
 	owner: {
 		type: Schema.Types.ObjectId, 
 		ref: 'User'
-	}
+	},
+	private: Boolean
 })
 
 module.exports = mongoose.model('Category', CategorySchema);
