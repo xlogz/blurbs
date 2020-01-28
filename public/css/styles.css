@@ -185,6 +185,35 @@ body{
 	background-color: #0069d9;
 }
 
+.container-container-container{
+	max-width: 1200px;
+	overflow-y: hidden; 
+	display: table-cell; 
+	width: 800px; 
+	position: relative; 
+	height: 220px
+}
+
+.container-container{
+	scroll-behavior: smooth;
+	overflow-x: scroll;
+	overflow-y: hidden;
+	max-height: 250px; 
+	max-width: 1000px;
+	min-width: 200px;
+	width: 800px;
+	padding-bottom: 20px;
+	padding-right: 20px;
+	position: absolute
+}
+
+.card-container{
+	overflow-x: hidden;
+	overflow-y: hidden; height: 250px;
+	min-width: 2000px;
+	position: relative
+}
+
 @media only screen and (max-width: 634px){
 
 	.btn{

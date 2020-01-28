@@ -12,6 +12,19 @@ mainApp.service('profileService',['$http', function($http){
 		})
 	}
 
+	function unfollowUser(follower,followedUser, cb){
+		var submit = {};
+		submit.follower = follower;
+		submit.followedUser = followedUser;
+		$http({
+			method: 'PUT',
+			url: '/users/unfollow',
+			data: submit
+		}).then(function(results){
+			console.log(results);
+		})
+	}
+
 
 	function getFollowers(userId, cb){
 		var submit = {};
@@ -36,6 +49,7 @@ mainApp.service('profileService',['$http', function($http){
 
 	return{
 		followUser : followUser,
-		getFollowers: getFollowers
+		getFollowers: getFollowers,
+		unfollowUser: unfollowUser
 	}
 }])

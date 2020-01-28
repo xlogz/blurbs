@@ -122,14 +122,16 @@ mainApp.controller("profileCtrl", ["$scope", "$stateParams", "authService", 'com
 
 	$scope.followUser = function(){
 		console.log('following user');
+		$scope.isFollowing = true;
 		profileService.followUser($scope.currentUserId,$scope.userProfileId, function(){
 
 		})
 	}
 
-	$scope.followUser = function(){
-		console.log('following user');
-		profileService.followUser($scope.currentUserId,$scope.userProfileId, function(){
+	$scope.unfollowUser = function(){
+		console.log('unfollowing user');
+		$scope.isFollowing = false;
+		profileService.unfollowUser($scope.currentUserId,$scope.userProfileId, function(){
 
 		})
 	}

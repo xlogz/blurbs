@@ -36,6 +36,7 @@ module.exports = function(app){
 	app.route('/users/userobject').get(user.getUserObject);
 
 	app.route('/users/follow').put(user.followUser);
+	app.route('/users/unfollow').put(user.unfollowUser);
 	app.route('/users/followers').put(user.getFollowers);
 
 }

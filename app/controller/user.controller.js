@@ -72,6 +72,8 @@ controller.signup = function(req, res){
 	var usernameTaken;
 	var emailTaken;
 
+
+
 	User.exists({registeredUsername: registeredUsername}).then(function(taken){
 		console.log('this is the result of checking username existance: ' + taken);
 		if(taken){
@@ -362,6 +364,28 @@ controller.followUser = function(req, res){
 		}
 	})
 }
+
+controller.unfollowUser = function(req, res){
+	console.log(req.body);
+	User.updateOne({_id: req.body.follower}, {$pull : {following: req.body.followedUser}}, function(err,success){
+		if(err){
+			res.send(err);
+		}else{
+			console.log(success);
+
+			User.updateOne({_id: req.body.followedUser}, {pull : {followedby: req.body.follower}}, function(err,success){
+				if(err){
+					res.send(err);
+				}else{
+					res.status(200).send(success);
+					console.log(success);
+				}
+			})
+			
+		}
+	})
+}
+
 
 
 controller.getFollowers = function(req,res){
