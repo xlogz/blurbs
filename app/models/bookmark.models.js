@@ -35,7 +35,11 @@ var BookMarkSchema = new Schema({
 	},
 	tags : [{
 		type: String
-	}]
+	}],
+	comments: [{
+		type: Schema.Types.ObjectId,
+		ref: 'Comment'
+	}],
 
 })
 

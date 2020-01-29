@@ -4,18 +4,18 @@
 	
 	<div class="container">
 		<div class="row">
-			<h6>Latest Bookmarks</h6><br>
+			<h6 class="blurbs-title">Latest Bookmarks</h6><br>
 			<hr>
 		</div>
 		<div class="row" style="display: table; margin-bottom: 50px; width: 100%; ">
 			<div align=center>
 				<div style="display: table-cell; vertical-align: middle" id="latestBlurbsLeft">
-					<img src="../images/left-arrow.png">
+					<img src="../images/left-arrow.png" class="blurbs-arrow">
 				</div>
 				<div class="container-container-container">
 				<div class="container-container"  id="latestBlurbsContainer">
 					<div class="card-container row" id="latestBlurbsCards" style="">
-						<div class="" style="width: 150px; position: relative;margin-left: 25px;margin-bottom: 20px;" ng-repeat="blurb in latestBlurbs">
+						<div class="" style="width: 150px; position: relative;margin-left: 25px;margin-bottom: 20px; display: inline-block" ng-repeat="blurb in latestBlurbs">
 							<div class="card" style="min-height: 210px">
 								<div class="card-header"><a ui-sref="blurb({id: blurb._id})">{{blurb.title}}</a><span class="text-12"><br>By<br><a ui-sref="profile({username: blurb.author.username})">{{blurb.author.username}}</a></span></div>
 								<div class="card-body text-truncate" style="max-height: 100px;  "><span class="text-12" title="{{blurb.description}}">{{blurb.description}}</span></div>
@@ -25,7 +25,7 @@
 				</div>
 			</div>
 			<div style="display: table-cell; vertical-align: middle" id="latestBlurbsRight">
-				<img src="../images/right-arrow.png">
+				<img src="../images/right-arrow.png"  class="blurbs-arrow">
 			</div>
 			<hr>
 			</div>
@@ -40,12 +40,12 @@
 
 
 				<div class="row">
-			<h6>Random Bookmarks</h6><br>
+			<h6  class="blurbs-title">Random Bookmarks</h6><br>
 			<hr>
 		</div>
 		<div class="row" style="display: table; margin-bottom: 50px; width: 100%; ">
 			<div align=center>
-				<div style="display: table-cell; vertical-align: middle" id="randomBlurbsLeft"><img src="../images/left-arrow.png"></div>
+				<div style="display: table-cell; vertical-align: middle" id="randomBlurbsLeft"><img src="../images/left-arrow.png"  class="blurbs-arrow"></div>
 				<div class="container-container-container" >
 				<div class="container-container"  id="randomBlurbsContainer" >
 					<div class="card-container row">
@@ -58,7 +58,7 @@
 					</div>
 				</div>
 			</div>
-			<div style="display: table-cell; vertical-align: middle" id="randomBlurbsRight"><img src="../images/right-arrow.png"></div>
+			<div style="display: table-cell; vertical-align: middle" id="randomBlurbsRight"><img src="../images/right-arrow.png"  class="blurbs-arrow"></div>
 			<hr>
 			</div>
 		</div>

@@ -189,7 +189,7 @@ body{
 	max-width: 1200px;
 	overflow-y: hidden; 
 	display: table-cell; 
-	width: 800px; 
+	width: 100%; 
 	position: relative; 
 	height: 220px
 }
@@ -201,7 +201,7 @@ body{
 	max-height: 250px; 
 	max-width: 1000px;
 	min-width: 200px;
-	width: 800px;
+	width: 100%;
 	padding-bottom: 20px;
 	padding-right: 20px;
 	position: absolute
@@ -212,6 +212,15 @@ body{
 	overflow-y: hidden; height: 250px;
 	min-width: 2000px;
 	position: relative
+}
+
+.blurbs-arrow{
+	margin-left: 20px;
+	margin-right: 20px;
+}
+
+.blurbs-title{
+	margin-left: 20px;
 }
 
 @media only screen and (max-width: 634px){
