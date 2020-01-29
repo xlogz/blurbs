@@ -5,6 +5,7 @@ var bookmarkModel = require('./app/models/user.models.js');
 var tokenModel = require('./app/models/token.models.js');
 var categoryModel = require('./app/models/category.models.js');
 var commentModel = require('./app/models/comment.models.js');
+var notificationModel = require('./app/models/notification.models.js');
 
 var user = require('./app/controller/user.controller.js');
 var blurb = require('./app/controller/blurb.controller.js');

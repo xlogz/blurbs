@@ -1,6 +1,7 @@
 var user = require('../controller/user.controller.js');
 var blurb = require('../controller/blurb.controller.js');
 var comment = require('../controller/comment.controller.js');
+var notification = require('../controller/notification.controller.js');
 
 module.exports = function(app){
 
@@ -16,10 +17,13 @@ module.exports = function(app){
 	app.route('/blurb/random').get(blurb.getRandomBlurbs);
 	app.route('/blurb/details').get(blurb.getBlurbDetails);
 
+
 	app.route('/comments/wall/submit').put(comment.submitWallMessage);
 	app.route('/comments/wall/retrieve').get(comment.retrieveWallMessages);
 	app.route('/comments/wall/edit').put(comment.editWallComment);
 	app.route('/comments/wall/delete').delete(comment.deleteWallComment);
+	
+	app.route('/comments/blurb/submit').put(comment.submitBlurbComment);
 
 	app.route('/aboutme/edit').put(comment.editAboutMe);
 
@@ -38,5 +42,7 @@ module.exports = function(app){
 	app.route('/users/follow').put(user.followUser);
 	app.route('/users/unfollow').put(user.unfollowUser);
 	app.route('/users/followers').put(user.getFollowers);
+
+	app.route('/notification/send').put(notification.sendNotification);
 
 }

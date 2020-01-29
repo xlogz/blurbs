@@ -8,6 +8,11 @@ mainApp.service('profileService',['$http', function($http){
 			url: '/users/follow',
 			data: submit
 		}).then(function(results){
+			if(cb){
+				cb(results);
+			}else{
+				return results;
+			}
 			console.log(results);
 		})
 	}

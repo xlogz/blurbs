@@ -223,6 +223,36 @@ body{
 	margin-left: 20px;
 }
 
+#notifications-container{
+	height: 100%;
+	width: 20%;
+	top: 76px;
+	position: fixed;
+	left: 80%;
+	z-index: 99;
+}
+
+#notification-background{
+	height: 100%;
+	width: 100%;
+	background: black;
+	opacity: .5;
+	position: absolute;
+	z-index: 2;
+}
+
+#notifications{
+	color: white;
+	top: 20px;
+	position: absolute;
+	z-index: 3;
+	list-style-type: none;
+
+}
+
+#notifications li{
+	padding-right: 10px;
+}
 @media only screen and (max-width: 634px){
 
 	.btn{

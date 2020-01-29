@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var Comment = mongoose.model('Comment');
 var User = mongoose.model('User');
+var Bookmark = mongoose.model('Bookmark');
 
 var controller = {};
 
@@ -66,5 +67,22 @@ controller.deleteWallComment = function(req, res){
 		})
 	})
 }
+
+controller.submitBlurbComment = function(req, res){
+	var date = new Date();
+	var comment = new Comment({
+		author: req.body.userid,
+		text: req.body.message,
+		date: date,
+	});
+	comment.save(function(result){
+		Bookmark.updateOne({_id: req.body.bookmarkid}, {$push : {comments: comment._id}}).then(function(results){
+			console.log('comment saved');
+			res.send(results);
+		})
+	
+	})
+}
+	
 
 module.exports = controller;

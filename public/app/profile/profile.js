@@ -1,4 +1,4 @@
-mainApp.controller("profileCtrl", ["$scope", "$stateParams", "authService", 'commentFactory', '$rootScope', 'profileService', function($scope,$stateParams,authService, commentFactory, $rootScope, profileService){
+mainApp.controller("profileCtrl", ["$scope", "$stateParams", "authService", 'commentFactory', '$rootScope', 'profileService', 'notificationsFactory',function($scope,$stateParams,authService, commentFactory, $rootScope, profileService, notificationsFactory){
 	console.log($stateParams);
 	$scope.userProfileName = $stateParams.username;
 	$scope.message = "";
@@ -120,13 +120,24 @@ mainApp.controller("profileCtrl", ["$scope", "$stateParams", "authService", 'com
 		});
 	}
 
-	$scope.followUser = function(){
+	$scope.followUser = function(currentUserName, profileUsername){
 		console.log('following user');
+		console.log(currentUserName + ' '+ profileUsername);
 		$scope.isFollowing = true;
 		profileService.followUser($scope.currentUserId,$scope.userProfileId, function(){
+			var data = {};
+			data.text = 'You have a new follower! <a ui-sref="profile({username: notification.fromUsername})">' + currentUserName + ' </a> has started following.';
+			data.from = $scope.currentUserId;
+			data.fromUsername = currentUserName;
+			data.createdon = new Date();
+			console.log('submitting data for notifications');
+			console.log(data);
+			notificationsFactory.sendNotification($scope.userProfileId, data, function(){
 
+			});
 		})
 	}
+
 
 	$scope.unfollowUser = function(){
 		console.log('unfollowing user');
@@ -149,7 +160,8 @@ mainApp.controller("profileCtrl", ["$scope", "$stateParams", "authService", 'com
 		});
 	}
 
-	
+
+		
 
 
 	$scope.$watch(function(authService){

@@ -89,5 +89,24 @@ mainApp.factory('commentFactory', [ '$http', function($http){
 		})
 	}
 
+	obj.submitBlurbComment = function(userid, bookmarkid, message, cb){
+		var submit = {};
+		submit.userid = userid;
+		submit.bookmarkid = bookmarkid;
+		submit.message = message;
+		$http({
+			method: 'PUT',
+			url: '/comments/blurb/submit',
+			data: submit
+		}).then(function(results){
+			if(cb){
+				cb(results)
+			}else{
+				return results;
+			}
+		})
+	}
+
+
 	return obj;
 }])

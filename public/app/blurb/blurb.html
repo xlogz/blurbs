@@ -27,5 +27,45 @@
  	 	<div class="row">
  	 		<div class="col-sm-10  offset-sm-1"> {{blurb.description}}</div>
  	 	</div>
+ 	 	<br>
+ 	 	<br>
+ 	 	<br>
+ 	 	<div class="row">
+ 		<div class="col-sm-10  offset-sm-1"> 
+ 		<form>
+			<textarea class="col-lg-9 form-control" rows=3 ng-model="message" id="blurbCommentField"></textarea>
+			<br>
+			<button class="btn btn-primary" style="float:right" ng-click="submitComment()">Submit</button>
+		</form>
+ 	 	</div>
+
+ 	 	<!-- 				Wall Comments -->
+ 	 	<div class="col-sm-10  offset-sm-1"> 
+				<div class="col-lg-9" ng-repeat="message in comments | orderBy: createdon:true | limitTo: 8">
+					<div class="comment-container">
+						<div edit-hover>
+							<h6 class="inline-block"> <a ui-sref="profile({username: message.author.username})">{{message.author.username}}</a></h6>
+							<div class="hide float-right ">
+
+								<button data-target="#deleteWallCommentModal" class="btn btn-default float-right text-12 grey" ng-click="deleteWallComment($index)" ng-show="sameUser || message.author.username === username">Delete</button>
+								<button data-target="#editWallCommentModal" class="btn btn-default float-right text-12 grey" ng-click="editWallComment(message.text, message._id)" ng-show="message.author.username === username">Edit</button>
+
+								
+							</div>
+						</div>
+
+						<div class="comment-text">
+							
+						{{message.text}}
+							
+
+						</div>
+						<hr>
+						
+					
+					</div>
+				</div>
+			</div>
+ 	 </div>
  	 </div>
  </section>

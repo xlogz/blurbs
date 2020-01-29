@@ -103,6 +103,7 @@ mainApp.controller('mainCtrl',['authService', '$scope', '$cookies','$rootScope',
     var user = authService.validateToken(authCookie, function(username){
     $rootScope.username = username;
     $scope.username = username.data[0].username;
+    $scope.currentUsername = username.data[0].username;
     console.log($scope.username);
     console.log(username);
     console.log(username + ' has been verified');
@@ -111,6 +112,13 @@ mainApp.controller('mainCtrl',['authService', '$scope', '$cookies','$rootScope',
       $scope.user = userObj;
       $scope.currentUserId = userObj.data[0]._id;
       authService.currentUserId = $scope.currentUserId;
+      console.log('these are the users notifications');
+      console.log(userObj.data[0].notifications);
+      // $scope.notifications = userObj.data[0].notifications;
+
+      
+      $scope.notifications = userObj.data[0].notifications;
+      $scope.showNotifications = false;
 
       console.log('initial loading of userObj');
       console.log(userObj);
@@ -132,6 +140,13 @@ mainApp.controller('mainCtrl',['authService', '$scope', '$cookies','$rootScope',
     }
   }
 
+  $scope.toggleNotifications = function(){
+    console.log('toggleNotifications clicked');
+    console.log($scope.showNotifications);
+    $scope.showNotifications = !$scope.showNotifications;
+  }
+
+
 
   
 
@@ -150,7 +165,7 @@ mainApp.controller('mainCtrl',['authService', '$scope', '$cookies','$rootScope',
   $scope.login = authService.login;
   $scope.validateToken = authService.validateToken;
   $scope.user = authService.user;
-  
+
 }])
 
 mainApp.directive('preventDefault', function(){
@@ -161,3 +176,46 @@ mainApp.directive('preventDefault', function(){
     }))
   }
 })
+
+ mainApp.filter('trustAsHtml',['$sce', function($sce) {
+    return function(text) {
+      return $sce.trustAsHtml(text);
+    };
+  }]);
+
+ mainApp.directive('compileHtml', ['$compile', function ($compile) {
+                return {
+                  $compile : $compile,
+                  priority: 1000,
+                  link: function(scope, element, attr){
+                    scope.$watch(attr.compileHtml, function(newVal, oldVal){
+                      if(newVal){
+                        console.log('this is scope from compilehtml');
+                        console.log(scope);
+                        console.log('this is element from compileHtml');
+                        console.log(element.contents());
+                        console.log('this is attr from compilehtml');
+                        console.log(attr.compileHtml);
+                        element.html(newVal);
+                        $compile(element.contents())(scope);
+                      }
+                    })
+                  }}
+            }]);
+
+//  var CompileHtmlDirective = (function () {
+//     function CompileHtmlDirective($compile) {
+//         this.$compile = $compile;
+//         this.priority = 1000;
+//         this.link = function (scope, element, attr) {
+//             scope.$watch(attr.compileHtml, function (newVal, oldVal) {
+//                 if (newVal) {
+//                     element.html(newVal);
+//                     $compile(element.contents())(scope);
+//                 }
+//             });
+//         };
+//     }
+
+//     return CompileHtmlDirective;
+// })();

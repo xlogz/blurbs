@@ -225,7 +225,7 @@ controller.getRandomBlurbs = function(req, res){
 
 
 controller.getBlurbDetails = function(req, res){
-	Bookmark.find({_id: req.headers.id}).populate({path: 'author'}).then(function(err,bookmark){
+	Bookmark.find({_id: req.headers.id}).populate({path: 'author'}).populate({path: 'comments', populate:{ path: 'author'}}).then(function(err,bookmark){
 		if(err){
 			res.send(err);
 		}else{
