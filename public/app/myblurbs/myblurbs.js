@@ -27,6 +27,8 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 
 
 	$('body').on('click', '.nav-tabs .nav-item', function(e){
+
+		console.log(e.target.id);
 		$scope.currentTabId = e.target.id;
 		$rootScope.currentTabId = e.target.id;
 		$scope.currentCategory = e.target.text;
@@ -125,7 +127,7 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 			setTimeout(function(){
 				console.log('switching to the tab');
 				console.log($rootScope.currentTabId)
-				$('#' + $rootScope.currentTabId + '-tab').tab('show');
+				$('#' + $rootScope.currentTabId).tab('show');
 			},50)
 		})
 		});
