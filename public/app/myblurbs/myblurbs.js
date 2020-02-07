@@ -321,6 +321,8 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 					 + result.data.title)
 				console.log($rootScope.currentTabId);
 
+				$rootScope.currentTabId = $rootScope.currentTabId + "-tab";
+
 				setTimeout(function(){
 					$rootScope.currentTabId = result.data._id
 					$('#' + result.data._id + '-tab').tab('show');
