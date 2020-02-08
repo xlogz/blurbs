@@ -215,7 +215,7 @@ mainApp.service('blurbService', ['$http', 'authService', '$rootScope',  function
 			$http({
 				method: 'put',
 				url: '/blurb/bookmark/add',
-				headers: submit
+				data: submit
 			}).then(function(id){
 				console.log('This is the ID of the blurb we just added in the database');
 				console.log(id);
@@ -255,7 +255,7 @@ mainApp.service('blurbService', ['$http', 'authService', '$rootScope',  function
 		$http({
 			method: 'PUT',
 			url: '/blurb/sublink/add',
-			headers: info
+			data: info
 		}).then(function(results){
 			if(cb){
 				cb(results);

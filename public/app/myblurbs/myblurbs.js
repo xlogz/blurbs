@@ -25,6 +25,15 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 	  $(this).tab('show');
 	})
 
+	$("#addBlurbModal").on('hidden.bs.modal', function(){
+   $scope.error = false;
+   $scope.errorMessage = [];
+	});
+
+	$("#addSubLinkbModal").on('hidden.bs.modal', function(){
+   $scope.error = false;
+   $scope.errorMessage = [];
+	});
 
 	$('body').on('click', '.nav-tabs .nav-item', function(e){
 
@@ -114,8 +123,12 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 		console.log(checkForInvalidLink($scope.bookmark.url));
 		
 		if(!checkForInvalidLink($scope.bookmark.url)){
-			$scope.error = true;
-			$scope.errorMessage.push("Please enter a valid link");
+			if($scope.error = true){
+				return
+			}else{
+				$scope.errorMessage.push("Please enter a valid link");
+				$scope.error = true;
+			}
 			return;
 		}
 		console.log('clicking addBlurb');
@@ -187,11 +200,17 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 
 	$scope.addSubLink = function(bookmarkid){
 		console.log('checking for invalid link:')
-		console.log(checkForInvalidLink($scope.sublink.url));
+		console.log(!checkForInvalidLink($scope.sublink.url));
 		
 		if(!checkForInvalidLink($scope.sublink.url)){
-			$scope.error = true;
-			$scope.errorMessage.push("Please enter a valid link");
+			
+			if($scope.error = true){
+				return
+			}else{
+				$scope.errorMessage.push("Please enter a valid link");
+				$scope.error = true;
+			}
+			
 			return;
 		}
 		console.log('addSubLink clicked');
@@ -212,12 +231,14 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 
 		blurbService.addSubLink(info, function(){
 			blurbService.populateUserData($scope.username, function(data){
-				setTimeout(function(){console.log(data);
-					setTimeout(function(){
+				console.log('this is the data we received after creating sublink');
+				$scope.categories = data.categories;
+				$scope.categoriesList = data.categoriesList;
+				setTimeout(function(){
+					console.log('switching to tab ' + $scope.currentTabId + ' ' + $rootScope.currentTabId);
 						$scope.error = false;
-						$('#' + $scope.currentTabId).tab('show');
-					},20)
-				},20)
+						$('#' + $rootScope.currentTabId).tab('show');
+					},50)
 			});
 		});
 

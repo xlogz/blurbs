@@ -59,18 +59,18 @@ controller.deleteCategory = function(req, res){
 controller.addBlurb = function(req, res){
 	console.log('');
 	console.log('attempting to add blurb');
-	console.log(req.headers);
-	console.log(req.headers.bookmark);
-	console.log('req.body.data ' + req.headers.title);
+	console.log(req.body);
+	console.log(req.body.bookmark);
+	console.log('req.body.data ' + req.body.title);
 	var date = new Date();
-	console.log(JSON.stringify(req.headers.bookmark))
+	console.log(JSON.stringify(req.body.bookmark))
 	var bookmark = new Bookmark({
 		_id: new mongoose.Types.ObjectId(),
-		title: req.headers.title,
-		url: req.headers.url,
-		description: req.headers.description,
-		private: req.headers.private,
-		author: req.headers.author,
+		title: req.body.title,
+		url: req.body.url,
+		description: req.body.description,
+		private: req.body.private,
+		author: req.body.author,
 		createdon: date,
 		depth: 1
 	})
@@ -80,9 +80,9 @@ controller.addBlurb = function(req, res){
 	console.log(bookmark._id)
 	console.log(bookmark);
 	console.log('this is the categoryid to add to');
-	console.log(req.headers.categoryid);
+	console.log(req.body.categoryId);
 
-		Category.updateOne({_id: req.headers.categoryid}, {$push: {bookmarks: bookmark._id}}).then(function(item){
+		Category.updateOne({_id: req.body.categoryId}, {$push: {bookmarks: bookmark._id}}).then(function(item){
 			
 				console.log('New bookmark successfully added');
 				res.status(201).send(bookmark._id);
@@ -124,27 +124,27 @@ controller.deleteBlurb = function(req, res){
 
 controller.addSubLink = function(req,res){
 	console.log('headers for adding of sublink');
-	console.log(req.headers);
+	console.log(req.body);
 	var date = new Date();
-	var depth = parseInt(req.headers.depth) + 1;
+	var depth = parseInt(req.body.depth) + 1;
 	console.log('this should be the depth thats added');
 	console.log(depth);
 	var bookmarkObj = new Bookmark({
-						title: req.headers.title,
-						url: req.headers.url,
-						description: req.headers.description,
+						title: req.body.title,
+						url: req.body.url,
+						description: req.body.description,
 						createdon: date,
 						depth: depth,
-						private: req.headers.private
+						private: req.body.private
 	});
 	bookmarkObj.save(function(err, bookmark){
 		console.log(err);
 		console.log(bookmark);
-		console.log('adding new bookmark: ' + bookmark._id + ' to bookmark: ' + req.headers.bookmarkid)
+		console.log('adding new bookmark: ' + bookmark._id + ' to bookmark: ' + req.body.bookmarkid)
 		if(err){
 			res.status(400).send(err);
 		}else{
-			Bookmark.updateOne({_id: req.headers.bookmarkid}, {$push : {relativelinks: bookmarkObj._id}}).then(function(results){
+			Bookmark.updateOne({_id: req.body.bookmarkid}, {$push : {relativelinks: bookmarkObj._id}}).then(function(results){
 			console.log('relevant bookmark added to bookmark');
 			console.log(results);
 			res.status(200).send(results);
