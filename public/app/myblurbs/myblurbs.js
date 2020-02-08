@@ -187,7 +187,7 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 
 	$scope.addSubLink = function(bookmarkid){
 		console.log('checking for invalid link:')
-		console.log(checkForInvalidLink($scope.bookmark.url));
+		console.log(checkForInvalidLink($scope.sublink.url));
 		
 		if(!checkForInvalidLink($scope.sublink.url)){
 			$scope.error = true;
