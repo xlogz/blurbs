@@ -222,6 +222,7 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 		info.bookmarkid = $scope.bookmarkid;
 		info.depth = $scope.depth;
 		info.private = $scope.sublink.private
+		info.author = authService.currentUserId;
 		if($scope.depth === 5){
 			$scope.errorMessage = "Sublink for this branch has reached its maximum capacity";
 			$scope.error = true;

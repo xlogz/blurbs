@@ -135,7 +135,8 @@ controller.addSubLink = function(req,res){
 						description: req.body.description,
 						createdon: date,
 						depth: depth,
-						private: req.body.private
+						private: req.body.private,
+						author: req.body.author
 	});
 	bookmarkObj.save(function(err, bookmark){
 		console.log(err);
