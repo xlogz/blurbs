@@ -271,6 +271,10 @@ button:focus{
 	top: 40vh;
 }
 
+.dark-link{
+	color: #0056b3;
+	font-size: .8em;
+}
 @media only screen and (max-width: 634px){
 
 	#myTab{
