@@ -275,6 +275,10 @@ button:focus{
 	color: #0056b3;
 	font-size: .8em;
 }
+
+.card-body{
+	padding-top: 0;
+}
 @media only screen and (max-width: 634px){
 
 	#myTab{
