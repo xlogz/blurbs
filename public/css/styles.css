@@ -257,6 +257,16 @@ body{
 button:focus{
 	outline: none;
 }
+
+.nav-tabs .nav-link.active {
+	border-color: #dee2e6 #fff #dee2e6 #dee2e6;
+}
+
+.nav-tabs .nav-link.active {
+	border-top-left-radius: .5rem;
+	border-bottom-left-radius: .5rem;
+}
+
 @media only screen and (max-width: 634px){
 
 	.btn{
