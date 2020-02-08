@@ -306,7 +306,7 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 			$scope.categoriesList = data.categoriesList;
 			$scope.userObject = data.userObject
 			setTimeout(function(){
-				$('#' + $scope.currentTabId).tab('show');
+				$('#' + $rootScope.currentTabId).tab('show');
 			},20)
 			
 			});
