@@ -35,6 +35,26 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
    $scope.errorMessage = [];
 	});
 
+	$scope.hamburgerOpen = false;
+	$scope.categoryHamburgerOpen = false;
+
+	$('#tab-hamburger').on('click', function(e){
+		console.log('hamburger-menu toggled');
+
+		if($scope.categoryHamburgerOpen){
+			console.log('closing');
+			$scope.categoryHamburgerOpen = false;
+			$('#myTab').css({"display":"none"});
+		}else{
+			console.log('opening');
+			$scope.categoryHamburgerOpen = true;
+			console.log($scope.categoryHamburgerOpen);
+			$('#myTab').css({"display":"inline-block"});
+		}
+		
+		
+	})
+
 	$('body').on('click', '.nav-tabs .nav-item', function(e){
 
 		console.log(e.target.id);
@@ -48,7 +68,7 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 		}
 	});
 
-	$scope.hamburgerOpen = false;
+
 
 	$('#tab-hamburger').on('click', function(){
 		if($scope.hamburgerOpen === false){

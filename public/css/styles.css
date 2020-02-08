@@ -273,6 +273,14 @@ button:focus{
 
 @media only screen and (max-width: 634px){
 
+	#myTab{
+		display: none;
+	}
+
+	.display{
+		display: inline-block;
+	}
+
 	.btn{
 		font-size = .6rem
 	}
@@ -281,7 +289,17 @@ button:focus{
 		display: inline-block;
 	}
 
-	#tab-hamburger {
+	#tab-hamburger{
+		display: inline-block;
+		width: 100%;
+	}
+	#tab-hamburger-text{
+		float:left;
+		color: black;
+		padding-left: 20px;
+
+	}
+	#tab-hamburger-icon {
 		display: inline-block;
 		float: right;
 		color: white;
