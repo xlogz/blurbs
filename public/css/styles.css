@@ -267,6 +267,10 @@ button:focus{
 	border-bottom-left-radius: .5rem;
 }
 
+.about-text{
+	top: 40vh;
+}
+
 @media only screen and (max-width: 634px){
 
 	.btn{
@@ -298,6 +302,10 @@ button:focus{
 
 	.title-bar-20{
 		height: 20px;
+	}
+
+	.about-text{
+		top: 20vh;
 	}
 
 
