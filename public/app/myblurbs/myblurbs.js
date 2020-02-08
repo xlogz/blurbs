@@ -100,8 +100,24 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 
 	}
 
+	function checkForInvalidLink(target){
+		var string = target;
+		var invalidLink = new RegExp(/[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/ig)
+		var results = invalidLink.test(string);
+
+		return results;
+	}
+
 	$scope.addBlurb = function(){
 
+		console.log('checking for invalid link:')
+		console.log(checkForInvalidLink($scope.bookmark.url));
+		
+		if(!checkForInvalidLink($scope.bookmark.url)){
+			$scope.error = true;
+			$scope.errorMessage.push("Please enter a valid link");
+			return;
+		}
 		console.log('clicking addBlurb');
 		var info = {};
 		
@@ -127,6 +143,7 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 			setTimeout(function(){
 				console.log('switching to the tab');
 				console.log($rootScope.currentTabId)
+				$scope.error = false;
 				$('#' + $rootScope.currentTabId).tab('show');
 			},50)
 		})
@@ -169,6 +186,14 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 	}
 
 	$scope.addSubLink = function(bookmarkid){
+		console.log('checking for invalid link:')
+		console.log(checkForInvalidLink($scope.bookmark.url));
+		
+		if(!checkForInvalidLink($scope.sublink.url)){
+			$scope.error = true;
+			$scope.errorMessage.push("Please enter a valid link");
+			return;
+		}
 		console.log('addSubLink clicked');
 		var info = {};
 
@@ -189,6 +214,7 @@ mainApp.controller('myBlurbsCtrl', ['$scope', 'authService', '$http', 'blurbServ
 			blurbService.populateUserData($scope.username, function(data){
 				setTimeout(function(){console.log(data);
 					setTimeout(function(){
+						$scope.error = false;
 						$('#' + $scope.currentTabId).tab('show');
 					},20)
 				},20)

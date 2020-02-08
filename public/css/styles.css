@@ -253,6 +253,10 @@ body{
 #notifications li{
 	padding-right: 10px;
 }
+
+button:focus{
+	outline: none;
+}
 @media only screen and (max-width: 634px){
 
 	.btn{

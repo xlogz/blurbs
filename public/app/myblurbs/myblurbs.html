@@ -38,7 +38,7 @@
 					<input type="text" ng-model = "searchContent" placeholder="Search here..." style="float:right;margin-bottom: 15px; margin-top: 10px" class="form-control col-sm-2">
 
 					</div>
-<hr>
+          <hr>
 					<br>
 					<div style="display: inline-block; float: left" data-toggle="modal" data-target="#addBlurbModal">
 						<a href="#" >Add Blurb</a></div>
@@ -66,7 +66,7 @@
 							<div >
 								<div class="col-sm-10">
 									<h6>Title</h6>
-									<input type="text" id="category-title" name="title" class="form-control" ng-model="category.title" required>
+									<input type="text" class="category-title form-control" name="title" ng-model="category.title" required>
 								</div>
 							</div>
 						</div>
@@ -103,25 +103,26 @@
           </div>
           <div class="formItem col-sm-12">
             <h6>Title</h6>
-            <input type="text" id="title" name="title" class="form-control" ng-model="bookmark.title" required>
+            <input type="text" name="title" class="form-control title" ng-model="bookmark.title" required>
             {{bookmark.title}}
           </div>
           <div class="formItem col-sm-12">
             <h6>Link:</h6>
-            <input type="text" id="link" name="link" class="form-control" ng-model="bookmark.url"  required>
+            <input type="text" name="link" class="form-control link" ng-model="bookmark.url"  required>
           </div>
           <div class="formItem col-sm-12">
             <h6>Description</h6>
-            <textarea id="description" name="description" class="form-control" ng-model="bookmark.description" required rows="3"> </textarea>
+            <textarea name="description" class="form-control description" ng-model="bookmark.description" required rows="3"> </textarea>
           </div>
           <div class="formItem col-sm-12">
             <h6>Private?</h6>
 
-            <input type="radio" id="not-private" name="privacy" class="" value="false" required ng-model="bookmark.private" checked="checked"> No
+            <input type="radio" class="not-private" name="privacy" value="false" required ng-model="bookmark.private" checked="checked"> No
             <br>
 
-            <input type="radio" id="private" name="privacy" class="" value="true" ng-model="bookmark.private"  > Yes<br>
-
+            <input type="radio" class="private" name="privacy" value="true" ng-model="bookmark.private"  > Yes<br>
+            <br>
+            <p ng-show="error" ng-repeat="error in errorMessage">{{error}}</p>
             
           </div>
           
@@ -164,7 +165,7 @@
 							<div >
 								<div class="col-sm-10">
 									<h6>Title</h6>
-									<input type="text" id="add-category-modal" name="title" class="form-control" ng-model="category.title" required>
+									<input type="text" id="add-category-modal" name="title" class="form-control title" ng-model="category.title" required>
 									<p ng-show="error" ng-repeat="error in errorMessage">{{error}}</p>
 								</div>
 							</div>
@@ -287,26 +288,26 @@
           
           <div class="formItem col-sm-12">
             <h6>Title</h6>
-            <input type="text" id="title" name="title" class="form-control" ng-model="sublink.title" required>
+            <input type="text" name="title" class="form-control" ng-model="sublink.title" required>
             {{sublink.title}}
           </div>
           <div class="formItem col-sm-12">
             <h6>Link:</h6>
-            <input type="text" id="link" name="link" class="form-control" ng-model="sublink.url"  required>
+            <input type="text" name="link" class="form-control link" ng-model="sublink.url"  required>
           </div>
           <div class="formItem col-sm-12">
             <h6>Description</h6>
-            <textarea id="description" name="description" class="form-control" ng-model="sublink.description" required rows="3"> </textarea>
+            <textarea name="description" class="form-control description" ng-model="sublink.description" required rows="3"> </textarea>
           </div>
           <div class="formItem col-sm-12">
             <h6>Private?</h6>
 
-            <input type="radio" id="not-private" name="privacy" class="" value="false" required ng-model="sublink.private" checked="checked"> No
+            <input type="radio" class="not-private" name="privacy" value="false" required ng-model="sublink.private" checked="checked"> No
             <br>
 
-            <input type="radio" id="private" name="privacy" class="" value="true" ng-model="sublink.private"  > Yes<br>
-
-            
+            <input type="radio" class="private" name="privacy"  value="true" ng-model="sublink.private"  > Yes<br>
+            <br>
+            <p ng-show="error" ng-repeat="error in errorMessage">{{error}}</p>
           </div>
           <div ng-show="error">
           {{errorMessage}}
